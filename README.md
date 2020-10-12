@@ -9,3 +9,5 @@ Simple SIEM system using Esper as the CEP engine
 2. Detecting port scans
 3. Decide yourself
 4. SIEM dashboard
+
+## Notes
