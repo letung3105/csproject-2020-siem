@@ -1,0 +1,24 @@
+@public @buseventtype
+create schema TcpPacketEvent as vn.edu.vgu.jupiter.scan_alerts.TcpPacketEvent;
+
+@public
+create schema TcpPacketWithClosedPortEvent as vn.edu.vgu.jupiter.scan_alerts.TcpPacketWithClosedPortEvent;
+
+@name('TcpPacketEvent')
+select * from TcpPacketEvent;
+
+@name('TcpPacketWithClosedPortEvent')
+select * from TcpPacketWithClosedPortEvent;
+
+insert into TcpPacketWithClosedPortEvent
+select a.ipHeader, a.tcpHeader from pattern [
+    every a=TcpPacketEvent(tcpHeader.syn = true) ->
+    b=TcpPacketEvent(
+        tcpHeader.rst = true and
+        ipHeader.srcAddr = a.ipHeader.dstAddr and
+        ipHeader.dstAddr = a.ipHeader.srcAddr and
+        tcpHeader.srcPort = a.tcpHeader.dstPort and
+        tcpHeader.dstPort = a.tcpHeader.srcPort
+    )
+    where timer:within(100 millisecond)
+];
