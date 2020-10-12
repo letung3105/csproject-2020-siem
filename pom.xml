@@ -25,7 +25,54 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-
+    <!-- https://mvnrepository.com/artifact/com.espertech/esper-common -->
+    <dependency>
+        <groupId>com.espertech</groupId>
+        <artifactId>esper-common</artifactId>
+        <version>8.6.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.espertech/esper-compiler -->
+    <dependency>
+        <groupId>com.espertech</groupId>
+        <artifactId>esper-compiler</artifactId>
+        <version>8.6.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.espertech/esper-runtime -->
+    <dependency>
+        <groupId>com.espertech</groupId>
+        <artifactId>esper-runtime</artifactId>
+        <version>8.6.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.antlr/antlr4 -->
+    <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4</artifactId>
+        <version>4.8</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.30</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.30</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.codehaus.janino/commons-compiler -->
+    <dependency>
+        <groupId>org.codehaus.janino</groupId>
+        <artifactId>commons-compiler</artifactId>
+        <version>3.1.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
+    <dependency>
+        <groupId>org.codehaus.janino</groupId>
+        <artifactId>janino</artifactId>
+        <version>3.1.2</version>
+    </dependency>
   </dependencies>
 
   <build>
