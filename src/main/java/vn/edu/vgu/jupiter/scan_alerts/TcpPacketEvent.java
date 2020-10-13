@@ -4,7 +4,6 @@ import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.TcpPacket;
 
 public class TcpPacketEvent {
-    public final static String statementName = "TcpPacketEvent";
     private TcpPacket.TcpHeader tcpHeader;
     private IpPacket.IpHeader ipHeader;
 

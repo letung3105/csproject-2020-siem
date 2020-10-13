@@ -1,14 +1,11 @@
-@public @buseventtype
-create schema TcpPacketEvent as vn.edu.vgu.jupiter.scan_alerts.TcpPacketEvent;
-
-@public
-create schema TcpPacketWithClosedPortEvent as vn.edu.vgu.jupiter.scan_alerts.TcpPacketWithClosedPortEvent;
-
 @name('TcpPacketEvent')
 select * from TcpPacketEvent;
 
 @name('TcpPacketWithClosedPortEvent')
 select * from TcpPacketWithClosedPortEvent;
+
+@name('VerticalPortScanAlert')
+select * from VerticalPortScanAlert;
 
 insert into TcpPacketWithClosedPortEvent
 select a.ipHeader, a.tcpHeader from pattern [
@@ -22,3 +19,8 @@ select a.ipHeader, a.tcpHeader from pattern [
     )
     where timer:within(100 millisecond)
 ];
+
+insert into VerticalPortScanAlert
+select ipHeader.dstAddr from TcpPacketWithClosedPortEvent#time(5 minute)
+group by ipHeader.dstAddr
+having count(*) > 100
