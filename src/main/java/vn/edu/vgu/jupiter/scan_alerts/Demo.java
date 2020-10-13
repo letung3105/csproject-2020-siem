@@ -5,7 +5,6 @@ import com.espertech.esper.common.client.module.ParseException;
 import com.espertech.esper.compiler.client.EPCompileException;
 import com.espertech.esper.runtime.client.EPDeployException;
 import org.pcap4j.core.*;
-import org.pcap4j.packet.namednumber.DataLinkType;
 
 import java.io.IOException;
 
@@ -37,6 +36,7 @@ public class Demo {
         }
 
         VerticalPortScan service = new VerticalPortScan();
+        service.deploy(100, 1);
         EventSender evtSender = service.getRawEventSender();
 
         try {

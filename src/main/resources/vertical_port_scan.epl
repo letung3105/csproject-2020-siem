@@ -9,7 +9,7 @@ select * from VerticalPortScanAlert;
 
 insert into TcpPacketWithClosedPortEvent
 select a.ipHeader, a.tcpHeader from pattern [
-    every a=TcpPacketEvent(tcpHeader.syn = true) ->
+    every a=TcpPacketEvent(tcpHeader.syn = true and tcpHeader.ack = false) ->
     b=TcpPacketEvent(
         tcpHeader.rst = true and
         ipHeader.srcAddr = a.ipHeader.dstAddr and
@@ -20,7 +20,3 @@ select a.ipHeader, a.tcpHeader from pattern [
     where timer:within(100 millisecond)
 ];
 
-insert into VerticalPortScanAlert
-select ipHeader.dstAddr from TcpPacketWithClosedPortEvent#time(5 minute)
-group by ipHeader.dstAddr
-having count(*) > 100

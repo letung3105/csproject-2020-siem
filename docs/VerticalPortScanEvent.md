@@ -3,11 +3,11 @@
 The following diagram describes that event hierarchy that is used to alert to user about a potential vertical port scan that is happening in the network.
 
 ```
-TCPConnectionEvent
+    TcpPacketEvent
           |
           |
           v
-TCPConnectionToClosedPortEvent
+TcpPacketToClosedPortEvent
           |
           |
           v
