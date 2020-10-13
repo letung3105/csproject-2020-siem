@@ -1,9 +1,9 @@
-package vn.edu.vgu.jupiter.scan_alerts;
+package vn.edu.vgu.jupiter.eventbean;
 
 import java.net.InetAddress;
 
 public class VerticalPortScanAlert {
-    InetAddress hostAddr;
+    private InetAddress hostAddr;
 
     public VerticalPortScanAlert(InetAddress hostAddr) {
         this.hostAddr = hostAddr;

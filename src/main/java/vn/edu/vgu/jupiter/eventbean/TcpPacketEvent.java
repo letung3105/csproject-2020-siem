@@ -1,8 +1,11 @@
-package vn.edu.vgu.jupiter.scan_alerts;
+package vn.edu.vgu.jupiter.eventbean;
 
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.TcpPacket;
 
+/**
+ * @author Tung Le Vo
+ */
 public class TcpPacketEvent {
     private TcpPacket.TcpHeader tcpHeader;
     private IpPacket.IpHeader ipHeader;

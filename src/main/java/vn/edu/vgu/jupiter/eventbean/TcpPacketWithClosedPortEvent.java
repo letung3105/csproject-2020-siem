@@ -1,4 +1,4 @@
-package vn.edu.vgu.jupiter.scan_alerts;
+package vn.edu.vgu.jupiter.eventbean;
 
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.TcpPacket;
