@@ -34,7 +34,7 @@ public class IntroductionMain {
 
                     //TEST BY PRINT OUT
                     System.out.println("Create Network Packet object!");
-                    System.out.println(networkPacketEvent.getDate());
+                    System.out.println(networkPacketEvent.getTimeStamp());
                     System.out.println("From: " + networkPacketEvent.getSourceAddress() + ", port " + networkPacketEvent.getSourcePort());
                     System.out.println("To: " + networkPacketEvent.getDestinationAddress() + ", port " + networkPacketEvent.getDestinationPort());
                 }
