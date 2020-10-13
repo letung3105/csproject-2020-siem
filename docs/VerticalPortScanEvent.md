@@ -14,6 +14,9 @@ TcpPacketToClosedPortEvent
 VerticalPortScanEvent
 ```
 
-`PacketTransmissionEvent` will be raised whenever there is network packet passing around between the host address and some external address.
++ `TcpPacketEvent` will be produced whenever there is network packet that uses TCP protocol and is passed between the host address and some external address.
 
-`TCPConnectionToClosedPortEvent` will be raised whenever 
++ `TcpConnectionToClosedPortEvent` will be produced whenever a host is trying to send TCP packets to a closed port on another host.
+	+ A TCP packet is determined to be sent to a closed port by detecting a pattern of packet transmission. The initial TCP packet (SYN) will be replied with a RST-packet, if it is sent to a closed port.
+
++ `VerticalPortScanEvent` will be raised whenever the number of `TcpConnectionToClosedPortEvent` reaches a certain threshold and a set time window
