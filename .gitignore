@@ -130,3 +130,5 @@ $RECYCLE.BIN/
 *.msp
 # Windows shortcuts
 *.lnk
+
+target/
