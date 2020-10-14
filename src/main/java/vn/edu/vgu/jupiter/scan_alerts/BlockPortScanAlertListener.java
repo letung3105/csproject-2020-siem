@@ -18,6 +18,6 @@ public class BlockPortScanAlertListener implements UpdateListener {
             return; // ignore old events for events leaving the window
         }
         Instant ts = (Instant) newEvents[0].get("timestamp");
-        logger.info("multiple hosts received multiple connections to different closed ports [ts:" + ts.getEpochSecond() + "]");
+        logger.info("[ts={}] multiple hosts received multiple connections to different closed ports", ts.getEpochSecond());
     }
 }

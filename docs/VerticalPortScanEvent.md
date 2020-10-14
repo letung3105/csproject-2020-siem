@@ -3,15 +3,15 @@
 The following diagram describes the event hierarchy that is used to alert to user about a potential vertical port scan that is happening in the network.
 
 ```
-    TcpPacketEvent
-          |
-          |
-          v
-TcpPacketToClosedPortEvent
-          |
-          |
-          v
-VerticalPortScanEvent
+      TcpPacketEvent
+            |
+            |
+            v
+TcpPacketWithClosedPortEvent
+            |
+            |
+            v
+   VerticalPortScanAlert
 ```
 
 + `TcpPacketEvent` will be produced whenever a network packet that uses TCP protocol is captured.

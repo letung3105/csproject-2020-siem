@@ -3,7 +3,7 @@ package vn.edu.vgu.jupiter.scan_alerts;
 import com.espertech.esper.runtime.client.EPRuntime;
 
 /**
- * This class compile the EPL statement the selecting packets of TCP connection to closed port
+ * This class compile the EPL statement for selecting packets of TCP connection to closed port
  * and deploy the compiled EPL to the runtime
  *
  * @author Tung Le Vo

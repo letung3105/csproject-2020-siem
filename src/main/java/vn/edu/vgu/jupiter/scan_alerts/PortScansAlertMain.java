@@ -49,7 +49,6 @@ public class PortScansAlertMain implements Runnable {
             log.info("Setting up EPL");
             new TcpPacketWithClosedPortStatement(runtime);
             new VerticalPortScanAlertStatement(runtime, 100, 60, 5);
-            new ClosedPortsCountStatement(runtime);
             new BlockPortScanAlertStatement(runtime, 50, 2, 60, 5);
 
             // getting the network interface

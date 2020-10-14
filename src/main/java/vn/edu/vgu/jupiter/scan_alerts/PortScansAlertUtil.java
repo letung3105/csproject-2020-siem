@@ -63,7 +63,7 @@ public class PortScansAlertUtil {
         configuration.getCommon().addEventType(TcpPacketEvent.class);
         configuration.getCommon().addEventType(TcpPacketWithClosedPortEvent.class);
         configuration.getCommon().addEventType(VerticalPortScanAlert.class);
-        configuration.getCommon().addEventType(ClosedPortsCount.class);
+        configuration.getCommon().addEventType(ClosedPortsCountPerAddress.class);
         configuration.getCommon().addEventType(BlockPortScanAlert.class);
         configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
         configuration.getRuntime().getLogging().setEnableTimerDebug(false);
