@@ -1,5 +1,3 @@
-package vn.edu.vgu.jupiter.scan_alerts;
-
 import com.espertech.esper.common.client.EPCompiled;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.compiler.client.CompilerArguments;
@@ -7,25 +5,8 @@ import com.espertech.esper.compiler.client.EPCompilerProvider;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
-import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
-import vn.edu.vgu.jupiter.eventbean.TcpPacketWithClosedPortEvent;
-import vn.edu.vgu.jupiter.eventbean.VerticalPortScanAlert;
 
-/**
- * Utility functions for compiling and deploying statements.
- *
- * @author Tung Le Vo
- */
-public class VerticalPortScanAlertUtil {
-
-    /**
-     * Compile and deploy the compiled statement with the given deployment options
-     *
-     * @param epl        the epl statement
-     * @param runtime    the runtime to deploy to
-     * @param deployOpts deployment options
-     * @return the statement that was deployed
-     */
+public class ConsecutiveFailedLoginsUtil {
     protected static EPStatement compileDeploy(String epl, EPRuntime runtime, DeploymentOptions deployOpts) {
         try {
             CompilerArguments args = new CompilerArguments(getConfiguration());
@@ -37,13 +18,6 @@ public class VerticalPortScanAlertUtil {
         }
     }
 
-    /**
-     * Compile and deploy the compiled statement
-     *
-     * @param epl     the epl statement
-     * @param runtime the runtime to deploy to
-     * @return the statement that was deployed
-     */
     protected static EPStatement compileDeploy(String epl, EPRuntime runtime) {
         try {
             CompilerArguments args = new CompilerArguments(getConfiguration());
@@ -55,16 +29,12 @@ public class VerticalPortScanAlertUtil {
         }
     }
 
-    /**
-     * Make and returns that default configuration for Esper
-     *
-     * @return the configuration
-     */
+
     public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
-        configuration.getCommon().addEventType(TcpPacketEvent.class);
-        configuration.getCommon().addEventType(TcpPacketWithClosedPortEvent.class);
-        configuration.getCommon().addEventType(VerticalPortScanAlert.class);
+        configuration.getCommon().addEventType(httpLogEvent.class);
+        configuration.getCommon().addEventType(httpFailedLogin.class);
+        configuration.getCommon().addEventType(httpConsecutiveFailedLoginAlert.class);
         return configuration;
     }
 }
