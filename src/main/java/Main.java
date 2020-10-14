@@ -15,16 +15,15 @@ import java.util.regex.Pattern;
 public class Main implements Runnable {
 
     public static void main(String args[]) {
-        Configuration configuration = UnauthorizedLogUtil.getConfiguration();
         new Main().run();
     }
 
     public void run() {
-        Configuration configuration = UnauthorizedLogUtil.getConfiguration();
+        Configuration configuration = ConsecutiveFailedLoginsUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
-        new UnauthorizedAlertStatement(runtime, 5, 5);
-        new UnauthorizedStatement(runtime);
+        new ConsecutiveFailedAlertStatement(runtime, 1, 5);
+        new httpFailedLoginStatement(runtime);
 
         int recordedNumberOfLogEntries = 0;
         while (true) {
@@ -36,7 +35,7 @@ public class Main implements Runnable {
             }
             int currentNumberOfLogEntries = httpLogEvents.size();
             if (recordedNumberOfLogEntries < currentNumberOfLogEntries) {
-                for (int i = currentNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
+                for (int i = recordedNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
                     runtime.getEventService().sendEventBean(httpLogEvents.get(i), "httpLogEvent");
                 }
                 recordedNumberOfLogEntries = currentNumberOfLogEntries;
@@ -45,7 +44,7 @@ public class Main implements Runnable {
     }
 
     public static ArrayList<httpLogEvent> getEventsFromApacheHTTPDLogs() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("/var/log/apache2/access.log.1"));
+        BufferedReader reader = new BufferedReader(new FileReader("/var/log/apache2/access.log"));
         String line = null;
         ArrayList<httpLogEvent> result = new ArrayList<>();
 
@@ -58,9 +57,10 @@ public class Main implements Runnable {
             }
 
             ArrayList<String> lineComponents = new ArrayList<String>(Arrays.asList(line.split(" ")));
-            System.out.println(lineComponents + " " + lineComponents.size());
+//            System.out.println(lineComponents + " " + lineComponents.size());
             result.add(new httpLogEvent(lineComponents));
         }
+      //System.out.println(result.size());
         return result;
     }
 }
