@@ -58,7 +58,6 @@ public class PortScansAlertMain implements Runnable {
 
             final PcapHandle handle = nif.openLive(SNAPLEN, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
             handle.setFilter(FILTER, BpfProgram.BpfCompileMode.OPTIMIZE);
-
             try {
                 // capturing packet and send the Esper engine
                 handle.loop(COUNT, (PacketListener) packet -> {

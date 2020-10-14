@@ -5,8 +5,6 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
-
 public class BlockPortScanAlertStatement {
     private final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertStatement.class);
 
@@ -28,12 +26,6 @@ public class BlockPortScanAlertStatement {
                         "output first every ?:alertInterval:integer seconds",
                 runtime, alertOpts);
         PortScansAlertUtil.compileDeploy("select * from BlockPortScanAlert", runtime)
-                .addListener((newEvents, oldEvents, statement, runtime1) -> {
-                    if (newEvents == null) {
-                        return; // ignore old events for events leaving the window
-                    }
-                    Instant ts = (Instant) newEvents[0].get("timestamp");
-                    logger.info("multiple hosts received multiple connections to different closed ports [ts:" + ts.getEpochSecond() + "]");
-                });
+                .addListener(new BlockPortScanAlertListener());
     }
 }
