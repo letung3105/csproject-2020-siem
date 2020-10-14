@@ -37,6 +37,7 @@ public class CEPSetupUtil {
         configuration.getCommon().addEventType(httpConsecutiveFailedLoginFromSameIPAlertEvent.class);
         configuration.getCommon().addEventType(httpFileTooLargeEvent.class);
         configuration.getCommon().addEventType(httpFileTooLargeFromSameIPAlertEvent.class);
+        configuration.getCommon().addEventType(httpConsecutiveFailedLoginAlertEvent.class);
         return configuration;
     }
 }

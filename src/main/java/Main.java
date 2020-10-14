@@ -20,10 +20,12 @@ public class Main implements Runnable {
         Configuration configuration = CEPSetupUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
+        new ConsecutiveFailedLoginAlertStatement(runtime, 15, 5);
         new ConsecutiveFailedFromSameIPAlertStatement(runtime, 12, 1);
         new FailedLoginStatement(runtime);
         new FileTooLargeFromSameIPAlertStatement(runtime, 5);
         new FileTooLargeStatement(runtime);
+
 
         int recordedNumberOfLogEntries = 0;
         while (true) {
