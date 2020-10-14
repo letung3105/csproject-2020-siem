@@ -11,15 +11,6 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Tung Le Vo
  */
 public class VerticalPortScanAlertStatement {
-    private final String stmt =
-            "insert into VerticalPortScanAlert\n" +
-                    "select ipHeader.dstAddr\n" +
-                    "from TcpPacketWithClosedPortEvent#time_batch(?:alertTimeWindow:integer second)\n" +
-                    "group by ipHeader.dstAddr\n" +
-                    "having count(*) > ?:alertInvalidAccessLowerBound:integer";
-
-    private final String listenStmt = "select * from VerticalPortScanAlert";
-
     public VerticalPortScanAlertStatement(EPRuntime runtime, int minFailedConnectionCount, int timeWindowSeconds) {
         DeploymentOptions opts = new DeploymentOptions();
         opts.setStatementSubstitutionParameter(prepared -> {
@@ -29,8 +20,14 @@ public class VerticalPortScanAlertStatement {
                 }
         );
 
-        VerticalPortScanAlertUtil.compileDeploy(stmt, runtime, opts);
-        VerticalPortScanAlertUtil.compileDeploy(listenStmt, runtime)
+        VerticalPortScanAlertUtil.compileDeploy(
+                "insert into VerticalPortScanAlert\n" +
+                        "select ipHeader.dstAddr\n" +
+                        "from TcpPacketWithClosedPortEvent#time(?:alertTimeWindow:integer second)\n" +
+                        "group by ipHeader.dstAddr\n" +
+                        "having count(*) > ?:alertInvalidAccessLowerBound:integer",
+                runtime, opts);
+        VerticalPortScanAlertUtil.compileDeploy("select * from VerticalPortScanAlert", runtime)
                 .addListener(new VerticalPortScanAlertListener());
     }
 }

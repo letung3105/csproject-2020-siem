@@ -15,7 +15,7 @@ import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
  *
  * @author Tung Le Vo
  */
-public class VerticalPortScanAlertMain {
+public class VerticalPortScanAlertMain implements Runnable {
 
     private static final Logger log = LoggerFactory.getLogger(VerticalPortScanAlertMain.class);
 
@@ -24,48 +24,54 @@ public class VerticalPortScanAlertMain {
     private static final int SNAPLEN = 65536; // [bytes]
     private static final String FILTER = "tcp";
 
-    public static void main(String[] args) throws Exception {
-        new VerticalPortScanAlertMain().run(args);
+    private String netDevName;
+
+    public static void main(String[] args) {
+        String netDevName = args.length > 0 ? args[0] : "";
+        new VerticalPortScanAlertMain(netDevName).run();
+    }
+
+    public VerticalPortScanAlertMain(String netDevName) {
+        this.netDevName = netDevName;
     }
 
     /**
      * Setup the runtime, deploys the necessary statements and starts capturing packets
-     *
-     * @param args program's arguments
-     * @throws PcapNativeException occurs while capturing packets
-     * @throws NotOpenException    occurs while accessing network interface
      */
-    public void run(String[] args) throws PcapNativeException, NotOpenException {
-        Configuration configuration = VerticalPortScanAlertUtil.getConfiguration();
-        EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
-
-        // compile and deploy epl statements
-        log.info("Setting up EPL");
-        new VerticalPortScanAlertStatement(runtime, 100, 5);
-        new TcpPacketWithClosedPortStatement(runtime);
-
-        // getting the network interface
-        String devName = args.length > 0 ? args[0] : "";
-        PcapNetworkInterface nif = Pcaps.getDevByName(devName);
-        log.info(nif.getName() + "(" + nif.getDescription() + ")");
-
-        final PcapHandle handle = nif.openLive(SNAPLEN, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
-        handle.setFilter(FILTER, BpfProgram.BpfCompileMode.OPTIMIZE);
-
+    public void run() {
         try {
-            // capturing packet and send the Esper engine
-            handle.loop(COUNT, (PacketListener) packet -> {
-                IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
-                TcpPacket tcpPacket = ipV4Packet.get(TcpPacket.class);
-                TcpPacketEvent evt = new TcpPacketEvent(
-                        ipV4Packet.getHeader(),
-                        tcpPacket.getHeader()
-                );
-                runtime.getEventService().sendEventBean(evt, TcpPacketEvent.class.getSimpleName());
-            });
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            Configuration configuration = VerticalPortScanAlertUtil.getConfiguration();
+            EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
+
+            // compile and deploy epl statements
+            log.info("Setting up EPL");
+            new VerticalPortScanAlertStatement(runtime, 100, 5);
+            new TcpPacketWithClosedPortStatement(runtime);
+
+            // getting the network interface
+            PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);
+            log.info(nif.getName() + "(" + nif.getDescription() + ")");
+
+            final PcapHandle handle = nif.openLive(SNAPLEN, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+            handle.setFilter(FILTER, BpfProgram.BpfCompileMode.OPTIMIZE);
+
+            try {
+                // capturing packet and send the Esper engine
+                handle.loop(COUNT, (PacketListener) packet -> {
+                    IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
+                    TcpPacket tcpPacket = ipV4Packet.get(TcpPacket.class);
+                    TcpPacketEvent evt = new TcpPacketEvent(
+                            ipV4Packet.getHeader(),
+                            tcpPacket.getHeader()
+                    );
+                    runtime.getEventService().sendEventBean(evt, TcpPacketEvent.class.getSimpleName());
+                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            handle.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        handle.close();
     }
 }
