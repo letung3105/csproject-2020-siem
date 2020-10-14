@@ -5,9 +5,9 @@ import com.espertech.esper.runtime.client.EPRuntime;
 public class ConsecutiveFailedAlertStatement {
     private String statement =
             "insert into httpConsecutiveFailedLoginAlert\n " +
-                "select statusCode\n " +
+                "select IPAddress, time, userID\n " +
                 "from httpFailedLogin#time_batch(?:alertTimeWindow: integer second)\n " +
-                "group by statusCode\n " +
+                "group by IPAddress\n " +
                 "having count(*) > ?:consecutiveAttemptThreshold:integer";
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginAlert";

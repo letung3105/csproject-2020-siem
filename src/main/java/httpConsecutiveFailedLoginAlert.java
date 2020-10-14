@@ -1,12 +1,23 @@
 public class httpConsecutiveFailedLoginAlert {
     String IPAddress;
-    String identd;
     String userID;
     String time;
-    String timeZone;
-    String protocol;
-    String statusCode;
-    String returnObjSize;
-    String referer;
-    String clientBrowser;
+
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public httpConsecutiveFailedLoginAlert(String IPAddress, String userID, String time) {
+        this.IPAddress = IPAddress;
+        this.userID = userID;
+        this.time = time;
+    }
 }

@@ -12,6 +12,44 @@ public class httpLogEvent {
     String referer;
     String clientBrowser;
 
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public String getIdentd() {
+        return identd;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public String getReturnObjSize() {
+        return returnObjSize;
+    }
+
+    public String getReferer() {
+        return referer;
+    }
+
+    public String getClientBrowser() {
+        return clientBrowser;
+    }
+
+
+
     public httpLogEvent(ArrayList<String> splittedLog) {
         IPAddress = splittedLog.get(0);
         identd = splittedLog.get(1);

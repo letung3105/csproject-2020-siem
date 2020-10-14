@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 public class Main implements Runnable {
 
     public static void main(String args[]) {
-        Configuration configuration = ConsecutiveFailedLoginsUtil.getConfiguration();
         new Main().run();
     }
 
@@ -23,7 +22,7 @@ public class Main implements Runnable {
         Configuration configuration = ConsecutiveFailedLoginsUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
-        new ConsecutiveFailedAlertStatement(runtime, 5, 5);
+        new ConsecutiveFailedAlertStatement(runtime, 1, 5);
         new httpFailedLoginStatement(runtime);
 
         int recordedNumberOfLogEntries = 0;
@@ -36,7 +35,7 @@ public class Main implements Runnable {
             }
             int currentNumberOfLogEntries = httpLogEvents.size();
             if (recordedNumberOfLogEntries < currentNumberOfLogEntries) {
-                for (int i = currentNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
+                for (int i = recordedNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
                     runtime.getEventService().sendEventBean(httpLogEvents.get(i), "httpLogEvent");
                 }
                 recordedNumberOfLogEntries = currentNumberOfLogEntries;
@@ -58,9 +57,10 @@ public class Main implements Runnable {
             }
 
             ArrayList<String> lineComponents = new ArrayList<String>(Arrays.asList(line.split(" ")));
-            System.out.println(lineComponents + " " + lineComponents.size());
+//            System.out.println(lineComponents + " " + lineComponents.size());
             result.add(new httpLogEvent(lineComponents));
         }
+//        System.out.println(result.size());
         return result;
     }
 }

@@ -1,16 +1,29 @@
 public class httpFailedLogin {
     String IPAddress;
-    String identd;
     String userID;
     String time;
     String timeZone;
-    String statusCode;
-    String protocol;
-    String returnObjSize;
-    String referer;
-    String clientBrowser;
 
-    public String getStatusCode() {
-        return statusCode;
+    public httpFailedLogin(String IPAddress, String userID, String time, String timeZone) {
+        this.IPAddress = IPAddress;
+        this.userID = userID;
+        this.time = time;
+        this.timeZone = timeZone;
+    }
+
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
     }
 }
