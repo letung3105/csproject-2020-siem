@@ -1,8 +1,6 @@
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,11 +17,13 @@ public class Main implements Runnable {
     }
 
     public void run() {
-        Configuration configuration = ConsecutiveFailedLoginsUtil.getConfiguration();
+        Configuration configuration = CEPSetupUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
-        new ConsecutiveFailedAlertStatement(runtime, 1, 5);
-        new httpFailedLoginStatement(runtime);
+        new ConsecutiveFailedFromSameIPAlertStatement(runtime, 12, 1);
+        new FailedLoginStatement(runtime);
+        new FileTooLargeFromSameIPAlertStatement(runtime, 5);
+        new FileTooLargeStatement(runtime);
 
         int recordedNumberOfLogEntries = 0;
         while (true) {
