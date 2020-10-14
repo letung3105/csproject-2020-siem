@@ -1,6 +1,5 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
-import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
@@ -11,31 +10,23 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Tung Le Vo
  */
 public class VerticalPortScanAlertStatement {
-    public VerticalPortScanAlertStatement(EPRuntime runtime, int minFailedConnectionCount, int timeWindowSeconds, int alertIntervalSeconds) {
+    public VerticalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval) {
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
-                    prepared.setObject("alertInvalidAccessLowerBound", minFailedConnectionCount);
-                    TimePeriod ts = new TimePeriod().sec(timeWindowSeconds);
-                    prepared.setObject("alertTimeWindow", ts.getSeconds());
+                    prepared.setObject("minConnectionsCount", minConnectionsCount);
+                    prepared.setObject("timeWindow", timeWindow);
+                    prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        VerticalPortScanAlertUtil.compileDeploy(
+        PortScansAlertUtil.compileDeploy(
                 "insert into VerticalPortScanAlert\n" +
-                        "select ipHeader.dstAddr\n" +
-                        "from TcpPacketWithClosedPortEvent#time(?:alertTimeWindow:integer seconds)\n" +
+                        "select timestamp, ipHeader.dstAddr\n" +
+                        "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer seconds)\n" +
                         "group by ipHeader.dstAddr\n" +
-                        "having count(*) > ?:alertInvalidAccessLowerBound:integer",
+                        "having count(distinct tcpHeader.dstPort) >= ?:minConnectionsCount:integer\n" +
+                        "output first every ?:alertInterval:integer seconds",
                 runtime, alertOpts);
-
-        DeploymentOptions listenOpts = new DeploymentOptions();
-        listenOpts.setStatementSubstitutionParameter(prepared -> {
-                    TimePeriod ts = new TimePeriod().sec(alertIntervalSeconds);
-                    prepared.setObject("alertInterval", ts.getSeconds());
-                }
-        );
-        VerticalPortScanAlertUtil.compileDeploy(
-                "select * from VerticalPortScanAlert output last every ?:alertInterval:integer seconds",
-                runtime, listenOpts)
+        PortScansAlertUtil.compileDeploy("select * from VerticalPortScanAlert", runtime)
                 .addListener(new VerticalPortScanAlertListener());
     }
 }

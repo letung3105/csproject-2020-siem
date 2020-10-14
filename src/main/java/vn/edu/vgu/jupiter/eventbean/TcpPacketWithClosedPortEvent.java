@@ -3,13 +3,21 @@ package vn.edu.vgu.jupiter.eventbean;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.TcpPacket;
 
+import java.time.Instant;
+
 public class TcpPacketWithClosedPortEvent {
+    private Instant timestamp;
     private TcpPacket.TcpHeader tcpHeader;
     private IpPacket.IpHeader ipHeader;
 
-    public TcpPacketWithClosedPortEvent(IpPacket.IpHeader ipHeader, TcpPacket.TcpHeader tcpHeader) {
-        this.ipHeader = ipHeader;
+    public TcpPacketWithClosedPortEvent(Instant timestamp, TcpPacket.TcpHeader tcpHeader, IpPacket.IpHeader ipHeader) {
+        this.timestamp = timestamp;
         this.tcpHeader = tcpHeader;
+        this.ipHeader = ipHeader;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
     }
 
     public IpPacket.IpHeader getIpHeader() {

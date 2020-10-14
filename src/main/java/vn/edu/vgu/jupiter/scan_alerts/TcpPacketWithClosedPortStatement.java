@@ -10,9 +10,9 @@ import com.espertech.esper.runtime.client.EPRuntime;
  */
 public class TcpPacketWithClosedPortStatement {
     public TcpPacketWithClosedPortStatement(EPRuntime runtime) {
-        VerticalPortScanAlertUtil.compileDeploy(
+        PortScansAlertUtil.compileDeploy(
                 "insert into TcpPacketWithClosedPortEvent\n" +
-                        "select a.ipHeader, a.tcpHeader from pattern [\n" +
+                        "select a.timestamp, a.tcpHeader, a.ipHeader from pattern [\n" +
                         "every a=TcpPacketEvent(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
                         "b=TcpPacketEvent(\n" +
                         "   tcpHeader.rst = true and\n" +
