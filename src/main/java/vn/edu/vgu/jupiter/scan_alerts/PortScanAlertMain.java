@@ -10,8 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
 
-public class HorizontalPortScanAlertMain {
-    private static final Logger log = LoggerFactory.getLogger(HorizontalPortScanAlertMain.class);
+/**
+ * Setup the Esper's runtime and packet capture, captured network packets are passed to the Esper's runtime
+ *
+ * @author Tung Le Vo
+ */
+public class PortScanAlertMain {
+
+    private static final Logger log = LoggerFactory.getLogger(PortScanAlertMain.class);
 
     private static final int COUNT = -1;
     private static final int READ_TIMEOUT = 100; // [ms]
@@ -19,16 +25,23 @@ public class HorizontalPortScanAlertMain {
     private static final String FILTER = "tcp";
 
     public static void main(String[] args) throws Exception {
-        new HorizontalPortScanAlertMain().run(args);
+        new PortScanAlertMain().run(args);
     }
 
+    /**
+     * Setup the runtime, deploys the necessary statements and starts capturing packets
+     *
+     * @param args program's arguments
+     * @throws PcapNativeException occurs while capturing packets
+     * @throws NotOpenException    occurs while accessing network interface
+     */
     public void run(String[] args) throws PcapNativeException, NotOpenException {
-        Configuration configuration = HorizontalPortScanAlertUtil.getConfiguration();
+        Configuration configuration = PortScanAlertUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
         // compile and deploy epl statements
         log.info("Setting up EPL");
-        new HorizontalPortScanAlertStatement(runtime, 100, 5);
+        new PortScanAlertStatement(runtime, 100, 5);
         new TcpPacketWithClosedPortStatement(runtime);
 
         // getting the network interface

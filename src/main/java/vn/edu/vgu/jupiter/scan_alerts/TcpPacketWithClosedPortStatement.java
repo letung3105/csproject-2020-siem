@@ -24,7 +24,6 @@ public class TcpPacketWithClosedPortStatement {
                     "]";
 
     public TcpPacketWithClosedPortStatement(EPRuntime runtime) {
-        VerticalPortScanAlertUtil.compileDeploy(stmt, runtime);
-        HorizontalPortScanAlertUtil.compileDeploy(stmt, runtime);
+        PortScanAlertUtil.compileDeploy(stmt, runtime);
     }
 }
