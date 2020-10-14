@@ -45,7 +45,7 @@ public class VerticalPortScanAlertMain implements Runnable {
 
             // compile and deploy epl statements
             log.info("Setting up EPL");
-            new VerticalPortScanAlertStatement(runtime, 100, 5);
+            new VerticalPortScanAlertStatement(runtime, 100, 60, 5);
             new TcpPacketWithClosedPortStatement(runtime);
 
             // getting the network interface
