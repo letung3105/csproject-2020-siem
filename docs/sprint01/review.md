@@ -202,3 +202,12 @@ The scan alerts are raised when the number of TCP connection to closed ports rea
 + Horizontal scan alert counts the number of host addresses that were accessed per closed port.
 
 + Block scan alert counts the number of host addresses whose many closed ports were accessed.
+
+---
+
+# Plans for next week
+
++ Tackle task 4.
+    + Fix existing modules (if needed) for integration.
+    + Starts prioritizing the alerts.
++ Might start working on task 3, when we come up with some interesting ideas.
