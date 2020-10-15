@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 /**
  * A listener for the HorizontalPortScanAlert events
  * The new events are logged using the class Logger
+ *
+ * @author Pham Nguyen Thanh An
  */
 public class HorizontalPortScanAlertListener implements UpdateListener {
     private final Logger logger = LoggerFactory.getLogger(HorizontalPortScanAlertListener.class);

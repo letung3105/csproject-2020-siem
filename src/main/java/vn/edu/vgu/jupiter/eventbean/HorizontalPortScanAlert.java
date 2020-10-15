@@ -4,6 +4,8 @@ import org.pcap4j.packet.namednumber.Port;
 
 /**
  * A class that represent HorizontalPortScan events
+ *
+ * @author Pham Nguyen Thanh An
  */
 public class HorizontalPortScanAlert {
     private Port hostPort;

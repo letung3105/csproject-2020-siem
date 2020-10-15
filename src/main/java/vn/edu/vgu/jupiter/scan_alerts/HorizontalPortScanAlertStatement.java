@@ -7,6 +7,8 @@ import com.espertech.esper.runtime.client.EPRuntime;
 /**
  * A class to compile EPL statements for the HorizontalPortScanAlert event
  * A listener is attached to log message
+ *
+ * @author Pham Nguyen Thanh An
  */
 public class HorizontalPortScanAlertStatement {
     private final String stmt =
