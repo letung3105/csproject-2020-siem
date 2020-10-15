@@ -4,26 +4,26 @@ import com.espertech.esper.common.client.EventBean;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
-import org.pcap4j.packet.namednumber.Port;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A listener for the HorizontalPortScanAlert events
- * The new events are logged using the class Logger
+ * A listener that can be attach the statement that returns events
+ * of type <code>BlockPortScanAlert</code>. The received update will
+ * be shown to the user in a log message.
  *
- * @author Pham Nguyen Thanh An
+ * @author Vo Le Tung
  */
-public class HorizontalPortScanAlertListener implements UpdateListener {
-    private static final Logger logger = LoggerFactory.getLogger(HorizontalPortScanAlertListener.class);
+public class BlockPortScanAlertListener implements UpdateListener {
+    private static final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertListener.class);
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
         if (newEvents == null) {
-            return;
+            return; // ignore old events for events leaving the window
         }
         Long ts = (Long) newEvents[0].get("timestamp");
-        Port hostPort = (Port) newEvents[0].get("hostPort");
-        logger.info("[ts={}] POTENTIAL HORIZONTAL PORT SCAN ON PORT {}", ts, hostPort.valueAsInt());
+        logger.info("[ts={}] POTENTIAL BLOCK PORT SCAN", ts);
     }
 }
+

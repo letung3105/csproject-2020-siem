@@ -7,16 +7,15 @@ import com.espertech.esper.compiler.client.EPCompilerProvider;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
-import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
-import vn.edu.vgu.jupiter.eventbean.TcpPacketWithClosedPortEvent;
-import vn.edu.vgu.jupiter.eventbean.VerticalPortScanAlert;
+import vn.edu.vgu.jupiter.eventbean.*;
 
 /**
  * Utility functions for compiling and deploying statements.
  *
- * @author Tung Le Vo
+ * @author Vo Le Tung
+ * @author Pham Nguyen Thanh An
  */
-public class VerticalPortScanAlertUtil {
+public class PortScansAlertUtil {
 
     /**
      * Compile and deploy the compiled statement with the given deployment options
@@ -64,7 +63,12 @@ public class VerticalPortScanAlertUtil {
         Configuration configuration = new Configuration();
         configuration.getCommon().addEventType(TcpPacketEvent.class);
         configuration.getCommon().addEventType(TcpPacketWithClosedPortEvent.class);
+        configuration.getCommon().addEventType(ClosedPortsCountPerAddress.class);
         configuration.getCommon().addEventType(VerticalPortScanAlert.class);
+        configuration.getCommon().addEventType(HorizontalPortScanAlert.class);
+        configuration.getCommon().addEventType(BlockPortScanAlert.class);
+        configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
+        configuration.getRuntime().getLogging().setEnableTimerDebug(false);
         return configuration;
     }
 }
