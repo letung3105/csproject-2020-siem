@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
-import java.time.Instant;
 
 /**
  * A simple listener for VerticalPortScanAlert events
@@ -26,7 +25,7 @@ public class VerticalPortScanAlertListener implements UpdateListener {
             return; // ignore old events for events leaving the window
         }
         InetAddress hostAddr = (InetAddress) newEvents[0].get("hostAddr");
-        Instant ts = (Instant) newEvents[0].get("timestamp");
-        logger.info("[ts={}] {} received multiple connections to different closed ports", ts.getEpochSecond(), hostAddr.getHostAddress());
+        Long ts = (Long) newEvents[0].get("timestamp");
+        logger.info("[ts={}] {} received multiple connections to different closed ports", ts, hostAddr.getHostAddress());
     }
 }

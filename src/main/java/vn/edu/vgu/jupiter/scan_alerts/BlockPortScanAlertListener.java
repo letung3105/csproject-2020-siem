@@ -7,8 +7,6 @@ import com.espertech.esper.runtime.client.UpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
-
 public class BlockPortScanAlertListener implements UpdateListener {
     private final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertListener.class);
 
@@ -17,7 +15,8 @@ public class BlockPortScanAlertListener implements UpdateListener {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        Instant ts = (Instant) newEvents[0].get("timestamp");
-        logger.info("[ts={}] multiple hosts received multiple connections to different closed ports", ts.getEpochSecond());
+        Long ts = (Long) newEvents[0].get("timestamp");
+        logger.info("[ts={}] multiple hosts received multiple connections to different closed ports", ts);
     }
 }
+

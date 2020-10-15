@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
 
-import java.time.Instant;
-
 /**
  * Setup the Esper's runtime and packet capture, captured network packets are passed to the Esper's runtime
  *
@@ -63,7 +61,7 @@ public class PortScansAlertMain implements Runnable {
                     IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
                     TcpPacket tcpPacket = ipV4Packet.get(TcpPacket.class);
                     TcpPacketEvent evt = new TcpPacketEvent(
-                            Instant.ofEpochMilli(handle.getTimestamp().getTime()),
+                            handle.getTimestamp().getTime(),
                             tcpPacket.getHeader(),
                             ipV4Packet.getHeader()
                     );

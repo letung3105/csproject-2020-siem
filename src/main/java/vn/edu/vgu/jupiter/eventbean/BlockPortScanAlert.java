@@ -1,15 +1,13 @@
 package vn.edu.vgu.jupiter.eventbean;
 
-import java.time.Instant;
-
 public class BlockPortScanAlert {
-    private Instant timestamp;
+    private Long timestamp;
 
-    public BlockPortScanAlert(Instant timestamp) {
+    public BlockPortScanAlert(Long timestamp) {
         this.timestamp = timestamp;
     }
 
-    public Instant getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 }
