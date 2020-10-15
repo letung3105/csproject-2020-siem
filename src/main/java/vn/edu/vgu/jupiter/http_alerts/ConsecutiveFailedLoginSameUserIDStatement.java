@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.http_alerts;
+
 import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
@@ -8,12 +10,11 @@ import com.espertech.esper.runtime.client.EPRuntime;
  *
  * @author Dang Chi Cong
  */
-
 public class ConsecutiveFailedLoginSameUserIDStatement {
     private String statement =
             "insert into httpConsecutiveFailedLoginOneUserIDAlert\n " +
                     "select IPAddress, userID, time, timeZone\n " +
-                    "from httpFailedLoginEvent#time_batch(?:alertTimeWindow: integer second)\n " +
+                    "from httpFailedLoginEvent#time_batch(?:alertTimeWindow:integer second)\n " +
                     "group by userID\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer";
 
