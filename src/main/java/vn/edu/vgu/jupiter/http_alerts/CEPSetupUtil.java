@@ -54,6 +54,7 @@ public class CEPSetupUtil {
      * Make and returns that default configuration for Esper
      *
      * @return the configuration
+     * @return the configuration
      */
     public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
