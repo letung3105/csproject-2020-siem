@@ -17,7 +17,7 @@ import java.net.InetAddress;
  * @author Tung Le Vo
  */
 public class VerticalPortScanAlertListener implements UpdateListener {
-    private final Logger logger = LoggerFactory.getLogger(VerticalPortScanAlertListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(VerticalPortScanAlertListener.class);
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {

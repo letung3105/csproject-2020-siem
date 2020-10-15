@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
  */
 public class PortScansAlertPlugin implements PluginLoader {
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertPlugin.class);
-
     private static final String NETDEV_KEY = "netdev";
     private static final String RUNTIME_URI_KEY = "runtimeURI";
 

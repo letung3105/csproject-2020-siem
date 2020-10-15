@@ -2,8 +2,6 @@ package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class compile the EPL statement for raising alerts for block port scan events that might be
@@ -12,7 +10,18 @@ import org.slf4j.LoggerFactory;
  * @author Tung Le Vo
  */
 public class BlockPortScanAlertStatement {
-    private final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertStatement.class);
+    private static final String portsCountStmt =
+            "insert into ClosedPortsCountPerAddress\n" +
+                    "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
+                    "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer seconds)\n" +
+                    "group by ipHeader.dstAddr\n";
+    private static final String alertStmt =
+            "insert into BlockPortScanAlert\n" +
+                    "select timestamp\n" +
+                    "from ClosedPortsCountPerAddress#time(?:timeWindow:integer seconds)\n" +
+                    "where portsCount >= ?:minPortsCount:integer\n" +
+                    "having count(distinct addr) >= ?:minAddressesCount:integer\n" +
+                    "output first every ?:alertInterval:integer seconds";
 
     public BlockPortScanAlertStatement(EPRuntime runtime, int minPortsCount, int minAddressesCount, int timeWindow, int alertInterval) {
         DeploymentOptions portsCountOpts = new DeploymentOptions();
@@ -20,12 +29,7 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("timeWindow", timeWindow);
                 }
         );
-        PortScansAlertUtil.compileDeploy(
-                "insert into ClosedPortsCountPerAddress\n" +
-                        "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
-                        "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer seconds)\n" +
-                        "group by ipHeader.dstAddr\n",
-                runtime, portsCountOpts);
+        PortScansAlertUtil.compileDeploy(portsCountStmt, runtime, portsCountOpts);
 
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
@@ -35,15 +39,9 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        PortScansAlertUtil.compileDeploy(
-                "insert into BlockPortScanAlert\n" +
-                        "select timestamp\n" +
-                        "from ClosedPortsCountPerAddress#time(?:timeWindow:integer seconds)\n" +
-                        "where portsCount >= ?:minPortsCount:integer\n" +
-                        "having count(distinct addr) >= ?:minAddressesCount:integer\n" +
-                        "output first every ?:alertInterval:integer seconds",
-                runtime, alertOpts);
-        PortScansAlertUtil.compileDeploy("select * from BlockPortScanAlert", runtime)
+        PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
+        PortScansAlertUtil
+                .compileDeploy("select * from BlockPortScanAlert", runtime)
                 .addListener(new BlockPortScanAlertListener());
     }
 }

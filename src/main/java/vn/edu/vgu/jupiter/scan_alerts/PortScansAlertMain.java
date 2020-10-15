@@ -14,11 +14,11 @@ import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
  * Setup the Esper's runtime and packet capture, captured network packets are passed to the Esper's runtime
  *
  * @author Tung Le Vo
+ * @author Pham Nguyen Thanh An
  */
 public class PortScansAlertMain implements Runnable {
 
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertMain.class);
-
     private static final int COUNT = -1;
     private static final int READ_TIMEOUT = 100; // [ms]
     private static final int SNAPLEN = 65536; // [bytes]
@@ -43,11 +43,13 @@ public class PortScansAlertMain implements Runnable {
             Configuration configuration = PortScansAlertUtil.getConfiguration();
             EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
+            // TODO: statement's parameters should be modifiable from external classes
             // compile and deploy epl statements
             log.info("Setting up EPL");
             new TcpPacketWithClosedPortStatement(runtime);
-            new VerticalPortScanAlertStatement(runtime, 100, 60, 5);
-            new BlockPortScanAlertStatement(runtime, 50, 2, 60, 5);
+            new VerticalPortScanAlertStatement(runtime, 100, 60, 10);
+            new HorizontalPortScanAlertStatement(runtime, 2, 60, 10);
+            new BlockPortScanAlertStatement(runtime, 50, 2, 60, 10);
 
             // getting the network interface
             PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);

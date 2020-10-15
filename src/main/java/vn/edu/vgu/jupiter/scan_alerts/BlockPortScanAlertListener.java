@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BlockPortScanAlertListener implements UpdateListener {
-    private final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertListener.class);
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {

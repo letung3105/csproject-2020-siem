@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author Pham Nguyen Thanh An
  */
 public class HorizontalPortScanAlertListener implements UpdateListener {
-    private final Logger logger = LoggerFactory.getLogger(HorizontalPortScanAlertListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(HorizontalPortScanAlertListener.class);
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
