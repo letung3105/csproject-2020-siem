@@ -8,11 +8,19 @@ import org.pcap4j.packet.namednumber.Port;
  * @author Pham Nguyen Thanh An
  */
 public class HorizontalPortScanAlert {
+    private Long timestamp;
     private Port hostPort;
 
-    public HorizontalPortScanAlert(Port hostPort) {
+    public HorizontalPortScanAlert(Long timestamp, Port hostPort) {
+        this.timestamp = timestamp;
         this.hostPort = hostPort;
     }
 
-    public Port getHostPort() { return hostPort; }
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public Port getHostPort() {
+        return hostPort;
+    }
 }

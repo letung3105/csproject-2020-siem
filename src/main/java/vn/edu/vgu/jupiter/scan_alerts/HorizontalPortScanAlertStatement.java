@@ -1,6 +1,5 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
-import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
@@ -11,26 +10,27 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Pham Nguyen Thanh An
  */
 public class HorizontalPortScanAlertStatement {
-    private final String stmt =
+    private static final String alertStmt =
             "insert into HorizontalPortScanAlert\n" +
-                    "select tcpHeader.dstPort\n" +
-                    "from TcpPacketWithClosedPortEvent#time_batch(?:alertTimeWindow:integer second)\n" +
+                    "select timestamp, tcpHeader.dstPort\n" +
+                    "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer second)\n" +
                     "group by tcpHeader.dstPort\n" +
-                    "having count(*) > ?:alertInvalidAccessLowerBound:integer";
+                    "having count(distinct ipHeader.dstAddr) >= ?:minConnectionsCount:integer\n" +
+                    "output first every ?:alertInterval:integer second";
 
-    private final String listenStmt = "select * from HorizontalPortScanAlert";
+    private static final String listenStmt = "select * from HorizontalPortScanAlert";
 
-    public HorizontalPortScanAlertStatement(EPRuntime runtime, int minFailedConnectionCount, int timeWindowSeconds) {
+    public HorizontalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval) {
         DeploymentOptions opts = new DeploymentOptions();
         opts.setStatementSubstitutionParameter(prepared -> {
-                    prepared.setObject("alertInvalidAccessLowerBound", minFailedConnectionCount);
-                    TimePeriod ts = new TimePeriod().sec(timeWindowSeconds);
-                    prepared.setObject("alertTimeWindow", ts.getSeconds());
+                    prepared.setObject("minConnectionsCount", minConnectionsCount);
+                    prepared.setObject("timeWindow", timeWindow);
+                    prepared.setObject("alertInterval", alertInterval);
                 }
         );
 
-        PortScanAlertUtil.compileDeploy(stmt, runtime, opts);
-        PortScanAlertUtil.compileDeploy(listenStmt, runtime)
+        PortScansAlertUtil.compileDeploy(alertStmt, runtime, opts);
+        PortScansAlertUtil.compileDeploy(listenStmt, runtime)
                 .addListener(new HorizontalPortScanAlertListener());
     }
 }
