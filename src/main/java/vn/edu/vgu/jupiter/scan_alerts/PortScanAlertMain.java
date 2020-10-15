@@ -41,7 +41,8 @@ public class PortScanAlertMain {
 
         // compile and deploy epl statements
         log.info("Setting up EPL");
-        new PortScanAlertStatement(runtime, 100, 5);
+        new VerticalPortScanAlertStatement(runtime, 100, 5);
+        new HorizontalPortScanAlertStatement(runtime, 100, 5);
         new TcpPacketWithClosedPortStatement(runtime);
 
         // getting the network interface
