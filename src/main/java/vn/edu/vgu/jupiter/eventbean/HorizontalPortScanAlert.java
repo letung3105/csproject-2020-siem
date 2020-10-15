@@ -2,6 +2,9 @@ package vn.edu.vgu.jupiter.eventbean;
 
 import org.pcap4j.packet.namednumber.Port;
 
+/**
+ * A class that represent HorizontalPortScan events
+ */
 public class HorizontalPortScanAlert {
     private Port hostPort;
 

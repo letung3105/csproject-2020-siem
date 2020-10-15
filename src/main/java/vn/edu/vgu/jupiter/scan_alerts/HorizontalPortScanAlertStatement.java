@@ -4,6 +4,10 @@ import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
+/**
+ * A class to compile EPL statements for the HorizontalPortScanAlert event
+ * A listener is attached to log message
+ */
 public class HorizontalPortScanAlertStatement {
     private final String stmt =
             "insert into HorizontalPortScanAlert\n" +

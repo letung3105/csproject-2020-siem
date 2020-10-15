@@ -8,6 +8,10 @@ import org.pcap4j.packet.namednumber.Port;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A listener for the HorizontalPortScanAlert events
+ * The new events are logged using the class Logger
+ */
 public class HorizontalPortScanAlertListener implements UpdateListener {
     private final Logger logger = LoggerFactory.getLogger(HorizontalPortScanAlertListener.class);
 
