@@ -2,10 +2,14 @@ import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
+/**
+ * this class compiples and deploys EPL statements of ConsecutiveFailedAlertStatement
+ * @author Dang Chi Cong
+ */
 public class ConsecutiveFailedAlertStatement {
     private String statement =
             "insert into httpConsecutiveFailedLoginAlert\n " +
-                "select IPAddress, time, userID\n " +
+                "select IPAddress, userID, time\n " +
                 "from httpFailedLogin#time_batch(?:alertTimeWindow: integer second)\n " +
                 "group by userID\n " +
                 "having count(*) > ?:consecutiveAttemptThreshold:integer";

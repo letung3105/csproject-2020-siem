@@ -1,3 +1,7 @@
+/**
+ * Store webserver failed log into POJO
+ * @author Bui Xuan phuoc
+ */
 public class httpFailedLogin {
     String IPAddress;
     String userID;

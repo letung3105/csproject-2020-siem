@@ -3,12 +3,17 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
 
+/**
+ * This class return failed log event
+ * @author Dang Chi Cong
+ */
+
 public class ConsecutiveFailedAlertListener implements UpdateListener {
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        System.out.println("Consecutive failed logins coming from: " + newEvents[0].get("userID"));
+        System.out.println("Consecutive failed logins coming from: " + newEvents[0].get("userID") + " at IP: " +newEvents[0].get("IPAddress"));
     }
 }

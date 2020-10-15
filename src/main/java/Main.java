@@ -12,6 +12,11 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * @Author: Dang Chi Cong
+ *
+ */
 public class Main implements Runnable {
 
     public static void main(String args[]) {
@@ -57,10 +62,8 @@ public class Main implements Runnable {
             }
 
             ArrayList<String> lineComponents = new ArrayList<String>(Arrays.asList(line.split(" ")));
-//            System.out.println(lineComponents + " " + lineComponents.size());
             result.add(new httpLogEvent(lineComponents));
         }
-      //System.out.println(result.size());
         return result;
     }
 }

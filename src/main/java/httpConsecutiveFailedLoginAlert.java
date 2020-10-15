@@ -1,3 +1,7 @@
+/**
+ * Store webserver failed log into POJO
+ * @author Bui Xuan Phuoc
+ */
 public class httpConsecutiveFailedLoginAlert {
     String IPAddress;
     String userID;

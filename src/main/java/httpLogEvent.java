@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+/**
+ * store webserver log into Pojo
+ * author Bui Xuan Phuoc
+ */
 public class httpLogEvent {
     String IPAddress;
     String identd;

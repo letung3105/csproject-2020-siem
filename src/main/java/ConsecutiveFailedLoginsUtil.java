@@ -6,7 +6,19 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 
+
+/**
+ * this is the helper for compiling and setting configuration
+ * @author Bui Xuan Phuoc
+ */
 public class ConsecutiveFailedLoginsUtil {
+    /**
+     * Compile and deploy EPL statements
+     * @param epl
+     * @param runtime
+     * @param deployOpts
+     * @return deployedStatement
+     */
     protected static EPStatement compileDeploy(String epl, EPRuntime runtime, DeploymentOptions deployOpts) {
         try {
             CompilerArguments args = new CompilerArguments(getConfiguration());
@@ -18,6 +30,12 @@ public class ConsecutiveFailedLoginsUtil {
         }
     }
 
+    /**
+     * Compile and deploy EPL statements
+     * @param epl
+     * @param runtime
+     * @return deployedStatement
+     */
     protected static EPStatement compileDeploy(String epl, EPRuntime runtime) {
         try {
             CompilerArguments args = new CompilerArguments(getConfiguration());
@@ -29,6 +47,10 @@ public class ConsecutiveFailedLoginsUtil {
         }
     }
 
+    /**
+     * Get configure
+     * @return
+     */
 
     public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
