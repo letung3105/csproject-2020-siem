@@ -8,7 +8,7 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * This class compile the EPL statement to select consecutive failed log in targeting one userID, raise the alert events.
  * and deploy the compiled EPL to the runtime
  *
- * @author Bui Xuan Phuoc
+ * @author Dang Chi Cong
  */
 public class ConsecutiveFailedLoginSameUserIDStatement {
     private String statement =

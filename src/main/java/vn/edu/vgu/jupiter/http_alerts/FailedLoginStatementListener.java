@@ -9,6 +9,8 @@ import com.espertech.esper.runtime.client.UpdateListener;
  * A simple listener for httpFailedLogin Event
  * <p>
  * The information of the new events is logged to the system using the class's logger
+ *
+ * @author Bui Xuan Phuoc
  */
 public class FailedLoginStatementListener implements UpdateListener {
     @Override
