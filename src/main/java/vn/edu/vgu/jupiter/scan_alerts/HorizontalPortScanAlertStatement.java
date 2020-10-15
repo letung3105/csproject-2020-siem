@@ -12,10 +12,10 @@ import com.espertech.esper.runtime.client.EPRuntime;
 public class HorizontalPortScanAlertStatement {
     private static final String alertStmt =
             "insert into HorizontalPortScanAlert\n" +
-                    "select tcpHeader.dstPort\n" +
+                    "select timestamp, tcpHeader.dstPort\n" +
                     "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer second)\n" +
                     "group by tcpHeader.dstPort\n" +
-                    "having count(distinct ipHeader.dstAddr) > ?:minConnectionsCount:integer\n" +
+                    "having count(distinct ipHeader.dstAddr) >= ?:minConnectionsCount:integer\n" +
                     "output first every ?:alertInterval:integer second";
 
     private static final String listenStmt = "select * from HorizontalPortScanAlert";

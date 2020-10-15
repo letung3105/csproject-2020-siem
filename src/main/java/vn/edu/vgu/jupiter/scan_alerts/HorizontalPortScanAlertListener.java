@@ -22,7 +22,8 @@ public class HorizontalPortScanAlertListener implements UpdateListener {
         if (newEvents == null) {
             return;
         }
+        Long ts = (Long) newEvents[0].get("timestamp");
         Port hostPort = (Port) newEvents[0].get("hostPort");
-        logger.info(hostPort + " IS UNDER HORIZONTAL ATTACK.");
+        logger.info("[ts={}] POTENTIAL HORIZONTAL PORT SCAN ON PORT {}", ts, hostPort.valueAsInt());
     }
 }

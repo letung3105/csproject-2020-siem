@@ -16,7 +16,7 @@ public class BlockPortScanAlertListener implements UpdateListener {
             return; // ignore old events for events leaving the window
         }
         Long ts = (Long) newEvents[0].get("timestamp");
-        logger.info("[ts={}] multiple hosts received multiple connections to different closed ports", ts);
+        logger.info("[ts={}] POTENTIAL BLOCK PORT SCAN", ts);
     }
 }
 

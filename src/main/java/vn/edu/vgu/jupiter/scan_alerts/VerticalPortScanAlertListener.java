@@ -24,8 +24,8 @@ public class VerticalPortScanAlertListener implements UpdateListener {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        InetAddress hostAddr = (InetAddress) newEvents[0].get("hostAddr");
         Long ts = (Long) newEvents[0].get("timestamp");
-        logger.info("[ts={}] {} received multiple connections to different closed ports", ts, hostAddr.getHostAddress());
+        InetAddress hostAddr = (InetAddress) newEvents[0].get("hostAddr");
+        logger.info("[ts={}] POTENTIAL VERTICAL PORT SCAN ON {}", ts, hostAddr.getHostAddress());
     }
 }
