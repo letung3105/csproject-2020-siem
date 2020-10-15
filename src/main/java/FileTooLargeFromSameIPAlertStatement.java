@@ -1,6 +1,12 @@
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
+
+/**
+ * This class compile the EPL statement to select consecutive attempts to send large files toward the web server sourcing from a single IP address,
+ * and deploy the compiled EPL to the runtime
+ *
+ */
 public class FileTooLargeFromSameIPAlertStatement {
     private String statementFromSameIP =
             "insert into httpMultipleFileTooLargeFromSameIPAlertEvent\n " +
@@ -15,7 +21,6 @@ public class FileTooLargeFromSameIPAlertStatement {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("attemptsThreshold", attemptsThreshold);
-
         });
 
         CEPSetupUtil.compileDeploy(statementFromSameIP, runtime, options);

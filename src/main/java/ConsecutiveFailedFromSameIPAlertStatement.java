@@ -2,6 +2,12 @@ import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
+/**
+ * This class compile the EPL statement to select consecutive failed login attempts sourcing from one IP and raise the according events
+ * and deploy the compiled EPL to the runtime
+ *
+ */
+
 public class ConsecutiveFailedFromSameIPAlertStatement {
     private String statement =
             "insert into httpConsecutiveFailedLoginFromSameIPAlertEvent\n " +

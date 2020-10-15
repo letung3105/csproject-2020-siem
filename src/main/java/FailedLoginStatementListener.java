@@ -3,6 +3,12 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
 
+/**
+ * A simple listener for httpFailedLogin Event
+ * <p>
+ * The information of the new events is logged to the system using the class's logger
+ */
+
 public class FailedLoginStatementListener implements UpdateListener {
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {

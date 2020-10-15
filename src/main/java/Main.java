@@ -16,12 +16,18 @@ public class Main implements Runnable {
         new Main().run();
     }
 
+    /**
+     * A while loop is run to check if there are any new entries from the log file.
+     * If new entries are found, they are turned into httpLogEvent and send to the CEP machine
+     *
+     */
     public void run() {
         Configuration configuration = CEPSetupUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
         new ConsecutiveFailedLoginAlertStatement(runtime, 15, 5);
         new ConsecutiveFailedFromSameIPAlertStatement(runtime, 12, 1);
+        new ConsecutiveFailedLoginSameUserIDStatement(runtime, 3, 1);
         new FailedLoginStatement(runtime);
         new FileTooLargeFromSameIPAlertStatement(runtime, 5);
         new FileTooLargeStatement(runtime);
@@ -44,6 +50,12 @@ public class Main implements Runnable {
             }
         }
     }
+
+    /**
+     * A httpd access log parser for linux systems
+     * @return ArrayList<httpLogEvent> list of events parsed from the log</httpLogEvent>
+     *
+     */
 
     public static ArrayList<httpLogEvent> getEventsFromApacheHTTPDLogs() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("/var/log/apache2/access.log"));

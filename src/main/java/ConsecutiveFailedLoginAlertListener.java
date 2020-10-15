@@ -3,6 +3,12 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
 
+/**
+ * A simple listener for httpConsecutiveFailedLoginAlert Event
+ * <p>
+ * The information of the new events is logged to the system using the class's logger
+ */
+
 public class ConsecutiveFailedLoginAlertListener implements UpdateListener {
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
