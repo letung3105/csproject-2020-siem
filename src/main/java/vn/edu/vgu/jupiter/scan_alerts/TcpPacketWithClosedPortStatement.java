@@ -9,21 +9,20 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Tung Le Vo
  */
 public class TcpPacketWithClosedPortStatement {
-    String stmt =
-            "insert into TcpPacketWithClosedPortEvent\n" +
-                    "select a.ipHeader, a.tcpHeader from pattern [\n" +
-                    "every a=TcpPacketEvent(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
-                    "b=TcpPacketEvent(\n" +
-                    "   tcpHeader.rst = true and\n" +
-                    "   ipHeader.srcAddr = a.ipHeader.dstAddr and\n" +
-                    "   ipHeader.dstAddr = a.ipHeader.srcAddr and\n" +
-                    "   tcpHeader.srcPort = a.tcpHeader.dstPort and\n" +
-                    "   tcpHeader.dstPort = a.tcpHeader.srcPort\n" +
-                    ")\n" +
-                    "where timer:within(100 millisecond)\n" +
-                    "]";
-
     public TcpPacketWithClosedPortStatement(EPRuntime runtime) {
-        PortScanAlertUtil.compileDeploy(stmt, runtime);
+        VerticalPortScanAlertUtil.compileDeploy(
+                "insert into TcpPacketWithClosedPortEvent\n" +
+                        "select a.ipHeader, a.tcpHeader from pattern [\n" +
+                        "every a=TcpPacketEvent(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
+                        "b=TcpPacketEvent(\n" +
+                        "   tcpHeader.rst = true and\n" +
+                        "   ipHeader.srcAddr = a.ipHeader.dstAddr and\n" +
+                        "   ipHeader.dstAddr = a.ipHeader.srcAddr and\n" +
+                        "   tcpHeader.srcPort = a.tcpHeader.dstPort and\n" +
+                        "   tcpHeader.dstPort = a.tcpHeader.srcPort\n" +
+                        ")\n" +
+                        "where timer:within(100 millisecond)\n" +
+                        "]",
+                runtime);
     }
 }
