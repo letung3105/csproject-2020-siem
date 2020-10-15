@@ -13,7 +13,7 @@ import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
 /**
  * Setup the Esper's runtime and packet capture, captured network packets are passed to the Esper's runtime
  *
- * @author Tung Le Vo
+ * @author Vo Le Tung
  * @author Pham Nguyen Thanh An
  */
 public class PortScansAlertMain implements Runnable {

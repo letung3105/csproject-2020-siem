@@ -12,7 +12,8 @@ import vn.edu.vgu.jupiter.eventbean.*;
 /**
  * Utility functions for compiling and deploying statements.
  *
- * @author Tung Le Vo
+ * @author Vo Le Tung
+ * @author Pham Nguyen Thanh An
  */
 public class PortScansAlertUtil {
 

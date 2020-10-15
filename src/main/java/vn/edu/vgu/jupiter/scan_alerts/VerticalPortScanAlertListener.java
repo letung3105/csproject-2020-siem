@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 
 /**
- * A simple listener for VerticalPortScanAlert events
- * <p>
- * The information of the new events is logged to the system using the class's logger
+ * A listener that can be attach the statement that returns events
+ * of type <code>VerticalPortScanAlert</code>. The received update will
+ * be shown to the user in a log message.
  *
- * @author Tung Le Vo
+ * @author Vo Le Tung
  */
 public class VerticalPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(VerticalPortScanAlertListener.class);

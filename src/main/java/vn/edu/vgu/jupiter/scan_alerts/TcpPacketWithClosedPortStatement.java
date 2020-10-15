@@ -6,7 +6,7 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * This class compile the EPL statement for selecting packets of TCP connection to closed port
  * and deploy the compiled EPL to the runtime
  *
- * @author Tung Le Vo
+ * @author Vo Le Tung
  */
 public class TcpPacketWithClosedPortStatement {
     private static final String filterClosedPortStmt =

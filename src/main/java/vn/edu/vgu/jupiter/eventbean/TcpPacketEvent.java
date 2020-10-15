@@ -3,6 +3,12 @@ package vn.edu.vgu.jupiter.eventbean;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.TcpPacket;
 
+/**
+ * Data structure that represents the raw event that contains the
+ * necessary information for detecting port scan using TCP protocol
+ *
+ * @author Pham Nguyen Thanh An
+ */
 public class TcpPacketEvent {
     private Long timestamp;
     private TcpPacket.TcpHeader tcpHeader;

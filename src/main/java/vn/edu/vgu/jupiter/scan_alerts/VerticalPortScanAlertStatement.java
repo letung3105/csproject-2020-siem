@@ -7,7 +7,7 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * This class compile the EPL statement for raising alerts for vertical port scan events that might be
  * happening. An event listener is also attached to log the alert messages to the user.
  *
- * @author Tung Le Vo
+ * @author Vo Le Tung
  */
 public class VerticalPortScanAlertStatement {
     private static final String alertStmt = "insert into VerticalPortScanAlert\n" +

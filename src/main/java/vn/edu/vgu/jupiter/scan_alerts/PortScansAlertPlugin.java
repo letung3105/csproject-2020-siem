@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * PluginLoader for added this example as part of an Esper configuration file and therefore execute it during startup.
+ *
+ * @author Vo Le Tung
+ * @author Pham Nguyen Thanh An
  */
 public class PortScansAlertPlugin implements PluginLoader {
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertPlugin.class);

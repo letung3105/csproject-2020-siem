@@ -7,6 +7,13 @@ import com.espertech.esper.runtime.client.UpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A listener that can be attach the statement that returns events
+ * of type <code>BlockPortScanAlert</code>. The received update will
+ * be shown to the user in a log message.
+ *
+ * @author Vo Le Tung
+ */
 public class BlockPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertListener.class);
 
