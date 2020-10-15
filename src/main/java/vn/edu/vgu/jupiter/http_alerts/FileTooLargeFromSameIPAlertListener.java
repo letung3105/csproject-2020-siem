@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.http_alerts;
+
 import com.espertech.esper.common.client.EventBean;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
@@ -9,7 +11,6 @@ import com.espertech.esper.runtime.client.UpdateListener;
  * <p>
  * The information of the new events is logged to the system using the class's logger
  */
-
 public class FileTooLargeFromSameIPAlertListener implements UpdateListener {
 
     @Override

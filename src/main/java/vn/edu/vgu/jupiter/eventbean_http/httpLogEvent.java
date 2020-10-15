@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.eventbean_http;
+
 import java.util.ArrayList;
 
 public class httpLogEvent {

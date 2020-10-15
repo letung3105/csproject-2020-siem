@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.http_alerts;
+
 import com.espertech.esper.common.client.EPCompiled;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.compiler.client.CompilerArguments;
@@ -5,7 +7,7 @@ import com.espertech.esper.compiler.client.EPCompilerProvider;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
-
+import vn.edu.vgu.jupiter.eventbean_http.*;
 
 /**
  * Utility functions for compiling and deploying statements.

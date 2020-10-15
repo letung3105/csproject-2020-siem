@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.eventbean_http;
+
 public class httpConsecutiveFailedLoginOneUserIDAlert {
     String IPAddress;
     String userID;

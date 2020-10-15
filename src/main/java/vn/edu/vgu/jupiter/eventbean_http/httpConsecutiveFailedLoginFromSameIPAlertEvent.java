@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.eventbean_http;
+
 public class httpConsecutiveFailedLoginFromSameIPAlertEvent {
     String IPAddress;
     String userID;
