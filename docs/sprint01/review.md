@@ -195,18 +195,19 @@ v                 v
 
 # Port scan alerts
 
-The scan alerts are raised when the number of TCP connection to closed ports reaches a threshold within a fixed time windows.
+The scan alerts are raised when the number of TCP connection to closed ports reaches a threshold within a fixed time windows, the threshold for each alert is defined differently.
 
-+ Vertical scan alert counts the number of closed ports that were accessed per host address.
++ Vertical: Number of ports that were accessed per host address.
 
-+ Horizontal scan alert counts the number of host addresses that were accessed per closed port.
++ Horizontal: Number of host addresses that were accessed per port.
 
-+ Block scan alert counts the number of host addresses whose many closed ports were accessed.
++ Block: Number of host addresses whose many ports were accessed.
 
 ---
 
 # Plans for next week
 
++ Work on non-function requirements.
 + Tackle task 4.
     + Fix existing modules (if needed) for integration.
     + Starts prioritizing the alerts.
