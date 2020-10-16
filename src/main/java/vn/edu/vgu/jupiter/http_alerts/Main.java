@@ -55,6 +55,7 @@ public class Main implements Runnable {
     /**
      * A httpd access log parser for linux systems
      *
+     * @author Bui Xuan Phuoc
      * @return ArrayList<httpLogEvent> list of events parsed from the log
      */
     public static ArrayList<httpLogEvent> getEventsFromApacheHTTPDLogs() throws IOException {

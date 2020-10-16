@@ -6,6 +6,7 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * This class compile the EPL statement to select failed authentication attempts
  * and deploy the compiled EPL to the runtime
  *
+ * @author Bui Xuan Phuoc
  */
 public class FailedLoginStatement {
     String statement = "insert into httpFailedLoginEvent\n " +

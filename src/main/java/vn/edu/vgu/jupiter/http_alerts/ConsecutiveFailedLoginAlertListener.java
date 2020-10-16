@@ -9,6 +9,8 @@ import com.espertech.esper.runtime.client.UpdateListener;
  * A simple listener for httpConsecutiveFailedLoginAlert Event
  * <p>
  * The information of the new events is logged to the system using the class's logger
+ *
+ * @author Bui Xuan Phuoc
  */
 public class ConsecutiveFailedLoginAlertListener implements UpdateListener {
     @Override
