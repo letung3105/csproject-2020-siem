@@ -50,6 +50,18 @@ Develop task 1 and task 2 simultaneously as two seperated modules.
 
 ---
 
+# Plans for next week
+
+*Sprint planning:* Saturday, Oct. 16 2020
+
++ Work on non-function requirements.
++ Tackle task 4.
+    + Fix existing modules (if needed) for integration.
+    + Starts prioritizing the alerts.
++ Might start working on task 3, when we come up with some interesting ideas.
+
+---
+
 # Setup a web service using Apache server
 
 Setup a simple web server that requires *BasicAuth* to access its root.
@@ -202,13 +214,3 @@ The scan alerts are raised when the number of TCP connection to closed ports rea
 + Horizontal: Number of host addresses that were accessed per port.
 
 + Block: Number of host addresses whose many ports were accessed.
-
----
-
-# Plans for next week
-
-+ Work on non-function requirements.
-+ Tackle task 4.
-    + Fix existing modules (if needed) for integration.
-    + Starts prioritizing the alerts.
-+ Might start working on task 3, when we come up with some interesting ideas.
