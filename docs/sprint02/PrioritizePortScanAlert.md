@@ -12,6 +12,17 @@ Vertical statement:
 The variable count in the statement above the count of number of distinct port being scanned.
 
 
+Horizontal statement:
+![horizontal EPL modified](images/horizontalEPL.png)
+
+The variable count in the statement above the count of number of distinct addresses being scanned.
+
+
+Block statement:
+![block EPL modified](images/blockEPL.png)
+
+The variable count in the statement above the count of number of distinct addresses of a certain amount of ports being scanned.
+
 ### THE LISTENER
 
 The Listener has been modified to have a new Integer value, which is a threshold count that acts like a limit for a warning to be output. This threshold can be changed by the user.
@@ -20,6 +31,14 @@ The count above will be used in the Listener class in order to classify low or h
 
 Vertical Listener:
 ![vertical listener](images/verticalListener.png) 
+
+
+Horizontal Listener:
+![horizontal listener](images/horizontalListener.png) 
+
+
+Block Listener:
+![block listener](images/blockListener.png) 
 
 
 ### THE MAIN
