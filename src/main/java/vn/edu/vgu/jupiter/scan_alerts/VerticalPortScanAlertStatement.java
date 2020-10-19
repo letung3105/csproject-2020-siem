@@ -11,7 +11,7 @@ import com.espertech.esper.runtime.client.EPRuntime;
  */
 public class VerticalPortScanAlertStatement {
     private static final String alertStmt = "insert into VerticalPortScanAlert\n" +
-            "select timestamp, ipHeader.dstAddr\n" +
+            "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
             "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer seconds)\n" +
             "group by ipHeader.dstAddr\n" +
             "having count(distinct tcpHeader.dstPort) >= ?:minConnectionsCount:integer\n" +

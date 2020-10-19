@@ -1,16 +1,16 @@
 package vn.edu.vgu.jupiter;
 
-import vn.edu.vgu.jupiter.scan_alerts.UserDefinedPortScanMain;
+import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertMain;
 
 import java.util.Scanner;
 
 public class UserDefinedMain {
-    public static UserDefinedPortScanMain portScanMain;
+    public static PortScansAlertMain portScanMain;
 
     public static void main(String[] args) {
         String netDevName = args.length > 0 ? args[0] : "";
 
-        portScanMain = new UserDefinedPortScanMain(netDevName);
+        portScanMain = new PortScansAlertMain(netDevName);
 
         //Prompt user for inputs
         // TODO: This can be changed by prompting in the GUI, then rerun the portScanMain when a change is applied

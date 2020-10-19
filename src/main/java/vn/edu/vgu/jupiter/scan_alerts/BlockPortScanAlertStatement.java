@@ -17,7 +17,7 @@ public class BlockPortScanAlertStatement {
                     "group by ipHeader.dstAddr\n";
     private static final String alertStmt =
             "insert into BlockPortScanAlert\n" +
-                    "select timestamp\n" +
+                    "select timestamp, count(distinct addr)\n" +
                     "from ClosedPortsCountPerAddress#time(?:timeWindow:integer seconds)\n" +
                     "where portsCount >= ?:minPortsCount:integer\n" +
                     "having count(distinct addr) >= ?:minAddressesCount:integer\n" +

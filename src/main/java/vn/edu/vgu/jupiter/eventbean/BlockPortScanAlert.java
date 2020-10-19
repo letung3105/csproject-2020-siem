@@ -7,12 +7,18 @@ package vn.edu.vgu.jupiter.eventbean;
  */
 public class BlockPortScanAlert {
     private Long timestamp;
+    private Long count;
 
-    public BlockPortScanAlert(Long timestamp) {
+    public BlockPortScanAlert(Long timestamp, Long count) {
         this.timestamp = timestamp;
+        this.count = count;
     }
 
     public Long getTimestamp() {
         return timestamp;
+    }
+
+    public Long getCount() {
+        return count;
     }
 }

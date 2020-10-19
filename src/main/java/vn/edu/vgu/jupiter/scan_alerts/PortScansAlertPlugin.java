@@ -20,7 +20,7 @@ public class PortScansAlertPlugin implements PluginLoader {
 
     private String netdev;
     private String runtimeURI;
-    private UserDefinedPortScanMain main;
+    private PortScansAlertMain main;
     private Thread portScansAlertThread;
 
     public void init(PluginLoaderInitContext context) {
@@ -41,7 +41,7 @@ public class PortScansAlertPlugin implements PluginLoader {
         log.info("Starting PortScansAlert for runtime URI '" + runtimeURI + "'.");
 
         try {
-            main = new UserDefinedPortScanMain(netdev);
+            main = new PortScansAlertMain(netdev);
             portScansAlertThread = new Thread(main, this.getClass().getName());
             portScansAlertThread.setDaemon(true);
             portScansAlertThread.start();
