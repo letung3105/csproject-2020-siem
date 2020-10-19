@@ -11,35 +11,44 @@ import org.slf4j.LoggerFactory;
 import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
 
 /**
- * This class is the new PortScansMain that have setters and getters to modify variables for all PortScan types
+ * This class is the new PortScansMain that have function to modify variables for all PortScan types
  */
-public class UserDefinedPortScanMain {
+public class UserDefinedPortScanMain implements Runnable{
     /**
      * The predefined variables by program
      */
-    private static final Logger log = LoggerFactory.getLogger(PortScansAlertMain.class);
+    private static final Logger log = LoggerFactory.getLogger(UserDefinedPortScanMain.class);
     private static final int COUNT = -1;
     private static final int READ_TIMEOUT = 100; // [ms]
     private static final int SNAPLEN = 65536; // [bytes]
     private static final String FILTER = "tcp";
+
+    private String netDevName;
 
     /**
      * Default values for port scan
      */
     private int minConnectionCountVertical = 100; // [connections]
     private int timeWindowVertical = 60; // [seconds]
+    private int countVertical = 5; // [vertical happened count times]
 
     private int minConnectionCountHorizontal = 100; // [connections]
     private int timeWindowHorizontal = 60; // [seconds]
+    private int countHorizontal = 5; // [horizontal happened count times]
 
     private int minPortsCount = 50; // [ports]
     private int minAddressCount = 2; // [addresses]
     private int timeWindowBlock = 60; // [seconds]
+    private int countBlock = 2; // [block happened count times]
+
+    public UserDefinedPortScanMain(String netDevName){
+        this.netDevName = netDevName;
+    }
 
     /**
      * Setup the runtime, deploys the necessary statements and starts capturing packets
      */
-    public void run(String netDevName) {
+    public void run() {
         try {
             Configuration configuration = PortScansAlertUtil.getConfiguration();
             EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
@@ -48,9 +57,9 @@ public class UserDefinedPortScanMain {
             // compile and deploy epl statements
             log.info("Setting up EPL");
             new TcpPacketWithClosedPortStatement(runtime);
-            new VerticalPortScanAlertStatement(runtime, minConnectionCountVertical, timeWindowVertical, 10);
-            new HorizontalPortScanAlertStatement(runtime, minConnectionCountHorizontal, timeWindowHorizontal, 10);
-            new BlockPortScanAlertStatement(runtime, minPortsCount, minAddressCount, timeWindowBlock, 10);
+            new VerticalPortScanAlertStatement(runtime, minConnectionCountVertical, timeWindowVertical, 10, countVertical);
+            new HorizontalPortScanAlertStatement(runtime, minConnectionCountHorizontal, timeWindowHorizontal, 10, countHorizontal);
+            new BlockPortScanAlertStatement(runtime, minPortsCount, minAddressCount, timeWindowBlock, 10, countBlock);
 
             // getting the network interface
             PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);
@@ -136,5 +145,29 @@ public class UserDefinedPortScanMain {
 
     public int getTimeWindowBlock() {
         return timeWindowBlock;
+    }
+
+    public int getCountVertical() {
+        return countVertical;
+    }
+
+    public int getCountHorizontal() {
+        return countHorizontal;
+    }
+
+    public int getCountBlock() {
+        return countBlock;
+    }
+
+    public void setCountVertical(int countVertical) {
+        this.countVertical = countVertical;
+    }
+
+    public void setCountHorizontal(int countHorizontal) {
+        this.countHorizontal = countHorizontal;
+    }
+
+    public void setCountBlock(int countBlock) {
+        this.countBlock = countBlock;
     }
 }

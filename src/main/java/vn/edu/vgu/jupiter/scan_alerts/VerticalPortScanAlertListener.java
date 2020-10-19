@@ -18,6 +18,12 @@ import java.net.InetAddress;
  */
 public class VerticalPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(VerticalPortScanAlertListener.class);
+    private int countThreshold;
+    private int count = 0;
+
+    public VerticalPortScanAlertListener(int countThreshold){
+        this.countThreshold = countThreshold;
+    }
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
@@ -26,6 +32,11 @@ public class VerticalPortScanAlertListener implements UpdateListener {
         }
         Long ts = (Long) newEvents[0].get("timestamp");
         InetAddress hostAddr = (InetAddress) newEvents[0].get("hostAddr");
-        logger.info("[ts={}] POTENTIAL VERTICAL PORT SCAN ON {}", ts, hostAddr.getHostAddress());
+        logger.info("[ts={}] POTENTIAL VERTICAL PORT SCAN ON {}", ts, hostAddr.getHostAddress()); //info
+        count++;
+        if(count == countThreshold){ //warning
+            logger.warn("VERTICAL PORT SCAN COUNT HAS REACHED {} times.", countThreshold);
+            count = 0;
+        }
     }
 }

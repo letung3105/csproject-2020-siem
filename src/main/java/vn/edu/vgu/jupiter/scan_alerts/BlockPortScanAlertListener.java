@@ -16,6 +16,12 @@ import org.slf4j.LoggerFactory;
  */
 public class BlockPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertListener.class);
+    private int countThreshold;
+    private int count = 0;
+
+    public BlockPortScanAlertListener(int countThreshold){
+        this.countThreshold = countThreshold;
+    }
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
@@ -24,6 +30,11 @@ public class BlockPortScanAlertListener implements UpdateListener {
         }
         Long ts = (Long) newEvents[0].get("timestamp");
         logger.info("[ts={}] POTENTIAL BLOCK PORT SCAN", ts);
+        count++;
+        if(count == countThreshold){ //warning
+            logger.warn("BLOCK PORT SCAN COUNT HAS REACHED {} times.", countThreshold);
+            count = 0;
+        }
     }
 }
 

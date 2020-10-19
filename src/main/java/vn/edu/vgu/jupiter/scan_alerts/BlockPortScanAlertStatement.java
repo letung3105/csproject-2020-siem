@@ -23,7 +23,7 @@ public class BlockPortScanAlertStatement {
                     "having count(distinct addr) >= ?:minAddressesCount:integer\n" +
                     "output first every ?:alertInterval:integer seconds";
 
-    public BlockPortScanAlertStatement(EPRuntime runtime, int minPortsCount, int minAddressesCount, int timeWindow, int alertInterval) {
+    public BlockPortScanAlertStatement(EPRuntime runtime, int minPortsCount, int minAddressesCount, int timeWindow, int alertInterval, int countThreshold) {
         DeploymentOptions portsCountOpts = new DeploymentOptions();
         portsCountOpts.setStatementSubstitutionParameter(prepared -> {
                     prepared.setObject("timeWindow", timeWindow);
@@ -42,6 +42,6 @@ public class BlockPortScanAlertStatement {
         PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
         PortScansAlertUtil
                 .compileDeploy("select * from BlockPortScanAlert", runtime)
-                .addListener(new BlockPortScanAlertListener());
+                .addListener(new BlockPortScanAlertListener(countThreshold));
     }
 }

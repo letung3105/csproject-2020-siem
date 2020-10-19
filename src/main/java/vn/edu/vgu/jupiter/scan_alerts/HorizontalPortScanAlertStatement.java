@@ -20,7 +20,7 @@ public class HorizontalPortScanAlertStatement {
 
     private static final String listenStmt = "select * from HorizontalPortScanAlert";
 
-    public HorizontalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval) {
+    public HorizontalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval, int countThreshold) {
         DeploymentOptions opts = new DeploymentOptions();
         opts.setStatementSubstitutionParameter(prepared -> {
                     prepared.setObject("minConnectionsCount", minConnectionsCount);
@@ -31,6 +31,6 @@ public class HorizontalPortScanAlertStatement {
 
         PortScansAlertUtil.compileDeploy(alertStmt, runtime, opts);
         PortScansAlertUtil.compileDeploy(listenStmt, runtime)
-                .addListener(new HorizontalPortScanAlertListener());
+                .addListener(new HorizontalPortScanAlertListener(countThreshold));
     }
 }

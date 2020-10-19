@@ -18,7 +18,7 @@ public class VerticalPortScanAlertStatement {
             "output first every ?:alertInterval:integer seconds";
     private static final String listenStmt = "select * from VerticalPortScanAlert";
 
-    public VerticalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval) {
+    public VerticalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval, int countThreshold) {
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
                     prepared.setObject("minConnectionsCount", minConnectionsCount);
@@ -29,6 +29,6 @@ public class VerticalPortScanAlertStatement {
         PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
         PortScansAlertUtil
                 .compileDeploy(listenStmt, runtime)
-                .addListener(new VerticalPortScanAlertListener());
+                .addListener(new VerticalPortScanAlertListener(countThreshold));
     }
 }

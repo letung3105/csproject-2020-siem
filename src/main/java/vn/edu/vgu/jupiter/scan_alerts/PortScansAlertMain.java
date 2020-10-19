@@ -47,9 +47,9 @@ public class PortScansAlertMain implements Runnable {
             // compile and deploy epl statements
             log.info("Setting up EPL");
             new TcpPacketWithClosedPortStatement(runtime);
-            new VerticalPortScanAlertStatement(runtime, 100, 60, 10);
-            new HorizontalPortScanAlertStatement(runtime, 2, 60, 10);
-            new BlockPortScanAlertStatement(runtime, 50, 2, 60, 10);
+            new VerticalPortScanAlertStatement(runtime, 100, 60, 10, 5);
+            new HorizontalPortScanAlertStatement(runtime, 2, 60, 10, 5);
+            new BlockPortScanAlertStatement(runtime, 50, 2, 60, 10, 5);
 
             // getting the network interface
             PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);
