@@ -12,17 +12,20 @@ import com.espertech.esper.runtime.client.EPRuntime;
 public class FileTooLargeFromSameIPAlertStatement {
     private String statementFromSameIP =
             "insert into httpMultipleFileTooLargeFromSameIPAlertEvent\n " +
-                    "select IPAddress, time, userID, returnObjSize\n " +
-                    "from httpFileTooLargeEvent\n " +
+                    "select IPAddress, time, userID, returnObjSize, count(*)\n " +
+                    "from httpFileTooLargeEvent#time(?:timeWindow:integer second)\n" +
                     "group by IPAddress\n " +
-                    "having count(*) > ?:attemptsThreshold:integer";
+                    "having count(*) > ?:attemptsThreshold:integer\n" +
+                    "output first every ?:alertInterval:integer second";
 
     private String listenStatement = "select * from httpFileTooLargeFromSameIPAlertEvent";
 
-    public FileTooLargeFromSameIPAlertStatement(EPRuntime runtime, int attemptsThreshold) {
+    public FileTooLargeFromSameIPAlertStatement(EPRuntime runtime, int attemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("attemptsThreshold", attemptsThreshold);
+            prepared.setObject("timeWindow", timeWindowSeconds);
+            prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 
         CEPSetupUtil.compileDeploy(statementFromSameIP, runtime, options);

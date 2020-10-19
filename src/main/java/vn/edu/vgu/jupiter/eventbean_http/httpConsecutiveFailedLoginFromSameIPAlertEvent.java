@@ -4,6 +4,7 @@ public class httpConsecutiveFailedLoginFromSameIPAlertEvent {
     String IPAddress;
     String userID;
     String time;
+    long failuresCount;
 
     public String getIPAddress() {
         return IPAddress;
@@ -17,9 +18,14 @@ public class httpConsecutiveFailedLoginFromSameIPAlertEvent {
         return time;
     }
 
-    public httpConsecutiveFailedLoginFromSameIPAlertEvent(String IPAddress, String userID, String time) {
+    public long getFailuresCount() {
+        return failuresCount;
+    }
+
+    public httpConsecutiveFailedLoginFromSameIPAlertEvent(String IPAddress, String userID, String time, long failuresCount) {
         this.IPAddress = IPAddress;
         this.userID = userID;
         this.time = time;
+        this.failuresCount = failuresCount;
     }
 }

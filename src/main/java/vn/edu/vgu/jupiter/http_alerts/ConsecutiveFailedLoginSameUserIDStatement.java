@@ -12,20 +12,21 @@ import com.espertech.esper.runtime.client.EPRuntime;
  */
 public class ConsecutiveFailedLoginSameUserIDStatement {
     private String statement =
-            "insert into httpConsecutiveFailedLoginOneUserIDAlert\n " +
-                    "select IPAddress, userID, time, timeZone\n " +
-                    "from httpFailedLoginEvent#time_batch(?:alertTimeWindow:integer second)\n " +
+            "insert into httpConsecutiveFailedLoginOneUserIDAlertEvent\n " +
+                    "select IPAddress, userID, time, timeZone, count(*)\n " +
+                    "from httpFailedLoginEvent#time(?:alertTimeWindow:integer second)\n " +
                     "group by userID\n " +
-                    "having count(*) > ?:consecutiveAttemptThreshold:integer";
+                    "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
+                    "output first every ?:alertInterval:integer second";
 
-    private String listenStatement = "select * from httpConsecutiveFailedLoginOneUserIDAlert";
+    private String listenStatement = "select * from httpConsecutiveFailedLoginOneUserIDAlertEvent";
 
-    public ConsecutiveFailedLoginSameUserIDStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds) {
+    public ConsecutiveFailedLoginSameUserIDStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);
-            TimePeriod ts = new TimePeriod().sec(timeWindowSeconds);
-            prepared.setObject("alertTimeWindow", ts.getSeconds());
+            prepared.setObject("alertTimeWindow", timeWindowSeconds);
+            prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 
         CEPSetupUtil.compileDeploy(statement, runtime, options);
