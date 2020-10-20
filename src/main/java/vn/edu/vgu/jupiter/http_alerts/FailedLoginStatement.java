@@ -1,6 +1,5 @@
-package vn.edu.vgu.jupiter.http_alerts;
-
 import com.espertech.esper.runtime.client.EPRuntime;
+
 
 /**
  * This class compile the EPL statement to select failed authentication attempts
@@ -14,6 +13,7 @@ public class FailedLoginStatement {
             "where statusCode like \"401\"";
 
     private String listenStatement = "select * from httpFailedLoginEvent";
+
 
     public FailedLoginStatement(EPRuntime runtime) {
         CEPSetupUtil.compileDeploy(statement, runtime);

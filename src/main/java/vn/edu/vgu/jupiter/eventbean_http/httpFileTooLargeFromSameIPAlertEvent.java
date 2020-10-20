@@ -1,5 +1,3 @@
-package vn.edu.vgu.jupiter.eventbean_http;
-
 public class httpFileTooLargeFromSameIPAlertEvent {
     String IPAddress;
     String time;
