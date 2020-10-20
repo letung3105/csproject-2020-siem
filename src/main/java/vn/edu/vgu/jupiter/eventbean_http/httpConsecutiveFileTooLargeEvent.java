@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.eventbean_http;
+
 public class httpConsecutiveFileTooLargeEvent {
     String time;
     String timeZone;

@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.eventbean_http;
+
 public class httpConsecutiveFailedLoginAlertEvent {
     String time;
     String timeZone;

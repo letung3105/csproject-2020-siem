@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.http_alerts;
+
 import com.espertech.esper.common.client.EventBean;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
@@ -10,5 +12,4 @@ public class FileTooLargeSameFileAlertListener implements UpdateListener {
             return; // ignore old events for events leaving the window
         }
         System.out.println("Consecutive one same large file is being sent");
-    }
 }

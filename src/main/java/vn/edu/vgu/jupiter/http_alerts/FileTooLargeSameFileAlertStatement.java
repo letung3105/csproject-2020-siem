@@ -1,3 +1,5 @@
+package vn.edu.vgu.jupiter.http_alerts;
+
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
