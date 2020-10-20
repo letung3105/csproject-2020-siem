@@ -4,6 +4,8 @@ import com.espertech.esper.common.client.EventBean;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -14,12 +16,14 @@ import com.espertech.esper.runtime.client.UpdateListener;
  * @author Bui Xuan Phuoc
  */
 public class FileTooLargeFromSameIPAlertListener implements UpdateListener {
+    private static final Logger log = LoggerFactory.getLogger(FileTooLargeFromSameIPAlertListener.class);
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        System.out.println("Attempts to send large entity from the same IP detected: " + newEvents[0].get("IPAddress"));
+        String IPAddress = (String) newEvents[0].get("IPAddress");
+        log.info("Attempts to send large entity from the same IP address {} detected", IPAddress);
     }
 }
