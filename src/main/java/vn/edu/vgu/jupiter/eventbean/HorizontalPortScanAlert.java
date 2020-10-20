@@ -10,10 +10,12 @@ import org.pcap4j.packet.namednumber.Port;
 public class HorizontalPortScanAlert {
     private Long timestamp;
     private Port hostPort;
+    private Long count;
 
-    public HorizontalPortScanAlert(Long timestamp, Port hostPort) {
+    public HorizontalPortScanAlert(Long timestamp, Port hostPort, Long count) {
         this.timestamp = timestamp;
         this.hostPort = hostPort;
+        this.count = count;
     }
 
     public Long getTimestamp() {
@@ -22,5 +24,9 @@ public class HorizontalPortScanAlert {
 
     public Port getHostPort() {
         return hostPort;
+    }
+
+    public Long getCount() {
+        return count;
     }
 }

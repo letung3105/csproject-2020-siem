@@ -16,6 +16,11 @@ import org.slf4j.LoggerFactory;
  */
 public class BlockPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(BlockPortScanAlertListener.class);
+    private int countThreshold;
+
+    public BlockPortScanAlertListener(int countThreshold){
+        this.countThreshold = countThreshold;
+    }
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
@@ -23,7 +28,13 @@ public class BlockPortScanAlertListener implements UpdateListener {
             return; // ignore old events for events leaving the window
         }
         Long ts = (Long) newEvents[0].get("timestamp");
-        logger.info("[ts={}] POTENTIAL BLOCK PORT SCAN", ts);
+        int count = ((Long) newEvents[0].get("count")).intValue();
+
+        if(count < countThreshold){
+            logger.info("[ts={}] LOW PRIORITY: POTENTIAL BLOCK PORT SCAN", ts);
+        } else {
+            logger.warn("[ts={}] HIGH PRIORITY: BLOCK PORT SCAN", ts);
+        }
     }
 }
 
