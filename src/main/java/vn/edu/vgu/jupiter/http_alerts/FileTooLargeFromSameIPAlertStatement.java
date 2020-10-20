@@ -20,7 +20,7 @@ public class FileTooLargeFromSameIPAlertStatement {
 
     private String listenStatement = "select * from httpFileTooLargeFromSameIPAlertEvent";
 
-    public FileTooLargeFromSameIPAlertStatement(EPRuntime runtime, int attemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds) {
+    public FileTooLargeFromSameIPAlertStatement(EPRuntime runtime, int attemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("attemptsThreshold", attemptsThreshold);
@@ -29,6 +29,6 @@ public class FileTooLargeFromSameIPAlertStatement {
         });
 
         CEPSetupUtil.compileDeploy(statementFromSameIP, runtime, options);
-        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new FileTooLargeFromSameIPAlertListener());
+        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new FileTooLargeFromSameIPAlertListener(highPriorityThreshold));
     }
 }

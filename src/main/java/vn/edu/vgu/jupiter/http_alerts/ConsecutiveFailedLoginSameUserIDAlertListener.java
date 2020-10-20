@@ -17,12 +17,23 @@ import org.slf4j.LoggerFactory;
 public class ConsecutiveFailedLoginSameUserIDAlertListener implements UpdateListener {
     private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedFromSameIPAlertListener.class);
 
+    private long highPriorityThreshold;
+
+    public ConsecutiveFailedLoginSameUserIDAlertListener(long highPriorityThreshold) {
+        this.highPriorityThreshold = highPriorityThreshold;
+    }
+
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
         String userID = (String) newEvents[0].get("userID");
-        log.info("Consecutive failed logins targeting '{}'", userID);
+        Long count = (Long) newEvents[0].get("failuresCount");
+        if (count < highPriorityThreshold) {
+            log.info("LOW PRIORITY: Consecutive failed logins targeting '{}'", userID);
+        } else {
+            log.warn("HIGH PRIORITY: Consecutive failed logins targeting '{}'", userID);
+        }
     }
 }

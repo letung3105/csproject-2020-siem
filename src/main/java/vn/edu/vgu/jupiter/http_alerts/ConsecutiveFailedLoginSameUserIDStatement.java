@@ -1,6 +1,5 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
-import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
@@ -21,7 +20,7 @@ public class ConsecutiveFailedLoginSameUserIDStatement {
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginOneUserIDAlertEvent";
 
-    public ConsecutiveFailedLoginSameUserIDStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds) {
+    public ConsecutiveFailedLoginSameUserIDStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);
@@ -30,6 +29,6 @@ public class ConsecutiveFailedLoginSameUserIDStatement {
         });
 
         CEPSetupUtil.compileDeploy(statement, runtime, options);
-        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveFailedLoginSameUserIDAlertListener());
+        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveFailedLoginSameUserIDAlertListener(highPriorityThreshold));
     }
 }

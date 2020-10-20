@@ -18,12 +18,23 @@ import org.slf4j.LoggerFactory;
 public class FileTooLargeFromSameIPAlertListener implements UpdateListener {
     private static final Logger log = LoggerFactory.getLogger(FileTooLargeFromSameIPAlertListener.class);
 
+    private long highPriorityThreshold;
+
+    public FileTooLargeFromSameIPAlertListener(long highPriorityThreshold) {
+        this.highPriorityThreshold = highPriorityThreshold;
+    }
+
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
         String IPAddress = (String) newEvents[0].get("IPAddress");
-        log.info("Attempts to send large entity from the same IP address {} detected", IPAddress);
+        Long count = (Long) newEvents[0].get("failuresCount");
+        if (count < highPriorityThreshold) {
+            log.info("LOW PRIORITY: Attempts to send large entity from the same IP address {} detected", IPAddress);
+        } else {
+            log.warn("HIGH PRIORITY: Attempts to send large entity from the same IP address {} detected", IPAddress);
+        }
     }
 }

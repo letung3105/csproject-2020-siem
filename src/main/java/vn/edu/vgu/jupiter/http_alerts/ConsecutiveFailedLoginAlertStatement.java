@@ -1,6 +1,5 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
-import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
@@ -20,7 +19,7 @@ public class ConsecutiveFailedLoginAlertStatement {
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginAlertEvent";
 
-    public ConsecutiveFailedLoginAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds) {
+    public ConsecutiveFailedLoginAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);
@@ -29,6 +28,6 @@ public class ConsecutiveFailedLoginAlertStatement {
         });
 
         CEPSetupUtil.compileDeploy(statement, runtime, options);
-        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveFailedLoginAlertListener());
+        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveFailedLoginAlertListener(highPriorityThreshold));
     }
 }
