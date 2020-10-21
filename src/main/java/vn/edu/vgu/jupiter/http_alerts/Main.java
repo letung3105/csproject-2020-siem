@@ -72,7 +72,12 @@ public class Main implements Runnable {
                 line = line.replace(m.group(1), m.group(1).replace(" ", ""));
             }
 
+
             ArrayList<String> lineComponents = new ArrayList<String>(Arrays.asList(line.split(" ")));
+            while (lineComponents.size() > 10) {
+                lineComponents.set(3, lineComponents.get(3) + lineComponents.get(4));
+                lineComponents.remove(4);
+            }
             // System.out.println(lineComponents + " " + lineComponents.size());
             result.add(new httpLogEvent(lineComponents));
         }
