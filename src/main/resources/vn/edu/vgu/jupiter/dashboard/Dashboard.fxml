@@ -1,25 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.HBox?>
-<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
-    <children>
-        <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-                 tabClosingPolicy="UNAVAILABLE">
-            <tabs>
-                <Tab text="PortScans">
-                    <fx:include source="PortScanControlPanel.fxml"/>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="300.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="Untitled Tab 1">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Accordion prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <panes>
+                                    <TitledPane animated="false" text="Vertical port scan's thresholds">
+                                       <content>
+                                          <GridPane vgap="8.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints percentWidth="80.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints vgrow="SOMETIMES" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="ALWAYS" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Minimum count" />
+                                                <TextField GridPane.columnIndex="1" />
+                                                <Label text="Time window (seconds)" GridPane.rowIndex="1" />
+                                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="High priority threshold" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             </children>
+                                          </GridPane>
+                                       </content>
+                                    </TitledPane>
+                                    <TitledPane animated="false" text="Horizontal port scan's thresholds">
+                                       <content>
+                                          <GridPane vgap="8.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints percentWidth="80.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints vgrow="SOMETIMES" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="ALWAYS" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Minimum count" />
+                                                <TextField GridPane.columnIndex="1" />
+                                                <Label text="Time window (seconds)" GridPane.rowIndex="1" />
+                                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="High priority threshold" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             </children>
+                                          </GridPane>
+                                       </content>
+                                    </TitledPane>
+                                    <TitledPane animated="false" text="Block port scan's thresholds">
+                                       <content>
+                                          <GridPane vgap="8.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints percentWidth="80.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints vgrow="SOMETIMES" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints vgrow="ALWAYS" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Minimum count" />
+                                                <TextField GridPane.columnIndex="1" />
+                                                <Label text="Time window (seconds)" GridPane.rowIndex="1" />
+                                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="High priority threshold" GridPane.rowIndex="3" />
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             </children>
+                                          </GridPane>
+                                       </content>
+                                    </TitledPane>
+                                 </panes>
+                              </Accordion>
+                           </children>
+                        </AnchorPane>
+                     </content>
                 </Tab>
-            </tabs>
-        </TabPane>
-        <TextArea editable="false" prefHeight="600.0" prefWidth="500.0" text="LOG MESSAGES" HBox.hgrow="ALWAYS">
+                <Tab text="Untitled Tab 2">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+            <Button alignment="CENTER" layoutX="123.0" layoutY="406.0" mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="16.0" />
+         </children>
+      </AnchorPane>
+        <TextArea editable="false" prefHeight="600.0" prefWidth="500.0" text="LOG MESSAGES" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>
-                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
             </padding>
         </TextArea>
-    </children>
-</HBox>
+   </children>
+</AnchorPane>
