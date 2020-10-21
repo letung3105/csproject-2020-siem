@@ -1,9 +1,9 @@
 package vn.edu.vgu.jupiter.dashboard;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,9 +19,7 @@ public class Dashboard extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        var root = new VBox();
-        root.setAlignment(Pos.CENTER);
-
+        var root = (Parent) FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
         primaryStage.setTitle("SIEM Dashboard");
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
         primaryStage.show();

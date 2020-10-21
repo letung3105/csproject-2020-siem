@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <children>
+        <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                 tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="PortScans">
+                    <fx:include source="PortScanControlPanel.fxml"/>
+
+                </Tab>
+            </tabs>
+        </TabPane>
+        <TextArea editable="false" prefHeight="600.0" prefWidth="500.0" text="LOG MESSAGES" HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+            </padding>
+        </TextArea>
+    </children>
+</HBox>
