@@ -28,9 +28,9 @@ public class Main implements Runnable {
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
         new FailedLoginStatement(runtime);
-        new ConsecutiveFailedLoginAlertStatement(runtime, 15, 5, 5, 25);
-        new ConsecutiveFailedFromSameIPAlertStatement(runtime, 12, 1, 1, 20);
-        new ConsecutiveFailedLoginSameUserIDStatement(runtime, 3, 1, 1, 6);
+        new ConsecutiveFailedLoginAlertStatement(runtime, 15, 5, 5, 20);
+        new ConsecutiveFailedFromSameIPAlertStatement(runtime, 12, 1, 1, 15);
+        new ConsecutiveFailedLoginSameUserIDStatement(runtime, 3, 1, 1, 5);
 
         new FileTooLargeStatement(runtime);
         new FileTooLargeFromSameIPAlertStatement(runtime, 5, 20, 10, 10);

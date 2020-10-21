@@ -30,4 +30,8 @@ public class httpConsecutiveFailedLoginOneUserIDAlertEvent {
     public String getTimeZone() {
         return timeZone;
     }
+
+    public long getFailuresCount() {
+        return failuresCount;
+    }
 }
