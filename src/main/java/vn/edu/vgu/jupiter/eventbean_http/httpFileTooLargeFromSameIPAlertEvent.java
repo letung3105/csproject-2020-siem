@@ -8,7 +8,7 @@ public class httpFileTooLargeFromSameIPAlertEvent {
     long failuresCount;
 
     public httpFileTooLargeFromSameIPAlertEvent(String IPAddress, String time, String userID,
-                                                String returnObjSize, int failuresCount) {
+                                                String returnObjSize, long failuresCount) {
         this.IPAddress = IPAddress;
         this.time = time;
         this.userID = userID;
