@@ -11,10 +11,12 @@ import java.net.InetAddress;
 public class VerticalPortScanAlert {
     private Long timestamp;
     private InetAddress hostAddr;
+    private Long count;
 
-    public VerticalPortScanAlert(Long timestamp, InetAddress hostAddr) {
+    public VerticalPortScanAlert(Long timestamp, InetAddress hostAddr, Long count) {
         this.timestamp = timestamp;
         this.hostAddr = hostAddr;
+        this.count = count;
     }
 
     public Long getTimestamp() {
@@ -23,5 +25,9 @@ public class VerticalPortScanAlert {
 
     public InetAddress getHostAddr() {
         return hostAddr;
+    }
+
+    public Long getCount() {
+        return count;
     }
 }

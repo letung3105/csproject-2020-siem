@@ -16,6 +16,11 @@ import org.slf4j.LoggerFactory;
  */
 public class HorizontalPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(HorizontalPortScanAlertListener.class);
+    private int countThreshold;
+
+    public HorizontalPortScanAlertListener(int countThreshold){
+        this.countThreshold = countThreshold;
+    }
 
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
@@ -24,6 +29,12 @@ public class HorizontalPortScanAlertListener implements UpdateListener {
         }
         Long ts = (Long) newEvents[0].get("timestamp");
         Port hostPort = (Port) newEvents[0].get("hostPort");
-        logger.info("[ts={}] POTENTIAL HORIZONTAL PORT SCAN ON PORT {}", ts, hostPort.valueAsInt());
+        int count = ((Long) newEvents[0].get("count")).intValue();
+
+        if(count < countThreshold){
+            logger.info("[ts={}] LOW PRIORITY: POTENTIAL HORIZONTAL PORT SCAN ON PORT {}", ts, hostPort.valueAsInt());
+        } else {
+            logger.warn("[ts={}] HIGH PRIORITY: HORIZONTAL PORT SCAN ON PORT {}", ts, hostPort.valueAsInt());
+        }
     }
 }

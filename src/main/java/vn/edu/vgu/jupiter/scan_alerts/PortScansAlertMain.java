@@ -11,13 +11,12 @@ import org.slf4j.LoggerFactory;
 import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
 
 /**
- * Setup the Esper's runtime and packet capture, captured network packets are passed to the Esper's runtime
- *
- * @author Vo Le Tung
- * @author Pham Nguyen Thanh An
+ * This class is the new PortScansMain that have function to modify variables for all PortScan types
  */
-public class PortScansAlertMain implements Runnable {
-
+public class PortScansAlertMain implements Runnable{
+    /**
+     * The predefined variables by program
+     */
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertMain.class);
     private static final int COUNT = -1;
     private static final int READ_TIMEOUT = 100; // [ms]
@@ -26,12 +25,23 @@ public class PortScansAlertMain implements Runnable {
 
     private String netDevName;
 
-    public static void main(String[] args) {
-        String netDevName = args.length > 0 ? args[0] : "";
-        new PortScansAlertMain(netDevName).run();
-    }
+    /**
+     * Default values for port scan
+     */
+    private int minConnectionCountVertical = 60; // [connections] [info threshold]
+    private int timeWindowVertical = 60; // [seconds]
+    private int countVertical = 100; // [warning threshold]
 
-    public PortScansAlertMain(String netDevName) {
+    private int minConnectionCountHorizontal = 60; // [connections] [info threshold]
+    private int timeWindowHorizontal = 60; // [seconds]
+    private int countHorizontal = 100; // [warning threshold]
+
+    private int minPortsCount = 50; // [ports]
+    private int minAddressCount = 2; // [addresses] [info threshold]
+    private int timeWindowBlock = 60; // [seconds]
+    private int countBlock = 5; // [warning threshold]
+
+    public PortScansAlertMain(String netDevName){
         this.netDevName = netDevName;
     }
 
@@ -47,9 +57,9 @@ public class PortScansAlertMain implements Runnable {
             // compile and deploy epl statements
             log.info("Setting up EPL");
             new TcpPacketWithClosedPortStatement(runtime);
-            new VerticalPortScanAlertStatement(runtime, 100, 60, 10);
-            new HorizontalPortScanAlertStatement(runtime, 2, 60, 10);
-            new BlockPortScanAlertStatement(runtime, 50, 2, 60, 10);
+            new VerticalPortScanAlertStatement(runtime, minConnectionCountVertical, timeWindowVertical, 10, countVertical);
+            new HorizontalPortScanAlertStatement(runtime, minConnectionCountHorizontal, timeWindowHorizontal, 10, countHorizontal);
+            new BlockPortScanAlertStatement(runtime, minPortsCount, minAddressCount, timeWindowBlock, 10, countBlock);
 
             // getting the network interface
             PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);
@@ -76,5 +86,88 @@ public class PortScansAlertMain implements Runnable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Setters for modifying variables
+     */
+    public void setMinConnectionCountVertical(int minConnectionCountVertical) {
+        this.minConnectionCountVertical = minConnectionCountVertical;
+    }
+
+    public void setTimeWindowVertical(int timeWindowVertical) {
+        this.timeWindowVertical = timeWindowVertical;
+    }
+
+    public void setMinConnectionCountHorizontal(int minConnectionCountHorizontal) {
+        this.minConnectionCountHorizontal = minConnectionCountHorizontal;
+    }
+
+    public void setTimeWindowHorizontal(int timeWindowHorizontal) {
+        this.timeWindowHorizontal = timeWindowHorizontal;
+    }
+
+    public void setMinPortsCount(int minPortsCount) {
+        this.minPortsCount = minPortsCount;
+    }
+
+    public void setMinAddressCount(int minAddressCount) {
+        this.minAddressCount = minAddressCount;
+    }
+
+    public void setTimeWindowBlock(int timeWindowBlock) {
+        this.timeWindowBlock = timeWindowBlock;
+    }
+
+    public int getMinConnectionCountVertical() {
+        return minConnectionCountVertical;
+    }
+
+    public int getTimeWindowVertical() {
+        return timeWindowVertical;
+    }
+
+    public int getMinConnectionCountHorizontal() {
+        return minConnectionCountHorizontal;
+    }
+
+    public int getTimeWindowHorizontal() {
+        return timeWindowHorizontal;
+    }
+
+    public int getMinPortsCount() {
+        return minPortsCount;
+    }
+
+    public int getMinAddressCount() {
+        return minAddressCount;
+    }
+
+    public int getTimeWindowBlock() {
+        return timeWindowBlock;
+    }
+
+    public int getCountVertical() {
+        return countVertical;
+    }
+
+    public int getCountHorizontal() {
+        return countHorizontal;
+    }
+
+    public int getCountBlock() {
+        return countBlock;
+    }
+
+    public void setCountVertical(int countVertical) {
+        this.countVertical = countVertical;
+    }
+
+    public void setCountHorizontal(int countHorizontal) {
+        this.countHorizontal = countHorizontal;
+    }
+
+    public void setCountBlock(int countBlock) {
+        this.countBlock = countBlock;
     }
 }
