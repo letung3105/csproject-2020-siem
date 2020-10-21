@@ -16,7 +16,7 @@ public class ConsecutiveFailedFromSameIPAlertStatement {
                     "from httpFailedLoginEvent#time(?:alertTimeWindow:integer second)\n " +
                     "group by IPAddress\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
-                    "output first every ?:alertInterval:integer second";
+                    "output last every ?:alertInterval:integer second";
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginFromSameIPAlertEvent";
 

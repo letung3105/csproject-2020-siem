@@ -16,7 +16,7 @@ public class FileTooLargeFromSameIPAlertStatement {
                     "from httpFileTooLargeEvent#time(?:timeWindow:integer second)\n" +
                     "group by IPAddress\n " +
                     "having count(*) > ?:attemptsThreshold:integer\n" +
-                    "output first every ?:alertInterval:integer second";
+                    "output last every ?:alertInterval:integer second";
 
     private String listenStatement = "select * from httpFileTooLargeFromSameIPAlertEvent";
 

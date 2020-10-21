@@ -15,7 +15,7 @@ public class ConsecutiveFailedLoginAlertStatement {
                     "select timeZone, time, count(*)\n " +
                     "from httpFailedLoginEvent#time(?:alertTimeWindow:integer second)\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
-                    "output first every ?:alertInterval:integer second";
+                    "output last every ?:alertInterval:integer second";
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginAlertEvent";
 
