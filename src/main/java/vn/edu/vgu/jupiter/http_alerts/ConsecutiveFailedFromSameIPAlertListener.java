@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public class ConsecutiveFailedFromSameIPAlertListener implements UpdateListener {
-    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedLoginAlertListener.class);
+    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedFromSameIPAlertListener.class);
 
     private long highPriorityThreshold;
 
