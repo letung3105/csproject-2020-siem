@@ -69,4 +69,8 @@ public class PortScansAlertPlugin implements PluginLoader {
         main = null;
         log.info("PortScansAlert stopped.");
     }
+
+    public PortScansAlertMain getPortScansAlertMain() {
+        return main;
+    }
 }

@@ -30,7 +30,8 @@ public class PortScansAlertUtil {
             CompilerArguments args = new CompilerArguments(getConfiguration());
             args.getPath().add(runtime.getRuntimePath());
             EPCompiled compiled = EPCompilerProvider.getCompiler().compile(epl, args);
-            return runtime.getDeploymentService().deploy(compiled, deployOpts).getStatements()[0];
+            EPStatement epStatement = runtime.getDeploymentService().deploy(compiled, deployOpts).getStatements()[0];
+            return epStatement;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

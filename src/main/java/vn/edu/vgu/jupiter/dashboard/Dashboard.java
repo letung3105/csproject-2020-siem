@@ -16,9 +16,7 @@ import vn.edu.vgu.jupiter.scan_alerts.HTTPAlertsPlugin;
 import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertMain;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -31,41 +29,8 @@ public class Dashboard extends Application implements Initializable {
 
     public static final double HEIGHT = 300;
     public static final double WIDTH = 400;
-    public static final CountDownLatch latch = new CountDownLatch(1);
-    public static Dashboard dashboard;
-    @FXML
-    public AnchorPane httpAlertControlPanel;
-    @FXML
-    public HTTPAlertControlPanel httpAlertControlPanelController;
+
     private EPRuntime runtime;
-    //PORT SCAN
-    private PortScansAlertMain portScansMain;
-    @FXML
-    private TextField verticalMinCount;
-    @FXML
-    private TextField verticalWarnCount;
-    @FXML
-    private TextField verticalTime;
-    @FXML
-    private TextField verticalTimeInterval;
-    @FXML
-    private TextField horizontalMinCount;
-    @FXML
-    private TextField horizontalWarnCount;
-    @FXML
-    private TextField horizontalTime;
-    @FXML
-    private TextField horizontalTimeInterval;
-    @FXML
-    private TextField blockMinAddressCount;
-    @FXML
-    private TextField blockMinPortCount;
-    @FXML
-    private TextField blockWarnAddressCount;
-    @FXML
-    private TextField blockTime;
-    @FXML
-    private TextField blockTimeInterval;
 
     public Dashboard() {
         Configuration config = new Configuration();
@@ -97,6 +62,7 @@ public class Dashboard extends Application implements Initializable {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        var root = (Parent) FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
         primaryStage.setTitle("SIEM Dashboard");
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
@@ -163,40 +129,102 @@ public class Dashboard extends Application implements Initializable {
             portScansMain.setIntervalHorizontal(Integer.parseInt(timeIntervalVar));
         }
     }
+||||||| 5729d69
+    public Dashboard(){
+        setDashboard(this);
+    }
 
-    private void setParametersBlock() {
+    public static void setDashboard(Dashboard thisDashboard){
+        dashboard = thisDashboard;
+        latch.countDown();
+    }
+
+    public static Dashboard waitAndGetDashboard(){
+        try{
+            latch.wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return dashboard;
+    }
+
+    //PORT SCAN
+    private PortScansAlertMain portScansMain;
+    @FXML
+    private TextField verticalMinCount;
+    @FXML
+    private TextField verticalWarnCount;
+    @FXML
+    private TextField verticalTime;
+    @FXML
+    private TextField verticalTimeInterval;
+
+    /**
+     * This method will gather all inputs in Text Fields
+     * and make portScanMain undeploy all and deploy with new vars
+     */
+    @FXML
+    private void refreshPortScansAlertParameter(){
+        setParametersVertical();
+        setParametersHorizontal();
+        setParametersBlock();
+        portScansMain.setVariableChange(true);
+    }
+
+    private void setParametersVertical(){
         //Get parameter from GUI
-        String minAddressCountVar = blockMinAddressCount.getText();
-        String minPortCountVar = blockMinPortCount.getText();
-        String warnCountVar = blockWarnAddressCount.getText();
-        String timeWindowVar = blockTime.getText();
-        String timeIntervalVar = blockTimeInterval.getText();
+        String verticalMinCountVar = verticalMinCount.getText();
+        String verticalWarnCountVar = verticalWarnCount.getText();
+        String verticalTimeVar = verticalTime.getText();
+        String verticalTimeIntervalVar = verticalTimeInterval.getText();
 
         //Check if integer and set
-        if (isInteger(minAddressCountVar)) {
-            portScansMain.setMinAddressCount(Integer.parseInt(minAddressCountVar));
+        if(isInteger(verticalMinCountVar)){
+            portScansMain.setMinConnectionCountVertical(Integer.parseInt(verticalMinCountVar));
         }
-        if (isInteger(minPortCountVar)) {
-            portScansMain.setMinPortsCount(Integer.parseInt(minPortCountVar));
+        if(isInteger(verticalWarnCountVar)){
+            portScansMain.setCountVertical(Integer.parseInt(verticalWarnCountVar));
         }
-        if (isInteger(warnCountVar)) {
-            portScansMain.setCountBlock(Integer.parseInt(warnCountVar));
+        if(isInteger(verticalTimeVar)){
+            portScansMain.setTimeWindowVertical(Integer.parseInt(verticalTimeVar));
         }
-        if (isInteger(timeWindowVar)) {
-            portScansMain.setTimeWindowBlock(Integer.parseInt(timeWindowVar));
-        }
-        if (isInteger(timeIntervalVar)) {
-            portScansMain.setIntervalBlock(Integer.parseInt(timeIntervalVar));
+        if(isInteger(verticalTimeIntervalVar)){
+            portScansMain.setIntervalVertical(Integer.parseInt(verticalTimeIntervalVar));
         }
     }
 
-    private boolean isInteger(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+    @FXML
+    private TextField horizontalMinCount;
+    @FXML
+    private TextField horizontalWarnCount;
+    @FXML
+    private TextField horizontalTime;
+    @FXML
+    private TextField horizontalTimeInterval;
+
+    private void setParametersHorizontal(){
+        //Get parameter from GUI
+        String minCountVar = horizontalMinCount.getText();
+        String warnCountVar = horizontalWarnCount.getText();
+        String timeWindowVar = horizontalTime.getText();
+        String timeIntervalVar = horizontalTimeInterval.getText();
+
+        //Check if integer and set
+        if(isInteger(minCountVar)){
+            portScansMain.setMinConnectionCountHorizontal(Integer.parseInt(minCountVar));
         }
+        if(isInteger(warnCountVar)){
+            portScansMain.setCountHorizontal(Integer.parseInt(warnCountVar));
+        }
+        if(isInteger(timeWindowVar)){
+            portScansMain.setTimeWindowHorizontal(Integer.parseInt(timeWindowVar));
+        }
+        if(isInteger(timeIntervalVar)){
+            portScansMain.setIntervalHorizontal(Integer.parseInt(timeIntervalVar));
+        }
+    }
+
+        runtime = EPRuntimeProvider.getRuntime("PortScansAlertPlugin", config);
     }
 }
 
