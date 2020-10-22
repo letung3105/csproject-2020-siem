@@ -5,12 +5,15 @@ public class httpFileTooLargeFromSameIPAlertEvent {
     String time;
     String userID;
     String returnObjSize;
+    long failuresCount;
 
-    public httpFileTooLargeFromSameIPAlertEvent(String IPAddress, String time, String userID, String returnObjSize) {
+    public httpFileTooLargeFromSameIPAlertEvent(String IPAddress, String time, String userID,
+                                                String returnObjSize, long failuresCount) {
         this.IPAddress = IPAddress;
         this.time = time;
         this.userID = userID;
         this.returnObjSize = returnObjSize;
+        this.failuresCount = failuresCount;
     }
 
     public String getIPAddress() {
@@ -27,5 +30,9 @@ public class httpFileTooLargeFromSameIPAlertEvent {
 
     public String getReturnObjSize() {
         return returnObjSize;
+    }
+
+    public long getFailuresCount() {
+        return failuresCount;
     }
 }

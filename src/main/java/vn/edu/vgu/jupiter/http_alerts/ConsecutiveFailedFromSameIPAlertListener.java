@@ -4,6 +4,8 @@ import com.espertech.esper.common.client.EventBean;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A simple listener for httpConsecutiveFailedFromSameIPAlert Event
@@ -14,11 +16,25 @@ import com.espertech.esper.runtime.client.UpdateListener;
  */
 
 public class ConsecutiveFailedFromSameIPAlertListener implements UpdateListener {
+    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedFromSameIPAlertListener.class);
+
+    private long highPriorityThreshold;
+
+    public ConsecutiveFailedFromSameIPAlertListener(long highPriorityThreshold) {
+        this.highPriorityThreshold = highPriorityThreshold;
+    }
+
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        System.out.println("Consecutive failed logins in short time frame coming from: " + newEvents[0].get("IPAddress") + " which might be a botnet");
+        Long count = (Long) newEvents[0].get("failuresCount");
+        String IPAddress = (String) newEvents[0].get("IPAddress");
+        if (count < highPriorityThreshold) {
+            log.info("LOW PRIORITY: Consecutive failed logins in short time frame coming from '{}'", IPAddress);
+        } else {
+            log.warn("HIGH PRIORITY: Consecutive failed logins in short time frame coming from '{}'", IPAddress);
+        }
     }
 }

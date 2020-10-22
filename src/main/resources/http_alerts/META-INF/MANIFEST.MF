@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Main-Class: vn.edu.vgu.jupiter.http_alerts.Main
+Class-Path: javax.json-1.0.4.jar esper-compiler-8.6.0.jar esper-runtime-
+ 8.6.0.jar icu4j-61.1.jar antlr4-runtime-4.7.2.jar janino-3.1.2.jar slf4
+ j-api-1.7.30.jar esper-common-8.6.0.jar jna-5.3.1.jar ST4-4.3.jar pcap4
+ j-packetfactory-static-1.8.2.jar commons-compiler-3.1.2.jar antlr4-4.8.
+ jar antlr-runtime-3.5.2.jar pcap4j-core-1.8.2.jar org.abego.treelayout.
+ core-1.0.3.jar slf4j-simple-1.7.30.jar
+

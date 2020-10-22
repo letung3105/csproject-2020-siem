@@ -27,12 +27,13 @@ public class HTTPAlertsMain implements Runnable {
         Configuration configuration = CEPSetupUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
-        new ConsecutiveFailedLoginAlertStatement(runtime, 15, 5);
-        new ConsecutiveFailedFromSameIPAlertStatement(runtime, 12, 1);
-        new ConsecutiveFailedLoginSameUserIDStatement(runtime, 3, 1);
         new FailedLoginStatement(runtime);
-        new FileTooLargeFromSameIPAlertStatement(runtime, 5);
+        new ConsecutiveFailedLoginAlertStatement(runtime, 15, 6, 3, 20);
+        new ConsecutiveFailedFromSameIPAlertStatement(runtime, 12, 2, 1, 15);
+        new ConsecutiveFailedLoginSameUserIDStatement(runtime, 3, 2, 1, 5);
+
         new FileTooLargeStatement(runtime);
+        new FileTooLargeFromSameIPAlertStatement(runtime, 5, 20, 10, 10);
 
         int recordedNumberOfLogEntries = 0;
         while (true) {
@@ -53,10 +54,11 @@ public class HTTPAlertsMain implements Runnable {
     }
 
     /**
-     * A httpd access log parser for linux systems
+     * A httpd access
+     * log parser for linux systems
      *
-     * @author Bui Xuan Phuoc
      * @return ArrayList<httpLogEvent> list of events parsed from the log
+     * @author Bui Xuan Phuoc
      */
     public static ArrayList<httpLogEvent> getEventsFromApacheHTTPDLogs() throws IOException {
         // TODO: more efficient way to read the log?
@@ -72,7 +74,12 @@ public class HTTPAlertsMain implements Runnable {
                 line = line.replace(m.group(1), m.group(1).replace(" ", ""));
             }
 
+
             ArrayList<String> lineComponents = new ArrayList<String>(Arrays.asList(line.split(" ")));
+            while (lineComponents.size() > 10) {
+                lineComponents.set(3, lineComponents.get(3) + lineComponents.get(4));
+                lineComponents.remove(4);
+            }
             // System.out.println(lineComponents + " " + lineComponents.size());
             result.add(new httpLogEvent(lineComponents));
         }

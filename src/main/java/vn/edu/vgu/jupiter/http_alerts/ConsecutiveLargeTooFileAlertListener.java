@@ -7,19 +7,12 @@ import com.espertech.esper.runtime.client.UpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A simple listener for httpConsecutiveFailedLoginAlert Event
- * <p>
- * The information of the new events is logged to the system using the class's logger
- *
- * @author Bui Xuan Phuoc
- */
-public class ConsecutiveFailedLoginAlertListener implements UpdateListener {
-    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedLoginAlertListener.class);
+public class ConsecutiveLargeTooFileAlertListener implements UpdateListener {
+    private static final Logger log = LoggerFactory.getLogger(ConsecutiveLargeTooFileAlertListener.class);
 
     private long highPriorityThreshold;
 
-    public ConsecutiveFailedLoginAlertListener(long highPriorityThreshold) {
+    public ConsecutiveLargeTooFileAlertListener(long highPriorityThreshold) {
         this.highPriorityThreshold = highPriorityThreshold;
     }
 
@@ -30,9 +23,9 @@ public class ConsecutiveFailedLoginAlertListener implements UpdateListener {
         }
         Long count = (Long) newEvents[0].get("failuresCount");
         if (count < highPriorityThreshold) {
-            log.info("LOW PRIORITY: Consecutive failed logins in short time frame detected");
+            log.info("LOW PRIORITY: Large files are consecutively being sent");
         } else {
-            log.warn("HIGH PRIORITY: Consecutive failed logins in short time frame detected");
+            log.warn("HIGH PRIORITY: Large files are consecutively being sent");
         }
     }
 }

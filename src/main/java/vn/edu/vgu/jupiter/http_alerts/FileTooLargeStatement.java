@@ -17,6 +17,5 @@ public class FileTooLargeStatement {
 
     public FileTooLargeStatement(EPRuntime runtime) {
         CEPSetupUtil.compileDeploy(statement, runtime);
-        // ConsecutiveFailedLoginsUtil.compileDeploy(listenStatement, runtime).addListener(new FileTooLargeListener());
     }
 }
