@@ -10,5 +10,6 @@ public class ARPCacheFloodAlertStatement {
 
     public ARPCacheFloodAlertStatement(EPRuntime runtime) {
         ARPAlertUtils.compileDeploy(statement, runtime);
+        ARPAlertUtils.compileDeploy(listenStatement, runtime).addListener(new ARPCacheFloodAlertListener());
     }
 }

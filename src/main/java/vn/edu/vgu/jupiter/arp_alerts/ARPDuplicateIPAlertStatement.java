@@ -13,5 +13,6 @@ public class ARPDuplicateIPAlertStatement {
 
     public ARPDuplicateIPAlertStatement(EPRuntime runtime) {
         ARPAlertUtils.compileDeploy(statement, runtime);
+        ARPAlertUtils.compileDeploy(listenStatement, runtime).addListener(new ARPDuplicateIPAlertListener());
     }
 }
