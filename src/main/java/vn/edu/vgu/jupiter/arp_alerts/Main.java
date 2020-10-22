@@ -23,6 +23,9 @@ public class Main implements Runnable {
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
         new ARPAnnouncementStatement(runtime);
         new ARPReplyStatement(runtime);
+        new ARPCacheFloodAlertStatement(runtime);
+        new ARPDuplicateIPAlertStatement(runtime);
+        new ARPCacheUpdateStatement(runtime);
 
         InetAddress inetAddress = null;
         try {

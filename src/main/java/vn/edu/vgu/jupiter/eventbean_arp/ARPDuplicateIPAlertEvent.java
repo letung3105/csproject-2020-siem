@@ -4,21 +4,15 @@ import java.util.ArrayList;
 
 public class ARPDuplicateIPAlertEvent {
     String IP;
-    String MACs;
     String time;
 
-    public ARPDuplicateIPAlertEvent(String IP, String MACs, String time) {
+    public ARPDuplicateIPAlertEvent(String IP, String time) {
         this.IP = IP;
-        this.MACs = MACs;
         this.time = time;
     }
 
     public String getIP() {
         return IP;
-    }
-
-    public String getMACs() {
-        return MACs;
     }
 
     public String getTime() {
