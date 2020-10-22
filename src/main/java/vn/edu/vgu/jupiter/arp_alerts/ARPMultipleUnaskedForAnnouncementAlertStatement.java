@@ -10,7 +10,7 @@ import vn.edu.vgu.jupiter.http_alerts.ConsecutiveFailedLoginAlertListener;
 
 public class ARPMultipleUnaskedForAnnouncementAlertStatement {
     String statementEPL =     "insert into ARPMultipleUnaskedForAnnouncementAlertEvent\n " +
-            "select srcIP, srcMAC, time\n " +
+            "select cast(count(*) as int), srcIP, srcMAC, time\n " +
             "from ARPAnnouncementEvent#time_batch(?:alertTimeWindow:integer second)\n " +
             "group by srcIP\n " +
             "having count(*) > ?:consecutiveAttemptThreshold:integer\n " +
@@ -36,7 +36,7 @@ public class ARPMultipleUnaskedForAnnouncementAlertStatement {
 
         statement = ARPAlertUtils.compileDeploy(statementEPL, runtime, options);
         listenStatement = ARPAlertUtils.compileDeploy(listenStatementEPL, runtime);
-        listenStatement.addListener(new ARPMultipleUnaskedForAnnouncementAlertListener());
+        listenStatement.addListener(new ARPMultipleUnaskedForAnnouncementAlertListener(highPriorityThreshold));
     }
 
     public void undeploy() throws EPUndeployException {
