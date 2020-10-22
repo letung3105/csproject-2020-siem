@@ -1,27 +1,29 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
-import com.espertech.esper.common.client.util.TimePeriod;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
 public class ConsecutiveLargeTooFileAlertStatement {
     private String statement =
-            "insert into httpConsecutiveFailedLoginOneUserIDAlert\n " +
-                    "select IPAddress, userID, time, timeZone\n " +
-                    "from httpFailedLoginEvent#time_batch(?:alertTimeWindow: integer second)\n " +
-                    "having count(*) > ?:consecutiveAttemptThreshold:integer";
+            "insert into httpConsecutiveFailedLoginOneUserIDAlert\n" +
+                    "select IPAddress, userID, time, timeZone\n" +
+                    "from httpFailedLoginEvent#time(?:alertTimeWindow:integer second)\n" +
+                    "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
+                    "output last every ?:alertInterval:integer second";
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginOneUserIDAlert";
 
-    public ConsecutiveLargeTooFileAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds) {
+    public ConsecutiveLargeTooFileAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold,
+                                                 int timeWindowSeconds, int alertIntervalSeconds,
+                                                 long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);
-            TimePeriod ts = new TimePeriod().sec(timeWindowSeconds);
-            prepared.setObject("alertTimeWindow", ts.getSeconds());
+            prepared.setObject("alertTimeWindow", timeWindowSeconds);
+            prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 
         CEPSetupUtil.compileDeploy(statement, runtime, options);
-        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveLargeTooFileAlertListener());
+        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveLargeTooFileAlertListener(highPriorityThreshold));
     }
 }

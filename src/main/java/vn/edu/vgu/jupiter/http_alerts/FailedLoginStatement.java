@@ -13,10 +13,7 @@ public class FailedLoginStatement {
             "select IPAddress, userID, time, timeZone from httpLogEvent\n " +
             "where statusCode like \"401\"";
 
-    private String listenStatement = "select * from httpFailedLoginEvent";
-
     public FailedLoginStatement(EPRuntime runtime) {
         CEPSetupUtil.compileDeploy(statement, runtime);
-        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new FailedLoginStatementListener());
     }
 }
