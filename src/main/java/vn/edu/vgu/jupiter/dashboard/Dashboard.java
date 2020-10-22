@@ -54,6 +54,9 @@ public class Dashboard extends Application {
 
     //PORT SCAN
     private PortScansAlertMain portScansMain;
+    public void setPortScansMain(PortScansAlertMain portScansMain){
+        this.portScansMain = portScansMain;
+    }
     @FXML
     private TextField verticalMinCount;
     @FXML
