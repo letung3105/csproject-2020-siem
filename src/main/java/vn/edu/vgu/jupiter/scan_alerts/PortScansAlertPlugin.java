@@ -6,6 +6,7 @@ import com.espertech.esper.runtime.client.plugin.PluginLoader;
 import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations;
 
 /**
  * PluginLoader for added this example as part of an Esper configuration file and therefore execute it during startup.
@@ -22,6 +23,7 @@ public class PortScansAlertPlugin implements PluginLoader {
     private String runtimeURI;
     private PortScansAlertMain main;
     private Thread portScansAlertThread;
+    private PortScansAlertConfigurations configs;
 
     public void init(PluginLoaderInitContext context) {
         if (context.getProperties().getProperty(RUNTIME_URI_KEY) != null) {
@@ -35,6 +37,11 @@ public class PortScansAlertPlugin implements PluginLoader {
         } else {
             netdev = context.getRuntime().getURI();
         }
+
+        configs = new PortScansAlertConfigurations(
+                new PortScansAlertConfigurations.VerticalScan(60, 10, 100, 60),
+                new PortScansAlertConfigurations.HorizontalScan(60, 10, 100, 60),
+                new PortScansAlertConfigurations.BlockScan(60, 10, 5, 50, 2));
     }
 
     public void postInitialize() {
@@ -42,6 +49,7 @@ public class PortScansAlertPlugin implements PluginLoader {
 
         try {
             main = new PortScansAlertMain(netdev);
+            main.deploy(configs);
             portScansAlertThread = new Thread(main, this.getClass().getName());
             portScansAlertThread.setDaemon(true);
             portScansAlertThread.start();
@@ -50,6 +58,16 @@ public class PortScansAlertPlugin implements PluginLoader {
         }
 
         log.info("PortScansAlert started.");
+    }
+
+    public void deploy(PortScansAlertConfigurations configs) {
+        main.deploy(configs);
+    }
+
+    public void undeploy() throws EPUndeployException {
+        if (main != null) {
+            main.undeploy();
+        }
     }
 
     public void destroy() {
@@ -68,9 +86,5 @@ public class PortScansAlertPlugin implements PluginLoader {
         }
         main = null;
         log.info("PortScansAlert stopped.");
-    }
-
-    public PortScansAlertMain getPortScansAlertMain() {
-        return main;
     }
 }

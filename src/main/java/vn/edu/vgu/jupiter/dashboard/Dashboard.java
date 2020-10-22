@@ -36,6 +36,11 @@ public class Dashboard extends Application implements Initializable {
     @FXML
     public HTTPAlertControlPanel httpAlertControlPanelController;
 
+    @FXML
+    public AnchorPane portScansAlertControlPanel;
+    @FXML
+    public PortScansAlertController portScansAlertControlPanelController;
+
     public Dashboard() {
         Configuration config = new Configuration();
 
@@ -55,6 +60,15 @@ public class Dashboard extends Application implements Initializable {
         //         "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
         //         portScansAlertProps);
 
+        //Port scans
+        Properties portScansAlertProps = new Properties();
+        portScansAlertProps.put("runtimeURI", "PortScansAlertPlugin");
+        portScansAlertProps.put("netdev", "lo0");
+        config.getRuntime().addPluginLoader(
+                "PortScansAlertPlugin",
+                "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
+                portScansAlertProps);
+
         runtime = EPRuntimeProvider.getRuntime("SIEM", config);
     }
 
@@ -73,6 +87,7 @@ public class Dashboard extends Application implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.httpAlertControlPanelController.setRuntime(runtime);
+        this.portScansAlertControlPanelController.setRuntime(runtime);
     }
 }
 

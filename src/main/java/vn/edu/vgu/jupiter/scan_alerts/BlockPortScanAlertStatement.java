@@ -2,6 +2,8 @@ package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
+import com.espertech.esper.runtime.client.EPStatement;
+import com.espertech.esper.runtime.client.EPUndeployException;
 
 /**
  * This class compile the EPL statement for raising alerts for block port scan events that might be
@@ -23,13 +25,21 @@ public class BlockPortScanAlertStatement {
                     "having count(distinct addr) >= ?:minAddressesCount:integer\n" +
                     "output first every ?:alertInterval:integer seconds";
 
+    private EPStatement portsCountStatement;
+    private EPStatement statement;
+    private EPStatement listenStatement;
+
+    private EPRuntime runtime;
+
     public BlockPortScanAlertStatement(EPRuntime runtime, int minPortsCount, int minAddressesCount, int timeWindow, int alertInterval, int countThreshold) {
+        this.runtime = runtime;
+
         DeploymentOptions portsCountOpts = new DeploymentOptions();
         portsCountOpts.setStatementSubstitutionParameter(prepared -> {
                     prepared.setObject("timeWindow", timeWindow);
                 }
         );
-        PortScansAlertUtil.compileDeploy(portsCountStmt, runtime, portsCountOpts);
+        portsCountStatement = PortScansAlertUtil.compileDeploy(portsCountStmt, runtime, portsCountOpts);
 
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
@@ -39,9 +49,14 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
-        PortScansAlertUtil
-                .compileDeploy("select * from BlockPortScanAlert", runtime)
-                .addListener(new BlockPortScanAlertListener(countThreshold));
+        statement = PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
+        listenStatement = PortScansAlertUtil.compileDeploy("select * from BlockPortScanAlert", runtime);
+        listenStatement.addListener(new BlockPortScanAlertListener(countThreshold));
+    }
+
+    public void undeploy() throws EPUndeployException {
+        runtime.getDeploymentService().undeploy(portsCountStatement.getDeploymentId());
+        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
+        runtime.getDeploymentService().undeploy(listenStatement.getDeploymentId());
     }
 }

@@ -1,6 +1,8 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntime;
+import com.espertech.esper.runtime.client.EPStatement;
+import com.espertech.esper.runtime.client.EPUndeployException;
 
 /**
  * This class compile the EPL statement for selecting packets of TCP connection to closed port
@@ -23,7 +25,16 @@ public class TcpPacketWithClosedPortStatement {
                     "where timer:within(100 millisecond)\n" +
                     "]";
 
+    private EPStatement statement;
+
+    private EPRuntime runtime;
+
     public TcpPacketWithClosedPortStatement(EPRuntime runtime) {
-        PortScansAlertUtil.compileDeploy(filterClosedPortStmt, runtime);
+        this.runtime = runtime;
+        statement = PortScansAlertUtil.compileDeploy(filterClosedPortStmt, runtime);
+    }
+
+    public void undeploy() throws EPUndeployException {
+        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
     }
 }

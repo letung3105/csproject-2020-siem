@@ -19,7 +19,7 @@
                     <tabs>
                         <Tab text="PortScansAlert">
                             <content>
-                                <fx:include source="PortScansAlertPanel.fxml"/>
+                                <fx:include fx:id= "portScansAlertControlPanel" source="PortScansAlertPanel.fxml"/>
                             </content>
                         </Tab>
                         <Tab text="HTTPAlerts">

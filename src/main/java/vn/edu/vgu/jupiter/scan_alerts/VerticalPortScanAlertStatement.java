@@ -2,6 +2,8 @@ package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
+import com.espertech.esper.runtime.client.EPStatement;
+import com.espertech.esper.runtime.client.EPUndeployException;
 
 /**
  * This class compile the EPL statement for raising alerts for vertical port scan events that might be
@@ -18,6 +20,11 @@ public class VerticalPortScanAlertStatement {
             "output first every ?:alertInterval:integer seconds";
     private static final String listenStmt = "select * from VerticalPortScanAlert";
 
+    private EPStatement statement;
+    private EPStatement listenStatement;
+
+    private EPRuntime runtime;
+
     public VerticalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval, int countThreshold) {
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
@@ -26,9 +33,13 @@ public class VerticalPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
-        PortScansAlertUtil
-                .compileDeploy(listenStmt, runtime)
-                .addListener(new VerticalPortScanAlertListener(countThreshold));
+        statement = PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
+        listenStatement = PortScansAlertUtil.compileDeploy(listenStmt, runtime);
+        listenStatement.addListener(new VerticalPortScanAlertListener(countThreshold));
+    }
+
+    public void undeploy() throws EPUndeployException {
+        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
+        runtime.getDeploymentService().undeploy(listenStatement.getDeploymentId());
     }
 }

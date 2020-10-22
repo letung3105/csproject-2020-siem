@@ -3,6 +3,7 @@ package vn.edu.vgu.jupiter.scan_alerts;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
+import com.espertech.esper.runtime.client.EPUndeployException;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.TcpPacket;
@@ -24,53 +25,36 @@ public class PortScansAlertMain implements Runnable {
     private static int COUNT = -1;
     private String netDevName;
 
+    private EPRuntime runtime;
+    private TcpPacketWithClosedPortStatement tcpClosedStatement;
+    private VerticalPortScanAlertStatement verticalStatement;
+    private HorizontalPortScanAlertStatement horizontalStatement;
+    private BlockPortScanAlertStatement blockStatement;
+
+    private PortScansAlertConfigurations portScanAlertConfig;
+
+    public PortScansAlertMain(String netDevName){
+        this.netDevName = netDevName;
+        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(),
+                PortScansAlertUtil.getConfiguration());
+    }
+
     public static void main(String[] args){
         PortScansAlertConfigurations portScanAlertConfig = new PortScansAlertConfigurations(
                 new PortScansAlertConfigurations.VerticalScan(60, 10, 100, 60),
                 new PortScansAlertConfigurations.HorizontalScan(60, 10, 100, 60),
                 new PortScansAlertConfigurations.BlockScan(60, 10, 5, 50, 2));
-        new PortScansAlertMain(portScanAlertConfig).run();
+
+        PortScansAlertMain portScansAlertMain = new PortScansAlertMain(args[0]);
+        portScansAlertMain.deploy(portScanAlertConfig);
+        portScansAlertMain.run();
     }
-    
-    private PortScansAlertConfigurations portScanAlertConfig;
-    
-    public PortScansAlertMain(PortScansAlertConfigurations portScanAlertConfig){ this.portScanAlertConfig = portScanAlertConfig; }
-    
-    public PortScansAlertMain(String netDevName){
-        this.netDevName = netDevName;
-    }
-    
+
     /**
      * Setup the runtime, deploys the necessary statements and starts capturing packets
      */
     public void run() {
-        Configuration configuration = PortScansAlertUtil.getConfiguration();
-        EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
-
         try{
-            // TODO: statement's parameters should be modifiable from external classes
-            // compile and deploy epl statements
-            log.info("Setting up EPL");
-            new VerticalPortScanAlertStatement(
-                    runtime,
-                    portScanAlertConfig.getVerticalScan().getConnectionsCountThreshold(),
-                    portScanAlertConfig.getVerticalScan().getTimeWindow(),
-                    portScanAlertConfig.getVerticalScan().getAlertInterval(),
-                    portScanAlertConfig.getVerticalScan().getHighPriorityThreshold());
-            new HorizontalPortScanAlertStatement(
-                    runtime,
-                    portScanAlertConfig.getHorizontalScan().getConnectionsCountThreshold(),
-                    portScanAlertConfig.getHorizontalScan().getTimeWindow(),
-                    portScanAlertConfig.getHorizontalScan().getAlertInterval(),
-                    portScanAlertConfig.getHorizontalScan().getHighPriorityThreshold());
-            new BlockPortScanAlertStatement(
-                    runtime,
-                    portScanAlertConfig.getBlockScan().getPortsCountThreshold(),
-                    portScanAlertConfig.getBlockScan().getAddressesCountThreshold(),
-                    portScanAlertConfig.getBlockScan().getTimeWindow(),
-                    portScanAlertConfig.getHorizontalScan().getAlertInterval(),
-                    portScanAlertConfig.getHorizontalScan().getHighPriorityThreshold());
-
             // getting the network interface
             PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);
             log.info(nif.getName() + "(" + nif.getDescription() + ")");
@@ -93,11 +77,46 @@ public class PortScansAlertMain implements Runnable {
                 e.printStackTrace();
             }
             handle.close();
-            //undeploy
-            runtime.getDeploymentService().undeployAll();
-            log.info("Undeploy all.");
         }catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void deploy(PortScansAlertConfigurations portScanAlertConfig){
+        tcpClosedStatement = new TcpPacketWithClosedPortStatement(runtime);
+        verticalStatement = new VerticalPortScanAlertStatement(
+                runtime,
+                portScanAlertConfig.getVerticalScan().getConnectionsCountThreshold(),
+                portScanAlertConfig.getVerticalScan().getTimeWindow(),
+                portScanAlertConfig.getVerticalScan().getAlertInterval(),
+                portScanAlertConfig.getVerticalScan().getHighPriorityThreshold());
+        horizontalStatement = new HorizontalPortScanAlertStatement(
+                runtime,
+                portScanAlertConfig.getHorizontalScan().getConnectionsCountThreshold(),
+                portScanAlertConfig.getHorizontalScan().getTimeWindow(),
+                portScanAlertConfig.getHorizontalScan().getAlertInterval(),
+                portScanAlertConfig.getHorizontalScan().getHighPriorityThreshold());
+        blockStatement = new BlockPortScanAlertStatement(
+                runtime,
+                portScanAlertConfig.getBlockScan().getPortsCountThreshold(),
+                portScanAlertConfig.getBlockScan().getAddressesCountThreshold(),
+                portScanAlertConfig.getBlockScan().getTimeWindow(),
+                portScanAlertConfig.getHorizontalScan().getAlertInterval(),
+                portScanAlertConfig.getHorizontalScan().getHighPriorityThreshold());
+    }
+
+    public void undeploy() throws EPUndeployException {
+        if(tcpClosedStatement != null){
+            tcpClosedStatement.undeploy();
+        }
+        if(verticalStatement != null){
+            verticalStatement.undeploy();
+        }
+        if(horizontalStatement != null){
+            horizontalStatement.undeploy();
+        }
+        if(blockStatement != null){
+            blockStatement.undeploy();
         }
     }
 }
