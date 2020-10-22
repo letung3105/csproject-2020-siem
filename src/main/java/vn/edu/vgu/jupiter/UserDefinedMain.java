@@ -22,9 +22,9 @@ public class UserDefinedMain {
         portScanMain.run();
     }
 
-    public static void changeVerticalScanAlertParam(){
+    public static void changeVerticalScanAlertParam() {
         System.out.println("Vertical port scan alert: " + portScanMain.getMinConnectionCountVertical()
-                                + "/" + portScanMain.getTimeWindowVertical() + " (connections/seconds)");
+                + "/" + portScanMain.getTimeWindowVertical() + " (connections/seconds)");
         System.out.println("Vertical port scan warning: " + portScanMain.getCountVertical() + "times.");
 
         System.out.println("Input new minimum connections: ");
@@ -39,7 +39,7 @@ public class UserDefinedMain {
         System.out.println("Vertical port scan warning: " + portScanMain.getCountVertical() + "times.");
     }
 
-    public static void changeHorizontalScanAlertParam(){
+    public static void changeHorizontalScanAlertParam() {
         System.out.println("Horizontal port scan alert: " + portScanMain.getMinConnectionCountHorizontal()
                 + "/" + portScanMain.getTimeWindowHorizontal() + " (connections/seconds)");
         System.out.println("Horizontal port scan warning: " + portScanMain.getCountHorizontal() + "times.");
@@ -56,7 +56,7 @@ public class UserDefinedMain {
         System.out.println("Horizontal port scan warning: " + portScanMain.getCountHorizontal() + "times.");
     }
 
-    public static void changeBlockScanAlertParam(){
+    public static void changeBlockScanAlertParam() {
         System.out.println("Block port scan alert: " + portScanMain.getMinAddressCount() + " addresses on " +
                 portScanMain.getMinPortsCount() + " ports/ " + portScanMain.getTimeWindowBlock() + " seconds");
         System.out.println("Block port scan warning: " + portScanMain.getCountBlock() + "times.");
@@ -75,12 +75,12 @@ public class UserDefinedMain {
         System.out.println("Block port scan warning: " + portScanMain.getCountBlock() + "times.");
     }
 
-    private static int getInput(){
+    private static int getInput() {
         //Scanner is used here for simplicity, when the GUI is applied, this is not necessary
         Scanner scanner = new Scanner(System.in);
         boolean isCorrectInput = false;
         String input = null;
-        while(!isCorrectInput){
+        while (!isCorrectInput) {
             input = scanner.nextLine();
             isCorrectInput = isInteger(input);
         }
@@ -88,11 +88,11 @@ public class UserDefinedMain {
         return result;
     }
 
-    private static boolean isInteger(String input){
-        try{
+    private static boolean isInteger(String input) {
+        try {
             Integer.parseInt(input);
             return true;
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }

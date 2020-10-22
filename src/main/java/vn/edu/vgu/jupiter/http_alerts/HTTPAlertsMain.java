@@ -1,6 +1,5 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
-import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
@@ -15,62 +14,24 @@ import java.util.regex.Pattern;
 
 public class HTTPAlertsMain implements Runnable {
 
+    private HTTPAlertsConfigurations defaultConfigs;
+    private EPRuntime runtime;
+    private HTTPFailedLoginEventStatement httpFailedLoginEventStmt;
+    private FailedLoginAlertStatement failedLoginAlertStmt;
+    private FailedLoginFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
+    private FailedLoginSameUserIDAlertStatement failedLoginSameUserIDAlertStmt;
+
+    public HTTPAlertsMain(HTTPAlertsConfigurations defaultConfigs) {
+        this.defaultConfigs = defaultConfigs;
+        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), CEPSetupUtil.getConfiguration());
+    }
+
     public static void main(String[] args) {
-        HTTPAlertConfiguration httpAlertConfig = new HTTPAlertConfiguration(
-                new HTTPAlertConfiguration.FailedLogin(15, 6, 3, 20),
-                new HTTPAlertConfiguration.FailedLoginFromSameIP(12, 2, 1, 15),
-                new HTTPAlertConfiguration.FailedLoginSameUserID(3, 2, 1, 5));
+        HTTPAlertsConfigurations httpAlertConfig = new HTTPAlertsConfigurations(
+                new HTTPAlertsConfigurations.FailedLogin(15, 6, 3, 20),
+                new HTTPAlertsConfigurations.FailedLoginFromSameIP(12, 2, 1, 15),
+                new HTTPAlertsConfigurations.FailedLoginSameUserID(3, 2, 1, 5));
         new HTTPAlertsMain(httpAlertConfig).run();
-    }
-
-    private HTTPAlertConfiguration httpAlertConfig;
-
-    public HTTPAlertsMain(HTTPAlertConfiguration httpAlertConfig) {
-        this.httpAlertConfig = httpAlertConfig;
-    }
-
-    /**
-     * A while loop is run to check if there are any new entries from the log file.
-     * If new entries are found, they are turned into httpLogEvent and send to the CEP machine
-     */
-    public void run() {
-        Configuration configuration = CEPSetupUtil.getConfiguration();
-        EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
-
-        new HTTPFailedLoginEventStatement(runtime);
-        new FailedLoginAlertStatement(
-                runtime,
-                httpAlertConfig.getFailedLogin().getConsecutiveAttemptsThreshold(),
-                httpAlertConfig.getFailedLogin().getTimeWindow(),
-                httpAlertConfig.getFailedLogin().getAlertInterval(),
-                httpAlertConfig.getFailedLogin().getHighPriorityThreshold());
-        new FailedLoginFromSameIPAlertStatement(runtime,
-                httpAlertConfig.getFailedLoginFromSameIP().getConsecutiveAttemptsThreshold(),
-                httpAlertConfig.getFailedLoginFromSameIP().getTimeWindow(),
-                httpAlertConfig.getFailedLoginFromSameIP().getAlertInterval(),
-                httpAlertConfig.getFailedLoginFromSameIP().getHighPriorityThreshold());
-        new FailedLoginSameUserIDAlertStatement(runtime,
-                httpAlertConfig.getFailedLoginSameUserID().getConsecutiveAttemptsThreshold(),
-                httpAlertConfig.getFailedLoginSameUserID().getTimeWindow(),
-                httpAlertConfig.getFailedLoginSameUserID().getAlertInterval(),
-                httpAlertConfig.getFailedLoginSameUserID().getHighPriorityThreshold());
-
-        int recordedNumberOfLogEntries = 0;
-        while (true) {
-            ArrayList<HTTPLog> httpLogs = null;
-            try {
-                httpLogs = getEventsFromApacheHTTPDLogs();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            int currentNumberOfLogEntries = httpLogs.size();
-            if (recordedNumberOfLogEntries < currentNumberOfLogEntries) {
-                for (int i = recordedNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
-                    runtime.getEventService().sendEventBean(httpLogs.get(i), "HTTPLog");
-                }
-                recordedNumberOfLogEntries = currentNumberOfLogEntries;
-            }
-        }
     }
 
     /**
@@ -105,5 +66,48 @@ public class HTTPAlertsMain implements Runnable {
         }
         // System.out.println(result.size());
         return result;
+    }
+
+    /**
+     * A while loop is run to check if there are any new entries from the log file.
+     * If new entries are found, they are turned into httpLogEvent and send to the CEP machine
+     */
+    public void run() {
+        int recordedNumberOfLogEntries = 0;
+        while (true) {
+            ArrayList<HTTPLog> httpLogs = null;
+            try {
+                httpLogs = getEventsFromApacheHTTPDLogs();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            int currentNumberOfLogEntries = httpLogs.size();
+            if (recordedNumberOfLogEntries < currentNumberOfLogEntries) {
+                for (int i = recordedNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
+                    runtime.getEventService().sendEventBean(httpLogs.get(i), "HTTPLog");
+                }
+                recordedNumberOfLogEntries = currentNumberOfLogEntries;
+            }
+        }
+    }
+
+    public void deploy(HTTPAlertsConfigurations configs) {
+        httpFailedLoginEventStmt = new HTTPFailedLoginEventStatement(runtime);
+        failedLoginAlertStmt = new FailedLoginAlertStatement(
+                runtime,
+                configs.getFailedLogin().getConsecutiveAttemptsThreshold(),
+                configs.getFailedLogin().getTimeWindow(),
+                configs.getFailedLogin().getAlertInterval(),
+                configs.getFailedLogin().getHighPriorityThreshold());
+        failedLoginFromSameIPAlertStmt = new FailedLoginFromSameIPAlertStatement(runtime,
+                configs.getFailedLoginFromSameIP().getConsecutiveAttemptsThreshold(),
+                configs.getFailedLoginFromSameIP().getTimeWindow(),
+                configs.getFailedLoginFromSameIP().getAlertInterval(),
+                configs.getFailedLoginFromSameIP().getHighPriorityThreshold());
+        failedLoginSameUserIDAlertStmt = new FailedLoginSameUserIDAlertStatement(runtime,
+                configs.getFailedLoginSameUserID().getConsecutiveAttemptsThreshold(),
+                configs.getFailedLoginSameUserID().getTimeWindow(),
+                configs.getFailedLoginSameUserID().getAlertInterval(),
+                configs.getFailedLoginSameUserID().getHighPriorityThreshold());
     }
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="vn.edu.vgu.jupiter.dashboard.HTTPAlertControlPanel">
+    <children>
+        <Accordion prefWidth="300.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <panes>
+                <TitledPane animated="false" text="Failed login's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="failedLoginAttemptsThreshold" GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="failedLoginTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="failedLoginAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="failedLoginHighPriorityThreshold" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Failed logins from same IP's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="sameIpFailedLoginAttemptsThreshold" GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="sameIpFailedLoginTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="sameIpFailedLoginAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="sameIpFailedLoginHighPriorityThreshold" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Failed logins same user ID's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="sameUserFailedLoginAttemptsThreshold" GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="sameUserFailedLoginTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="sameUserFailedLoginAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="sameUserFailedLoginHighPriorityThreshold" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+            </panes>
+        </Accordion>
+        <Button alignment="CENTER" mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="16.0"
+                AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" onAction="#deploy"/>
+    </children>
+</AnchorPane>

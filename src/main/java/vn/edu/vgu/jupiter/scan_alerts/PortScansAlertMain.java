@@ -13,16 +13,15 @@ import vn.edu.vgu.jupiter.eventbean.TcpPacketEvent;
 /**
  * This class is the new PortScansMain that have function to modify variables for all PortScan types
  */
-public class PortScansAlertMain implements Runnable{
+public class PortScansAlertMain implements Runnable {
     /**
      * The predefined variables by program
      */
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertMain.class);
-    private static int COUNT = -1;
     private static final int READ_TIMEOUT = 100; // [ms]
     private static final int SNAPLEN = 65536; // [bytes]
     private static final String FILTER = "tcp";
-
+    private static int COUNT = -1;
     private String netDevName;
 
     /**
@@ -43,13 +42,12 @@ public class PortScansAlertMain implements Runnable{
     private int timeWindowBlock = 60; // [seconds]
     private int countBlock = 5; // [warning threshold]
     private int intervalBlock = 10; // [seconds delay]
-
-    public PortScansAlertMain(String netDevName){
-        this.netDevName = netDevName;
-    }
-
     //Some condition variable
     private boolean isVariableChange = true;
+
+    public PortScansAlertMain(String netDevName) {
+        this.netDevName = netDevName;
+    }
 
     /**
      * Setup the runtime, deploys the necessary statements and starts capturing packets
@@ -58,12 +56,12 @@ public class PortScansAlertMain implements Runnable{
         Configuration configuration = PortScansAlertUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
-        while(true){
-            if(isVariableChange){
+        while (true) {
+            if (isVariableChange) {
                 isVariableChange = false;
                 COUNT = -1;
                 //rerun the thing
-                try{
+                try {
                     // TODO: statement's parameters should be modifiable from external classes
                     // compile and deploy epl statements
                     log.info("Setting up EPL");
@@ -89,7 +87,7 @@ public class PortScansAlertMain implements Runnable{
                                     ipV4Packet.getHeader()
                             );
                             runtime.getEventService().sendEventBean(evt, TcpPacketEvent.class.getSimpleName());
-                            if(isVariableChange){
+                            if (isVariableChange) {
                                 COUNT = 1;
                                 log.info("Variable change detect, rerun the loop.");
                             }
@@ -101,7 +99,7 @@ public class PortScansAlertMain implements Runnable{
                     //undeploy
                     runtime.getDeploymentService().undeployAll();
                     log.info("Undeploy all.");
-                }catch (Exception e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -112,6 +110,10 @@ public class PortScansAlertMain implements Runnable{
         isVariableChange = variableChange;
     }
 
+    public int getMinConnectionCountVertical() {
+        return minConnectionCountVertical;
+    }
+
     /**
      * Setters for modifying variables
      */
@@ -119,76 +121,72 @@ public class PortScansAlertMain implements Runnable{
         this.minConnectionCountVertical = minConnectionCountVertical;
     }
 
-    public void setTimeWindowVertical(int timeWindowVertical) {
-        this.timeWindowVertical = timeWindowVertical;
-    }
-
-    public void setMinConnectionCountHorizontal(int minConnectionCountHorizontal) {
-        this.minConnectionCountHorizontal = minConnectionCountHorizontal;
-    }
-
-    public void setTimeWindowHorizontal(int timeWindowHorizontal) {
-        this.timeWindowHorizontal = timeWindowHorizontal;
-    }
-
-    public void setMinPortsCount(int minPortsCount) {
-        this.minPortsCount = minPortsCount;
-    }
-
-    public void setMinAddressCount(int minAddressCount) {
-        this.minAddressCount = minAddressCount;
-    }
-
-    public void setTimeWindowBlock(int timeWindowBlock) {
-        this.timeWindowBlock = timeWindowBlock;
-    }
-
-    public int getMinConnectionCountVertical() {
-        return minConnectionCountVertical;
-    }
-
     public int getTimeWindowVertical() {
         return timeWindowVertical;
+    }
+
+    public void setTimeWindowVertical(int timeWindowVertical) {
+        this.timeWindowVertical = timeWindowVertical;
     }
 
     public int getMinConnectionCountHorizontal() {
         return minConnectionCountHorizontal;
     }
 
+    public void setMinConnectionCountHorizontal(int minConnectionCountHorizontal) {
+        this.minConnectionCountHorizontal = minConnectionCountHorizontal;
+    }
+
     public int getTimeWindowHorizontal() {
         return timeWindowHorizontal;
+    }
+
+    public void setTimeWindowHorizontal(int timeWindowHorizontal) {
+        this.timeWindowHorizontal = timeWindowHorizontal;
     }
 
     public int getMinPortsCount() {
         return minPortsCount;
     }
 
+    public void setMinPortsCount(int minPortsCount) {
+        this.minPortsCount = minPortsCount;
+    }
+
     public int getMinAddressCount() {
         return minAddressCount;
+    }
+
+    public void setMinAddressCount(int minAddressCount) {
+        this.minAddressCount = minAddressCount;
     }
 
     public int getTimeWindowBlock() {
         return timeWindowBlock;
     }
 
+    public void setTimeWindowBlock(int timeWindowBlock) {
+        this.timeWindowBlock = timeWindowBlock;
+    }
+
     public int getCountVertical() {
         return countVertical;
-    }
-
-    public int getCountHorizontal() {
-        return countHorizontal;
-    }
-
-    public int getCountBlock() {
-        return countBlock;
     }
 
     public void setCountVertical(int countVertical) {
         this.countVertical = countVertical;
     }
 
+    public int getCountHorizontal() {
+        return countHorizontal;
+    }
+
     public void setCountHorizontal(int countHorizontal) {
         this.countHorizontal = countHorizontal;
+    }
+
+    public int getCountBlock() {
+        return countBlock;
     }
 
     public void setCountBlock(int countBlock) {

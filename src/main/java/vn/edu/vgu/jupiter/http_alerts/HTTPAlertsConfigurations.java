@@ -1,12 +1,12 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
-public class HTTPAlertConfiguration {
+public class HTTPAlertsConfigurations {
 
     private FailedLogin failedLogin;
     private FailedLoginFromSameIP failedLoginFromSameIP;
     private FailedLoginSameUserID failedLoginSameUserID;
 
-    public HTTPAlertConfiguration(FailedLogin failedLogin, FailedLoginFromSameIP failedLoginFromSameIP, FailedLoginSameUserID failedLoginSameUserID) {
+    public HTTPAlertsConfigurations(FailedLogin failedLogin, FailedLoginFromSameIP failedLoginFromSameIP, FailedLoginSameUserID failedLoginSameUserID) {
         this.failedLogin = failedLogin;
         this.failedLoginFromSameIP = failedLoginFromSameIP;
         this.failedLoginSameUserID = failedLoginSameUserID;

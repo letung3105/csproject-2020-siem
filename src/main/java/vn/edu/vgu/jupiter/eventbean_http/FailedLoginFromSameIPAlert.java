@@ -6,6 +6,13 @@ public class FailedLoginFromSameIPAlert {
     String time;
     long failuresCount;
 
+    public FailedLoginFromSameIPAlert(String IPAddress, String userID, String time, long failuresCount) {
+        this.IPAddress = IPAddress;
+        this.userID = userID;
+        this.time = time;
+        this.failuresCount = failuresCount;
+    }
+
     public String getIPAddress() {
         return IPAddress;
     }
@@ -20,12 +27,5 @@ public class FailedLoginFromSameIPAlert {
 
     public long getFailuresCount() {
         return failuresCount;
-    }
-
-    public FailedLoginFromSameIPAlert(String IPAddress, String userID, String time, long failuresCount) {
-        this.IPAddress = IPAddress;
-        this.userID = userID;
-        this.time = time;
-        this.failuresCount = failuresCount;
     }
 }

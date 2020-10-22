@@ -21,14 +21,14 @@ public class App {
         EPRuntime runtime = EPRuntimeProvider.getRuntime("PortScansAlertPlugin", config);
 
         //Run Dashboard
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 javafx.application.Application.launch(Dashboard.class);
             }
         }.start();
         Dashboard dashboard = Dashboard.waitAndGetDashboard();
-        
+
         try {
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException e) {
