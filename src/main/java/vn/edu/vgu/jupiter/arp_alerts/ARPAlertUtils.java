@@ -7,9 +7,7 @@ import com.espertech.esper.compiler.client.EPCompilerProvider;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
-import vn.edu.vgu.jupiter.eventbean_arp.ARPCacheFloodAlertEvent;
-import vn.edu.vgu.jupiter.eventbean_arp.ARPReplyEvent;
-import vn.edu.vgu.jupiter.eventbean_arp.ARPDuplicateIPAlertEvent;
+import vn.edu.vgu.jupiter.eventbean_arp.*;
 
 /**
  * Utility functions for compiling and deploying statements.
@@ -61,9 +59,11 @@ public class ARPAlertUtils {
      */
     public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
+        configuration.getCommon().addEventType(ARPPacketEvent.class);
         configuration.getCommon().addEventType(ARPReplyEvent.class);
         configuration.getCommon().addEventType(ARPDuplicateIPAlertEvent.class);
-        configuration.getCommon().addEventType(ARPCacheFloodAlertEvent.class);
+        configuration.getCommon().addEventType(ARPCacheFloodAlertStatement.class);
+        configuration.getCommon().addEventType(ARPAnnouncementEvent.class);
         return configuration;
     }
 }

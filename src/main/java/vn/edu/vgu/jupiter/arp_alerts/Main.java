@@ -15,13 +15,14 @@ import java.net.UnknownHostException;
 
 public class Main implements Runnable {
     public static void main(String[] args) {
-        new vn.edu.vgu.jupiter.http_alerts.Main().run();
+        new Main().run();
     }
-
 
     public void run() {
         Configuration configuration = ARPAlertUtils.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
+        new ARPAnnouncementStatement(runtime);
+        new ARPReplyStatement(runtime);
 
         InetAddress inetAddress = null;
         try {
@@ -42,19 +43,29 @@ public class Main implements Runnable {
         int timeout = 10; //milliseconds
         try {
             PcapHandle handle = networkInterface.openLive(snapLen, mode, timeout);
+            PacketListener listener = new PacketListener() {
+                @Override
+                public void gotPacket(Packet packet) {
+                    if (packet.contains(ArpPacket.class)) {
+                        ArpPacket arp = packet.get(ArpPacket.class);
+                        ARPPacketEvent arpPacketEvent = new ARPPacketEvent(arp.getHeader());
+                        runtime.getEventService().sendEventBean(arpPacketEvent, "ARPPacketEvent");
+                    }
+                }
+            };
+
+            try{
+                handle.loop(-1, listener);
+            } catch (PcapNativeException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (NotOpenException e) {
+                e.printStackTrace();
+            }
+            handle.close();
         } catch (PcapNativeException e) {
             e.printStackTrace();
         }
-
-        PacketListener listener = new PacketListener() {
-            @Override
-            public void gotPacket(Packet packet) {
-                if (packet.contains(ArpPacket.class)) {
-                    ArpPacket arp = packet.get(ArpPacket.class);
-                    ARPPacketEvent arpPacketEvent = new ARPPacketEvent(arp.getHeader());
-                    runtime.getEventService().sendEventBean(arpPacketEvent, arpPacketEvent.getClass().getName());
-                }
-            }
-        };
     }
 }

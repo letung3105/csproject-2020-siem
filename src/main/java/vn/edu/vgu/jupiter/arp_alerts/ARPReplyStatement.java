@@ -6,7 +6,7 @@ import vn.edu.vgu.jupiter.http_alerts.CEPSetupUtil;
 public class ARPReplyStatement {
     String statement = "insert into ARPReplyEvent\n " +
             "select srcIP, destIP, srcMAC, destMAC, time from ARPPacketEvent\n " +
-            "where isReply";
+            "where reply";
 
     private String listenStatement = "select * from ARPReplyEvent";
 

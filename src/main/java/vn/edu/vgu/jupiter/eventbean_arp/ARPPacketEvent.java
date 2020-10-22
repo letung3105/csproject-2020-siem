@@ -32,5 +32,31 @@ public class ARPPacketEvent {
         this.time = LocalDateTime.now().toString();
     }
 
+    public String getSrcIP() {
+        return srcIP;
+    }
 
+    public String getDestIP() {
+        return destIP;
+    }
+
+    public String getSrcMAC() {
+        return srcMAC;
+    }
+
+    public String getDestMAC() {
+        return destMAC;
+    }
+
+    public boolean isReply() {
+        return isReply;
+    }
+
+    public boolean isAnnouncement() {
+        return isAnnouncement;
+    }
+
+    public String getTime() {
+        return time;
+    }
 }

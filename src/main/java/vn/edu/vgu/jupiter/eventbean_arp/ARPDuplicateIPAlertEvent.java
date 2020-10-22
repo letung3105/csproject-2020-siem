@@ -1,15 +1,15 @@
 package vn.edu.vgu.jupiter.eventbean_arp;
 
+import java.util.ArrayList;
+
 public class ARPDuplicateIPAlertEvent {
     String IP;
-    String recordedMAC;
-    String acquiredMAC;
+    String MACs;
     String time;
 
-    public ARPDuplicateIPAlertEvent(String IP, String recordedMAC, String acquiredMAC, String time) {
+    public ARPDuplicateIPAlertEvent(String IP, String MACs, String time) {
         this.IP = IP;
-        this.recordedMAC = recordedMAC;
-        this.acquiredMAC = acquiredMAC;
+        this.MACs = MACs;
         this.time = time;
     }
 
@@ -17,12 +17,8 @@ public class ARPDuplicateIPAlertEvent {
         return IP;
     }
 
-    public String getRecordedMAC() {
-        return recordedMAC;
-    }
-
-    public String getAcquiredMAC() {
-        return acquiredMAC;
+    public String getMACs() {
+        return MACs;
     }
 
     public String getTime() {
