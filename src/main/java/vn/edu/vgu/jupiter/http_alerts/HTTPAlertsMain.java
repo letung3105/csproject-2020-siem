@@ -43,7 +43,7 @@ public class HTTPAlertsMain implements Runnable {
             int currentNumberOfLogEntries = httpLogs.size();
             if (recordedNumberOfLogEntries < currentNumberOfLogEntries) {
                 for (int i = recordedNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
-                    runtime.getEventService().sendEventBean(httpLogs.get(i), "httpLogEvent");
+                    runtime.getEventService().sendEventBean(httpLogs.get(i), "HTTPLog");
                 }
                 recordedNumberOfLogEntries = currentNumberOfLogEntries;
             }

@@ -9,8 +9,8 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Bui Xuan Phuoc
  */
 public class HTTPFailedLoginEventStatement {
-    String statement = "insert into HTTPFailedLoginEvent\n " +
-            "select IPAddress, userID, time, timeZone from HTTPLogEvent\n " +
+    String statement = "insert into HTTPFailedLogin\n " +
+            "select IPAddress, userID, time, timeZone from HTTPLog\n " +
             "where statusCode like \"401\"";
 
     public HTTPFailedLoginEventStatement(EPRuntime runtime) {
