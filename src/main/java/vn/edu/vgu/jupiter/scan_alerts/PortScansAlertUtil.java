@@ -16,7 +16,6 @@ import vn.edu.vgu.jupiter.eventbean.*;
  * @author Pham Nguyen Thanh An
  */
 public class PortScansAlertUtil {
-    private static String currentID;
 
     /**
      * Compile and deploy the compiled statement with the given deployment options
@@ -32,7 +31,6 @@ public class PortScansAlertUtil {
             args.getPath().add(runtime.getRuntimePath());
             EPCompiled compiled = EPCompilerProvider.getCompiler().compile(epl, args);
             EPStatement epStatement = runtime.getDeploymentService().deploy(compiled, deployOpts).getStatements()[0];
-            currentID = runtime.getDeploymentService().deploy(compiled, deployOpts).getDeploymentId();
             return epStatement;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -73,9 +71,5 @@ public class PortScansAlertUtil {
         configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
         configuration.getRuntime().getLogging().setEnableTimerDebug(false);
         return configuration;
-    }
-
-    public static String getCurrentID() {
-        return currentID;
     }
 }

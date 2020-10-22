@@ -23,10 +23,6 @@ public class BlockPortScanAlertStatement {
                     "having count(distinct addr) >= ?:minAddressesCount:integer\n" +
                     "output first every ?:alertInterval:integer seconds";
 
-    private String deployPortCountID;
-    private String deployAlertID;
-    private String deployListenID;
-
     public BlockPortScanAlertStatement(EPRuntime runtime, int minPortsCount, int minAddressesCount, int timeWindow, int alertInterval, int countThreshold) {
         DeploymentOptions portsCountOpts = new DeploymentOptions();
         portsCountOpts.setStatementSubstitutionParameter(prepared -> {
@@ -34,7 +30,6 @@ public class BlockPortScanAlertStatement {
                 }
         );
         PortScansAlertUtil.compileDeploy(portsCountStmt, runtime, portsCountOpts);
-        deployPortCountID = PortScansAlertUtil.getCurrentID();
 
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
@@ -45,14 +40,8 @@ public class BlockPortScanAlertStatement {
                 }
         );
         PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
-        deployAlertID = PortScansAlertUtil.getCurrentID();
         PortScansAlertUtil
                 .compileDeploy("select * from BlockPortScanAlert", runtime)
                 .addListener(new BlockPortScanAlertListener(countThreshold));
-        deployListenID = PortScansAlertUtil.getCurrentID();
     }
-
-    public String getDeployAlertID() { return deployAlertID; }
-    public String getDeployListenID() { return deployListenID; }
-    public String getDeployPortCountID() { return deployPortCountID; }
 }
