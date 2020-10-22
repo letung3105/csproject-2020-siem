@@ -3,6 +3,7 @@ package vn.edu.vgu.jupiter;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
+import vn.edu.vgu.jupiter.dashboard.Dashboard;
 
 import java.util.Properties;
 
@@ -18,6 +19,16 @@ public class App {
         config.getRuntime().addPluginLoader("PortScansAlertPlugin", "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin", props);
 
         EPRuntime runtime = EPRuntimeProvider.getRuntime("PortScansAlertPlugin", config);
+
+        //Run Dashboard
+        new Thread(){
+            @Override
+            public void run() {
+                javafx.application.Application.launch(Dashboard.class);
+            }
+        }.start();
+        Dashboard dashboard = Dashboard.waitAndGetDashboard();
+        
         try {
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException e) {

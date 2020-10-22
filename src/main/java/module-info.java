@@ -13,4 +13,5 @@ module vn.edu.vgu.jupiter {
     opens vn.edu.vgu.jupiter.dashboard to javafx.fxml, javafx.graphics;
     exports vn.edu.vgu.jupiter;
     exports vn.edu.vgu.jupiter.eventbean;
+    exports vn.edu.vgu.jupiter.scan_alerts;
 }
