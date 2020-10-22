@@ -8,12 +8,12 @@ import com.espertech.esper.runtime.client.EPRuntime;
  *
  * @author Bui Xuan Phuoc
  */
-public class FailedLoginStatement {
-    String statement = "insert into httpFailedLoginEvent\n " +
-            "select IPAddress, userID, time, timeZone from httpLogEvent\n " +
+public class HTTPFailedLoginEventStatement {
+    String statement = "insert into HTTPFailedLoginEvent\n " +
+            "select IPAddress, userID, time, timeZone from HTTPLogEvent\n " +
             "where statusCode like \"401\"";
 
-    public FailedLoginStatement(EPRuntime runtime) {
+    public HTTPFailedLoginEventStatement(EPRuntime runtime) {
         CEPSetupUtil.compileDeploy(statement, runtime);
     }
 }

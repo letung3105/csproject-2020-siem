@@ -11,13 +11,13 @@ import com.espertech.esper.runtime.client.EPRuntime;
  */
 public class FailedLoginAlertStatement {
     private String statement =
-            "insert into httpConsecutiveFailedLoginAlertEvent\n " +
+            "insert into FailedLoginAlert\n " +
                     "select timeZone, time, count(*)\n " +
-                    "from httpFailedLoginEvent#time(?:alertTimeWindow:integer second)\n " +
+                    "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
 
-    private String listenStatement = "select * from httpConsecutiveFailedLoginAlertEvent";
+    private String listenStatement = "select * from FailedLoginAlert";
 
     public FailedLoginAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();

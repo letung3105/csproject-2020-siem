@@ -3,7 +3,7 @@ package vn.edu.vgu.jupiter.http_alerts;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import vn.edu.vgu.jupiter.eventbean_http.httpLogEvent;
+import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,26 +27,23 @@ public class HTTPAlertsMain implements Runnable {
         Configuration configuration = CEPSetupUtil.getConfiguration();
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
-        new FailedLoginStatement(runtime);
+        new HTTPFailedLoginEventStatement(runtime);
         new FailedLoginAlertStatement(runtime, 15, 6, 3, 20);
         new FailedLoginFromSameIPAlertStatement(runtime, 12, 2, 1, 15);
-        new FailedLoginSameUserIDStatement(runtime, 3, 2, 1, 5);
-
-        new FileTooLargeStatement(runtime);
-        new FileTooLargeFromSameIPAlertStatement(runtime, 5, 20, 10, 10);
+        new FailedLoginSameUserIDAlertStatement(runtime, 3, 2, 1, 5);
 
         int recordedNumberOfLogEntries = 0;
         while (true) {
-            ArrayList<httpLogEvent> httpLogEvents = null;
+            ArrayList<HTTPLog> httpLogs = null;
             try {
-                httpLogEvents = getEventsFromApacheHTTPDLogs();
+                httpLogs = getEventsFromApacheHTTPDLogs();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            int currentNumberOfLogEntries = httpLogEvents.size();
+            int currentNumberOfLogEntries = httpLogs.size();
             if (recordedNumberOfLogEntries < currentNumberOfLogEntries) {
                 for (int i = recordedNumberOfLogEntries; i < currentNumberOfLogEntries; i++) {
-                    runtime.getEventService().sendEventBean(httpLogEvents.get(i), "httpLogEvent");
+                    runtime.getEventService().sendEventBean(httpLogs.get(i), "httpLogEvent");
                 }
                 recordedNumberOfLogEntries = currentNumberOfLogEntries;
             }
@@ -60,11 +57,11 @@ public class HTTPAlertsMain implements Runnable {
      * @return ArrayList<httpLogEvent> list of events parsed from the log
      * @author Bui Xuan Phuoc
      */
-    public static ArrayList<httpLogEvent> getEventsFromApacheHTTPDLogs() throws IOException {
+    public static ArrayList<HTTPLog> getEventsFromApacheHTTPDLogs() throws IOException {
         // TODO: more efficient way to read the log?
         BufferedReader reader = new BufferedReader(new FileReader("/var/log/apache2/access.log"));
         String line = null;
-        ArrayList<httpLogEvent> result = new ArrayList<>();
+        ArrayList<HTTPLog> result = new ArrayList<>();
 
         while ((line = reader.readLine()) != null) {
             Pattern p = Pattern.compile("\"([^\"]*)\"");
@@ -81,7 +78,7 @@ public class HTTPAlertsMain implements Runnable {
                 lineComponents.remove(4);
             }
             // System.out.println(lineComponents + " " + lineComponents.size());
-            result.add(new httpLogEvent(lineComponents));
+            result.add(new HTTPLog(lineComponents));
         }
         // System.out.println(result.size());
         return result;

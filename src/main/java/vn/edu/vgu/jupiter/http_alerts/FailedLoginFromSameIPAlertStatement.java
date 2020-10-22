@@ -11,14 +11,14 @@ import com.espertech.esper.runtime.client.EPRuntime;
  */
 public class FailedLoginFromSameIPAlertStatement {
     private String statement =
-            "insert into httpConsecutiveFailedLoginFromSameIPAlertEvent\n " +
+            "insert into FailedLoginFromSameIPAlert\n " +
                     "select IPAddress, time, userID, count(*)\n " +
-                    "from httpFailedLoginEvent#time(?:alertTimeWindow:integer second)\n " +
+                    "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "group by IPAddress\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
 
-    private String listenStatement = "select * from httpConsecutiveFailedLoginFromSameIPAlertEvent";
+    private String listenStatement = "select * from FailedLoginFromSameIPAlert";
 
     public FailedLoginFromSameIPAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();

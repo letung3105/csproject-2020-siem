@@ -1,16 +1,26 @@
 package vn.edu.vgu.jupiter.eventbean_http;
 
-public class httpFileTooLargeSameFileAlertEvent {
+public class FailedLoginSameUserIDAlert {
+    String IPAddress;
+    String userID;
     String time;
     String timeZone;
-    String returnObjSize;
     long failuresCount;
 
-    public httpFileTooLargeSameFileAlertEvent(String time, String timeZone, String returnObjSize, long failuresCount) {
+    public FailedLoginSameUserIDAlert(String IPAddress, String userID, String time, String timeZone, long failuresCount) {
+        this.IPAddress = IPAddress;
+        this.userID = userID;
         this.time = time;
         this.timeZone = timeZone;
-        this.returnObjSize = returnObjSize;
         this.failuresCount = failuresCount;
+    }
+
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 
     public String getTime() {
@@ -19,10 +29,6 @@ public class httpFileTooLargeSameFileAlertEvent {
 
     public String getTimeZone() {
         return timeZone;
-    }
-
-    public String getReturnObjSize() {
-        return returnObjSize;
     }
 
     public long getFailuresCount() {

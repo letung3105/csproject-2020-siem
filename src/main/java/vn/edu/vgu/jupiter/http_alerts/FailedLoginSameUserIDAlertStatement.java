@@ -9,18 +9,18 @@ import com.espertech.esper.runtime.client.EPRuntime;
  *
  * @author Dang Chi Cong
  */
-public class FailedLoginSameUserIDStatement {
+public class FailedLoginSameUserIDAlertStatement {
     private String statement =
-            "insert into httpConsecutiveFailedLoginOneUserIDAlertEvent\n " +
+            "insert into FailedLoginSameUserIDAlert\n " +
                     "select IPAddress, userID, time, timeZone, count(*)\n " +
-                    "from httpFailedLoginEvent#time(?:alertTimeWindow:integer second)\n " +
+                    "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "group by userID\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
 
-    private String listenStatement = "select * from httpConsecutiveFailedLoginOneUserIDAlertEvent";
+    private String listenStatement = "select * from FailedLoginSameUserIDAlert";
 
-    public FailedLoginSameUserIDStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
+    public FailedLoginSameUserIDAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);

@@ -2,7 +2,7 @@ package vn.edu.vgu.jupiter.eventbean_http;
 
 import java.util.ArrayList;
 
-public class httpLogEvent {
+public class HTTPLog {
     String IPAddress;
     String identd;
     String userID;
@@ -52,7 +52,7 @@ public class httpLogEvent {
 
 
 
-    public httpLogEvent(ArrayList<String> splittedLog) {
+    public HTTPLog(ArrayList<String> splittedLog) {
         IPAddress = splittedLog.get(0);
         identd = splittedLog.get(1);
         userID = splittedLog.get(2);

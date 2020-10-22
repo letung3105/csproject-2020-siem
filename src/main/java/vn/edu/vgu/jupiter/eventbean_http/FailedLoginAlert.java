@@ -1,15 +1,13 @@
 package vn.edu.vgu.jupiter.eventbean_http;
 
-public class httpConsecutiveFileTooLargeAlertEvent {
+public class FailedLoginAlert {
     String time;
     String timeZone;
-    String returnObjSize;
     long failuresCount;
 
-    public httpConsecutiveFileTooLargeAlertEvent(String time, String timeZone, String returnObjSize, long failuresCount) {
+    public FailedLoginAlert(String time, String timeZone, long failuresCount) {
         this.time = time;
         this.timeZone = timeZone;
-        this.returnObjSize = returnObjSize;
         this.failuresCount = failuresCount;
     }
 
@@ -19,10 +17,6 @@ public class httpConsecutiveFileTooLargeAlertEvent {
 
     public String getTimeZone() {
         return timeZone;
-    }
-
-    public String getReturnObjSize() {
-        return returnObjSize;
     }
 
     public long getFailuresCount() {

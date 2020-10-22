@@ -1,6 +1,6 @@
 package vn.edu.vgu.jupiter.eventbean_http;
 
-public class httpConsecutiveFailedLoginFromSameIPAlertEvent {
+public class FailedLoginFromSameIPAlert {
     String IPAddress;
     String userID;
     String time;
@@ -22,7 +22,7 @@ public class httpConsecutiveFailedLoginFromSameIPAlertEvent {
         return failuresCount;
     }
 
-    public httpConsecutiveFailedLoginFromSameIPAlertEvent(String IPAddress, String userID, String time, long failuresCount) {
+    public FailedLoginFromSameIPAlert(String IPAddress, String userID, String time, long failuresCount) {
         this.IPAddress = IPAddress;
         this.userID = userID;
         this.time = time;
