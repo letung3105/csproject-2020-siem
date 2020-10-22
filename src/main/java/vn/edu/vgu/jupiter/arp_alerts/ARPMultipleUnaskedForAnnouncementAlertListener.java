@@ -6,7 +6,6 @@ import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
 
 public class ARPMultipleUnaskedForAnnouncementAlertListener implements UpdateListener {
-
     @Override
     public void update(EventBean[] eventBeans, EventBean[] eventBeans1, EPStatement epStatement, EPRuntime epRuntime) {
         System.out.println("Consecutive gratuitous announcements in a small instance of time detected");

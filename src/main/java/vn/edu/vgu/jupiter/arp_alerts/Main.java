@@ -6,9 +6,7 @@ import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.ArpPacket;
 import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.namednumber.ArpOperation;
 import vn.edu.vgu.jupiter.eventbean_arp.ARPPacketEvent;
-import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertUtil;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -26,7 +24,7 @@ public class Main implements Runnable {
         new ARPCacheFloodAlertStatement(runtime);
         new ARPDuplicateIPAlertStatement(runtime);
         new ARPCacheUpdateStatement(runtime);
-        new ARPMultipleUnaskedForAnnouncementAlertStatement(runtime, 1, 10);
+        new ARPMultipleUnaskedForAnnouncementAlertStatement(runtime, 6, 10);
 
         InetAddress inetAddress = null;
         try {

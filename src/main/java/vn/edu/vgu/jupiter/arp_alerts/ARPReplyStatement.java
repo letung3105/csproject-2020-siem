@@ -1,7 +1,6 @@
 package vn.edu.vgu.jupiter.arp_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntime;
-import vn.edu.vgu.jupiter.http_alerts.CEPSetupUtil;
 
 public class ARPReplyStatement {
     String statement = "insert into ARPReplyEvent\n " +
