@@ -26,6 +26,7 @@ public class Main implements Runnable {
         new ARPCacheFloodAlertStatement(runtime);
         new ARPDuplicateIPAlertStatement(runtime);
         new ARPCacheUpdateStatement(runtime);
+        new ARPMultipleUnaskedForAnnouncementAlertStatement(runtime, 1, 10);
 
         InetAddress inetAddress = null;
         try {

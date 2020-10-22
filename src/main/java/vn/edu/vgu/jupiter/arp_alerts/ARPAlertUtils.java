@@ -65,6 +65,7 @@ public class ARPAlertUtils {
         configuration.getCommon().addEventType(ARPCacheFloodAlertStatement.class);
         configuration.getCommon().addEventType(ARPAnnouncementEvent.class);
         configuration.getCommon().addEventType(ARPCacheUpdateEvent.class);
+        configuration.getCommon().addEventType(ARPMultipleUnaskedForAnnouncementAlertEvent.class);
         return configuration;
     }
 }
