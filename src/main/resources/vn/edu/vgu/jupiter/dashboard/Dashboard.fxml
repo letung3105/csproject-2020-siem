@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.edu.vgu.jupiter.dashboard.Dashboard">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -42,13 +42,13 @@
                                              </rowConstraints>
                                              <children>
                                                 <Label text="Minimum count" />
-                                                <TextField GridPane.columnIndex="1" />
+                                                <TextField fx:id="verticalMinCount" GridPane.columnIndex="1" />
                                                 <Label text="Time window (seconds)" GridPane.rowIndex="1" />
                                                 <Label text="Alert interval (seconds)" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="verticalTime" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="verticalTimeInterval" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <Label text="High priority threshold" GridPane.rowIndex="3" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="verticalWarnCount" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                              </children>
                                           </GridPane>
                                        </content>
@@ -69,13 +69,13 @@
                                              </rowConstraints>
                                              <children>
                                                 <Label text="Minimum count" />
-                                                <TextField GridPane.columnIndex="1" />
+                                                <TextField fx:id="horizontalMinCount" GridPane.columnIndex="1" />
                                                 <Label text="Time window (seconds)" GridPane.rowIndex="1" />
                                                 <Label text="Alert interval (seconds)" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="horizontalTime" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="horizontalTimeInterval" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <Label text="High priority threshold" GridPane.rowIndex="3" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="horizontalWarnCount" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                              </children>
                                           </GridPane>
                                        </content>
@@ -92,17 +92,21 @@
                                                 <RowConstraints vgrow="NEVER" />
                                                 <RowConstraints vgrow="NEVER" />
                                                 <RowConstraints vgrow="NEVER" />
+                                                <RowConstraints prefHeight="30.0" vgrow="NEVER" />
+                                                <RowConstraints vgrow="ALWAYS" />
                                                 <RowConstraints vgrow="ALWAYS" />
                                              </rowConstraints>
                                              <children>
-                                                <Label text="Minimum count" />
-                                                <TextField GridPane.columnIndex="1" />
-                                                <Label text="Time window (seconds)" GridPane.rowIndex="1" />
-                                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Label text="High priority threshold" GridPane.rowIndex="3" />
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label text="Minimum Port count" />
+                                                <TextField fx:id="blockMinPortCount" GridPane.columnIndex="1" />
+                                                <Label text="Alert Interval (seconds)" GridPane.rowIndex="3" />
+                                                <Label text="Time window (seconds)" GridPane.rowIndex="2" />
+                                                <TextField fx:id="blockMinAddressCount" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="blockTime" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="High priority Address threshold" GridPane.rowIndex="4" />
+                                                <TextField fx:id="blockTimeInterval" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label text="Minumum Address count" GridPane.rowIndex="1" />
+                                                <TextField fx:id="blockWarnAddressCount" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                              </children>
                                           </GridPane>
                                        </content>
@@ -120,7 +124,7 @@
                 </Tab>
               </tabs>
             </TabPane>
-            <Button alignment="CENTER" layoutX="123.0" layoutY="406.0" mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="16.0" />
+            <Button alignment="CENTER" layoutX="123.0" layoutY="406.0" mnemonicParsing="false" onAction="#refreshPortScansAlertParameter" text="Button" AnchorPane.bottomAnchor="16.0" />
          </children>
       </AnchorPane>
         <TextArea editable="false" prefHeight="600.0" prefWidth="500.0" text="LOG MESSAGES" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
