@@ -5,6 +5,12 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
 
+/**
+ * This class compile the EPL statement to detect ARP cache flooding attempts,
+ * and deploy the compiled EPL to the runtime
+ *
+ * @author Bui Xuan Phuoc
+ */
 public class ARPCacheFloodAlertStatement {
     private String statementEPL = "insert into ARPCacheFloodAlertEvent\n " +
             "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +

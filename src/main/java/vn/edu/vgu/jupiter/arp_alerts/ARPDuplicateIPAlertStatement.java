@@ -4,6 +4,11 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
 
+/**
+ * This class compile the EPL statement to detect IP entries that has multiple MAC addresses linked to it,
+ *
+ * @author Bui Xuan Phuoc
+ */
 public class ARPDuplicateIPAlertStatement {
     String statementEPL =     "insert into ARPDuplicateIPAlertEvent\n " +
             "select IP, time\n " +

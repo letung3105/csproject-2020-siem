@@ -4,6 +4,12 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
 
+/**
+ * This class compile the EPL statement which simulates an ARP cache table,
+ * and deploy the compiled EPL to the runtime
+ *
+ * @author Bui Xuan Phuoc
+ */
 public class ARPCacheUpdateStatement {
     private String statementEPL = "insert into ARPCacheUpdateEvent\n " +
             "select srcIP, srcMAC, time from ARPReplyEvent;\n " +

@@ -5,8 +5,7 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
-import vn.edu.vgu.jupiter.http_alerts.CEPSetupUtil;
-import vn.edu.vgu.jupiter.http_alerts.ConsecutiveFailedLoginAlertListener;
+
 
 public class ARPMultipleUnaskedForAnnouncementAlertStatement {
     String statementEPL =     "insert into ARPMultipleUnaskedForAnnouncementAlertEvent\n " +
