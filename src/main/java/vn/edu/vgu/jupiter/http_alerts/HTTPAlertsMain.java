@@ -13,10 +13,10 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Main implements Runnable {
+public class HTTPAlertsMain implements Runnable {
 
     public static void main(String[] args) {
-        new Main().run();
+        new HTTPAlertsMain().run();
     }
 
     /**

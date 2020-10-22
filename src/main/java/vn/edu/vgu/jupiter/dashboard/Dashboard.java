@@ -8,6 +8,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This contains the implementation for the graphical interface that is used to control the SIEM system,
+ * and display the information processed by the the system.
+ *
+ * @author Vo Le Tung
+ */
 public class Dashboard extends Application {
 
     public static final double HEIGHT = 300;
