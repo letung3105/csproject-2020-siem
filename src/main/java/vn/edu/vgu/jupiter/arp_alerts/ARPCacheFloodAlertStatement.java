@@ -1,15 +1,37 @@
 package vn.edu.vgu.jupiter.arp_alerts;
 
+import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
+import com.espertech.esper.runtime.client.EPStatement;
+import com.espertech.esper.runtime.client.EPUndeployException;
 
 public class ARPCacheFloodAlertStatement {
-    String statement = "insert into ARPCacheFloodAlertEvent\n " +
+    private String statementEPL = "insert into ARPCacheFloodAlertEvent\n " +
             "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
-            "having count(distinct IP) >= 240";
-    private String listenStatement = "select * from ARPCacheFloodAlertEvent";
+            "having count(distinct IP) >= 240\n " +
+            "output last every ?:alertInterval:integer second";
+    private String listenStatementEPL = "select * from ARPCacheFloodAlertEvent";
 
-    public ARPCacheFloodAlertStatement(EPRuntime runtime) {
-        ARPAlertUtils.compileDeploy(statement, runtime);
-        ARPAlertUtils.compileDeploy(listenStatement, runtime).addListener(new ARPCacheFloodAlertListener());
+    private EPStatement statement;
+    private EPStatement listenStatement;
+
+    private EPRuntime runtime;
+
+    public ARPCacheFloodAlertStatement(EPRuntime runtime, int alertIntervalSeconds, long highPriorityThreshold) {
+        this.runtime = runtime;
+
+        DeploymentOptions options = new DeploymentOptions();
+        options.setStatementSubstitutionParameter(prepared -> {
+            prepared.setObject("alertInterval", alertIntervalSeconds);
+        });
+
+        statement = ARPAlertUtils.compileDeploy(statementEPL, runtime, options);
+        listenStatement = ARPAlertUtils.compileDeploy(listenStatementEPL, runtime);
+        listenStatement.addListener(new ARPCacheFloodAlertListener(highPriorityThreshold));
+    }
+
+    public void undeploy() throws EPUndeployException {
+        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
+        runtime.getDeploymentService().undeploy(listenStatement.getDeploymentId());
     }
 }

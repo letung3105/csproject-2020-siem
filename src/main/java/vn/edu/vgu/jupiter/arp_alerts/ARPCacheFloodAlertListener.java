@@ -4,10 +4,28 @@ import com.espertech.esper.common.client.EventBean;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.UpdateListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ARPCacheFloodAlertListener implements UpdateListener {
+    private static final Logger logger = LoggerFactory.getLogger(ARPCacheFloodAlertListener.class);
+
+    private long highPriorityThreshold;
+
+    public ARPCacheFloodAlertListener(long highPriorityThreshold) {
+        this.highPriorityThreshold = highPriorityThreshold;
+    }
+
     @Override
-    public void update(EventBean[] eventBeans, EventBean[] eventBeans1, EPStatement epStatement, EPRuntime epRuntime) {
-        System.out.println("Too many entries in the ARP cache " + eventBeans[0].get("count"));
+    public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement epStatement, EPRuntime epRuntime) {
+        if (newEvents == null) {
+            return; // ignore old events for events leaving the window
+        }
+        Long count = (Long) newEvents[0].get("count");
+        if (count < highPriorityThreshold) {
+            logger.info("LOW PRIORITY: Large number of entries in the ARP cache " + newEvents[0].get("count"));
+        } else {
+            logger.warn("HIGH PRIORITY: Too many entries in the ARP cache:" + newEvents[0].get("count"));
+        }
     }
 }
