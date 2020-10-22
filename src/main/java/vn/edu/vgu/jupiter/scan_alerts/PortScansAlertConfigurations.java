@@ -1,6 +1,28 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
 public class PortScansAlertConfigurations {
+    private VerticalScan verticalScan;
+    private HorizontalScan horizontalScan;
+    private BlockScan blockScan;
+
+    public PortScansAlertConfigurations(VerticalScan verticalScan, HorizontalScan horizontalScan, BlockScan blockScan) {
+        this.verticalScan = verticalScan;
+        this.horizontalScan = horizontalScan;
+        this.blockScan = blockScan;
+    }
+
+    public VerticalScan getVerticalScan() {
+        return verticalScan;
+    }
+
+    public HorizontalScan getHorizontalScan() {
+        return horizontalScan;
+    }
+
+    public BlockScan getBlockScan() {
+        return blockScan;
+    }
+
     public static abstract class Common {
         private int timeWindow;
         private int alertInterval;
@@ -70,25 +92,4 @@ public class PortScansAlertConfigurations {
         }
     }
 
-    private VerticalScan verticalScan;
-    private HorizontalScan horizontalScan;
-    private BlockScan blockScan;
-
-    public PortScansAlertConfigurations(VerticalScan verticalScan, HorizontalScan horizontalScan, BlockScan blockScan) {
-        this.verticalScan = verticalScan;
-        this.horizontalScan = horizontalScan;
-        this.blockScan = blockScan;
-    }
-
-    public VerticalScan getVerticalScan() {
-        return verticalScan;
-    }
-
-    public HorizontalScan getHorizontalScan() {
-        return horizontalScan;
-    }
-
-    public BlockScan getBlockScan() {
-        return blockScan;
-    }
 }

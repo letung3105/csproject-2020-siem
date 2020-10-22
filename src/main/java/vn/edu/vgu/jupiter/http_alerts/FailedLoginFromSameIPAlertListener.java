@@ -12,14 +12,15 @@ import org.slf4j.LoggerFactory;
  * <p>
  * The information of the new events is logged to the system using the class's logger
  *
- * @author Dang Chi Cong
+ * @author Bui Xuan Phuoc
  */
-public class ConsecutiveFailedLoginSameUserIDAlertListener implements UpdateListener {
-    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedLoginSameUserIDAlertListener.class);
+
+public class FailedLoginFromSameIPAlertListener implements UpdateListener {
+    private static final Logger log = LoggerFactory.getLogger(FailedLoginFromSameIPAlertListener.class);
 
     private long highPriorityThreshold;
 
-    public ConsecutiveFailedLoginSameUserIDAlertListener(long highPriorityThreshold) {
+    public FailedLoginFromSameIPAlertListener(long highPriorityThreshold) {
         this.highPriorityThreshold = highPriorityThreshold;
     }
 
@@ -28,12 +29,12 @@ public class ConsecutiveFailedLoginSameUserIDAlertListener implements UpdateList
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        String userID = (String) newEvents[0].get("userID");
         Long count = (Long) newEvents[0].get("failuresCount");
+        String IPAddress = (String) newEvents[0].get("IPAddress");
         if (count < highPriorityThreshold) {
-            log.info("LOW PRIORITY: Consecutive failed logins targeting '{}'", userID);
+            log.info("LOW PRIORITY: Consecutive failed logins in short time frame coming from '{}'", IPAddress);
         } else {
-            log.warn("HIGH PRIORITY: Consecutive failed logins targeting '{}'", userID);
+            log.warn("HIGH PRIORITY: Consecutive failed logins in short time frame coming from '{}'", IPAddress);
         }
     }
 }

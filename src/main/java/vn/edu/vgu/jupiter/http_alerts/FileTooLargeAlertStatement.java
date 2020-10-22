@@ -3,7 +3,7 @@ package vn.edu.vgu.jupiter.http_alerts;
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 
-public class ConsecutiveLargeTooFileAlertStatement {
+public class FileTooLargeAlertStatement {
     private String statement =
             "insert into httpConsecutiveFailedLoginOneUserIDAlert\n" +
                     "select IPAddress, userID, time, timeZone\n" +
@@ -13,9 +13,9 @@ public class ConsecutiveLargeTooFileAlertStatement {
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginOneUserIDAlert";
 
-    public ConsecutiveLargeTooFileAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold,
-                                                 int timeWindowSeconds, int alertIntervalSeconds,
-                                                 long highPriorityThreshold) {
+    public FileTooLargeAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold,
+                                      int timeWindowSeconds, int alertIntervalSeconds,
+                                      long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);
@@ -24,6 +24,6 @@ public class ConsecutiveLargeTooFileAlertStatement {
         });
 
         CEPSetupUtil.compileDeploy(statement, runtime, options);
-        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveLargeTooFileAlertListener(highPriorityThreshold));
+        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new FileTooLargeAlertListener(highPriorityThreshold));
     }
 }

@@ -9,7 +9,7 @@ import com.espertech.esper.runtime.client.EPRuntime;
  *
  * @author Dang Chi Cong
  */
-public class ConsecutiveFailedLoginSameUserIDStatement {
+public class FailedLoginSameUserIDStatement {
     private String statement =
             "insert into httpConsecutiveFailedLoginOneUserIDAlertEvent\n " +
                     "select IPAddress, userID, time, timeZone, count(*)\n " +
@@ -20,7 +20,7 @@ public class ConsecutiveFailedLoginSameUserIDStatement {
 
     private String listenStatement = "select * from httpConsecutiveFailedLoginOneUserIDAlertEvent";
 
-    public ConsecutiveFailedLoginSameUserIDStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
+    public FailedLoginSameUserIDStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
             prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);
@@ -29,6 +29,6 @@ public class ConsecutiveFailedLoginSameUserIDStatement {
         });
 
         CEPSetupUtil.compileDeploy(statement, runtime, options);
-        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new ConsecutiveFailedLoginSameUserIDAlertListener(highPriorityThreshold));
+        CEPSetupUtil.compileDeploy(listenStatement, runtime).addListener(new FailedLoginSameUserIDAlertListener(highPriorityThreshold));
     }
 }

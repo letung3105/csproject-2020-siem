@@ -7,20 +7,12 @@ import com.espertech.esper.runtime.client.UpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A simple listener for httpConsecutiveFailedFromSameIPAlert Event
- * <p>
- * The information of the new events is logged to the system using the class's logger
- *
- * @author Bui Xuan Phuoc
- */
-
-public class ConsecutiveFailedFromSameIPAlertListener implements UpdateListener {
-    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedFromSameIPAlertListener.class);
+public class FileTooLargeAlertListener implements UpdateListener {
+    private static final Logger log = LoggerFactory.getLogger(FileTooLargeAlertListener.class);
 
     private long highPriorityThreshold;
 
-    public ConsecutiveFailedFromSameIPAlertListener(long highPriorityThreshold) {
+    public FileTooLargeAlertListener(long highPriorityThreshold) {
         this.highPriorityThreshold = highPriorityThreshold;
     }
 
@@ -30,11 +22,10 @@ public class ConsecutiveFailedFromSameIPAlertListener implements UpdateListener 
             return; // ignore old events for events leaving the window
         }
         Long count = (Long) newEvents[0].get("failuresCount");
-        String IPAddress = (String) newEvents[0].get("IPAddress");
         if (count < highPriorityThreshold) {
-            log.info("LOW PRIORITY: Consecutive failed logins in short time frame coming from '{}'", IPAddress);
+            log.info("LOW PRIORITY: Large files are consecutively being sent");
         } else {
-            log.warn("HIGH PRIORITY: Consecutive failed logins in short time frame coming from '{}'", IPAddress);
+            log.warn("HIGH PRIORITY: Large files are consecutively being sent");
         }
     }
 }
