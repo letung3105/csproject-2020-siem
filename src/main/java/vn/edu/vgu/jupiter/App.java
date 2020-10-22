@@ -22,29 +22,6 @@ public class App {
 
         EPRuntime runtime = EPRuntimeProvider.getRuntime("PortScansAlertPlugin", config);
 
-        //get plugin loader
-        try {
-            PortScansAlertPlugin pluginLoader = (PortScansAlertPlugin) runtime.getContext()
-                    .getEnvironment().get("plugin-loader/PortScansAlertPlugin");
-
-            //Get Port Scan Main
-            PortScansAlertMain portScansAlertMain = pluginLoader.getPortScansAlertMain();
-
-            //Run Dashboard
-            new Thread(){
-                @Override
-                public void run() {
-                    javafx.application.Application.launch(Dashboard.class);
-                }
-            }.start();
-            Dashboard dashboard = Dashboard.waitAndGetDashboard();
-            dashboard.setPortScansMain(portScansAlertMain);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
         try {
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException e) {
