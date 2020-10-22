@@ -23,12 +23,12 @@ public class PortScansAlertConfigurations {
         return blockScan;
     }
 
-    public static abstract class Common {
+    public static abstract class GeneralScan {
         private int timeWindow;
         private int alertInterval;
         private int highPriorityThreshold;
 
-        public Common(int timeWindow, int alertInterval, int highPriorityThreshold) {
+        public GeneralScan(int timeWindow, int alertInterval, int highPriorityThreshold) {
             this.timeWindow = timeWindow;
             this.alertInterval = alertInterval;
             this.highPriorityThreshold = highPriorityThreshold;
@@ -47,7 +47,7 @@ public class PortScansAlertConfigurations {
         }
     }
 
-    public static class VerticalScan extends Common {
+    public static class VerticalScan extends GeneralScan {
         private int connectionsCountThreshold;
 
         public VerticalScan(int timeWindow, int alertInterval, int highPriorityThreshold, int connectionsCountThreshold) {
@@ -60,7 +60,7 @@ public class PortScansAlertConfigurations {
         }
     }
 
-    public static class HorizontalScan extends Common {
+    public static class HorizontalScan extends GeneralScan {
         private int connectionsCountThreshold;
 
         public HorizontalScan(int timeWindow, int alertInterval, int highPriorityThreshold, int connectionsCountThreshold) {
@@ -73,7 +73,7 @@ public class PortScansAlertConfigurations {
         }
     }
 
-    public static class BlockScan extends Common {
+    public static class BlockScan extends GeneralScan {
         private int portsCountThreshold;
         private int addressesCountThreshold;
 

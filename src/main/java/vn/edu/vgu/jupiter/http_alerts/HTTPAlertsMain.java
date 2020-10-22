@@ -16,7 +16,17 @@ import java.util.regex.Pattern;
 public class HTTPAlertsMain implements Runnable {
 
     public static void main(String[] args) {
-        new HTTPAlertsMain().run();
+        HTTPAlertConfiguration httpAlertConfig = new HTTPAlertConfiguration(
+                new HTTPAlertConfiguration.FailedLogin(15, 6, 3, 20),
+                new HTTPAlertConfiguration.FailedLoginFromSameIP(12, 2, 1, 15),
+                new HTTPAlertConfiguration.FailedLoginSameUserID(3, 2, 1, 5));
+        new HTTPAlertsMain(httpAlertConfig).run();
+    }
+
+    private HTTPAlertConfiguration httpAlertConfig;
+
+    public HTTPAlertsMain(HTTPAlertConfiguration httpAlertConfig) {
+        this.httpAlertConfig = httpAlertConfig;
     }
 
     /**
@@ -28,9 +38,22 @@ public class HTTPAlertsMain implements Runnable {
         EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 
         new HTTPFailedLoginEventStatement(runtime);
-        new FailedLoginAlertStatement(runtime, 15, 6, 3, 20);
-        new FailedLoginFromSameIPAlertStatement(runtime, 12, 2, 1, 15);
-        new FailedLoginSameUserIDAlertStatement(runtime, 3, 2, 1, 5);
+        new FailedLoginAlertStatement(
+                runtime,
+                httpAlertConfig.getFailedLogin().getConsecutiveAttemptsThreshold(),
+                httpAlertConfig.getFailedLogin().getTimeWindow(),
+                httpAlertConfig.getFailedLogin().getAlertInterval(),
+                httpAlertConfig.getFailedLogin().getHighPriorityThreshold());
+        new FailedLoginFromSameIPAlertStatement(runtime,
+                httpAlertConfig.getFailedLoginFromSameIP().getConsecutiveAttemptsThreshold(),
+                httpAlertConfig.getFailedLoginFromSameIP().getTimeWindow(),
+                httpAlertConfig.getFailedLoginFromSameIP().getAlertInterval(),
+                httpAlertConfig.getFailedLoginFromSameIP().getHighPriorityThreshold());
+        new FailedLoginSameUserIDAlertStatement(runtime,
+                httpAlertConfig.getFailedLoginSameUserID().getConsecutiveAttemptsThreshold(),
+                httpAlertConfig.getFailedLoginSameUserID().getTimeWindow(),
+                httpAlertConfig.getFailedLoginSameUserID().getAlertInterval(),
+                httpAlertConfig.getFailedLoginSameUserID().getHighPriorityThreshold());
 
         int recordedNumberOfLogEntries = 0;
         while (true) {
