@@ -13,7 +13,6 @@ public class ARPAnnouncementEvent {
         this.srcMAC = srcMAC;
         this.destMAC = destMAC;
         this.time = time;
-        System.out.println(srcIP + " " + destIP);
     }
 
     public String getSrcIP() {

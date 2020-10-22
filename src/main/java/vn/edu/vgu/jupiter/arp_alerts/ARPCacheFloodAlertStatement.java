@@ -4,10 +4,9 @@ import com.espertech.esper.runtime.client.EPRuntime;
 
 public class ARPCacheFloodAlertStatement {
     String statement = "insert into ARPCacheFloodAlertEvent\n " +
-            "select count(*) from ARPCacheUpdateEvent\n " +
-            "group by srcIP\n " +
-            "having count(*) >= 240";
-    private String listenStatement = "select * from ARPReplyEvent";
+            "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
+            "having count(distinct IP) >= 240";
+    private String listenStatement = "select * from ARPCacheFloodAlertEvent";
 
     public ARPCacheFloodAlertStatement(EPRuntime runtime) {
         ARPAlertUtils.compileDeploy(statement, runtime);

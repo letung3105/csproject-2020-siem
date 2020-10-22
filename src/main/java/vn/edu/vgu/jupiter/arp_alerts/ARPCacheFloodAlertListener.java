@@ -8,6 +8,6 @@ import com.espertech.esper.runtime.client.UpdateListener;
 public class ARPCacheFloodAlertListener implements UpdateListener {
     @Override
     public void update(EventBean[] eventBeans, EventBean[] eventBeans1, EPStatement epStatement, EPRuntime epRuntime) {
-        System.out.println("Too many entries in the ARP cache");
+        System.out.println("Too many entries in the ARP cache " + eventBeans[0].get("count"));
     }
 }

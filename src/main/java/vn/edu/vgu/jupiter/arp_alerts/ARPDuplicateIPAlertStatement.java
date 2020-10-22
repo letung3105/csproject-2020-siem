@@ -4,10 +4,10 @@ import com.espertech.esper.runtime.client.EPRuntime;
 
 public class ARPDuplicateIPAlertStatement {
     String statement =     "insert into ARPDuplicateIPAlertEvent\n " +
-            "select srcIP, time\n " +
+            "select IP, time\n " +
             "from ARPCacheUpdateEvent\n " +
-            "group by srcIP\n " +
-            "having count(*) > 1";
+            "group by IP\n " +
+            "having count(distinct MAC) > 1";
 
     private String listenStatement = "select * from ARPDuplicateIPAlertEvent";
 
