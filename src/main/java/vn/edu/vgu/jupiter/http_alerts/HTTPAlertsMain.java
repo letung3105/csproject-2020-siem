@@ -14,16 +14,16 @@ import java.util.regex.Pattern;
 
 public class HTTPAlertsMain implements Runnable {
 
-    private HTTPAlertsConfigurations defaultConfigs;
     private EPRuntime runtime;
     private HTTPFailedLoginEventStatement httpFailedLoginEventStmt;
     private FailedLoginAlertStatement failedLoginAlertStmt;
     private FailedLoginFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
     private FailedLoginSameUserIDAlertStatement failedLoginSameUserIDAlertStmt;
+    private String logPath;
 
-    public HTTPAlertsMain(HTTPAlertsConfigurations defaultConfigs) {
-        this.defaultConfigs = defaultConfigs;
+    public HTTPAlertsMain(String logPath) {
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), CEPSetupUtil.getConfiguration());
+        this.logPath = logPath;
     }
 
     public static void main(String[] args) {
@@ -31,7 +31,10 @@ public class HTTPAlertsMain implements Runnable {
                 new HTTPAlertsConfigurations.FailedLogin(15, 6, 3, 20),
                 new HTTPAlertsConfigurations.FailedLoginFromSameIP(12, 2, 1, 15),
                 new HTTPAlertsConfigurations.FailedLoginSameUserID(3, 2, 1, 5));
-        new HTTPAlertsMain(httpAlertConfig).run();
+
+        HTTPAlertsMain httpAlertsMain = new HTTPAlertsMain("/private/var/log/apache2/access.log");
+        httpAlertsMain.deploy(httpAlertConfig);
+        httpAlertsMain.run();
     }
 
     /**
@@ -41,9 +44,9 @@ public class HTTPAlertsMain implements Runnable {
      * @return ArrayList<httpLogEvent> list of events parsed from the log
      * @author Bui Xuan Phuoc
      */
-    public static ArrayList<HTTPLog> getEventsFromApacheHTTPDLogs() throws IOException {
+    public ArrayList<HTTPLog> getEventsFromApacheHTTPDLogs() throws IOException {
         // TODO: more efficient way to read the log?
-        BufferedReader reader = new BufferedReader(new FileReader("/var/log/apache2/access.log"));
+        BufferedReader reader = new BufferedReader(new FileReader(logPath));
         String line = null;
         ArrayList<HTTPLog> result = new ArrayList<>();
 
@@ -91,6 +94,12 @@ public class HTTPAlertsMain implements Runnable {
         }
     }
 
+    /**
+     * Deploy all the modules related to HTTP alerts with the given configurations
+     *
+     * @param configs configurations for http alerts
+     * @author Vo Le Tung
+     */
     public void deploy(HTTPAlertsConfigurations configs) {
         httpFailedLoginEventStmt = new HTTPFailedLoginEventStatement(runtime);
         failedLoginAlertStmt = new FailedLoginAlertStatement(

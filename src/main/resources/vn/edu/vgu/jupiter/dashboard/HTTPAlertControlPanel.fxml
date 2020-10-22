@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="vn.edu.vgu.jupiter.dashboard.HTTPAlertControlPanel">
     <children>
         <Accordion prefWidth="300.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0"
@@ -100,7 +100,7 @@
                 </TitledPane>
             </panes>
         </Accordion>
-        <Button alignment="CENTER" mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="16.0"
-                AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" onAction="#deploy"/>
+        <Button alignment="CENTER" mnemonicParsing="false" onAction="#deploy" text="Button"
+                AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0"/>
     </children>
 </AnchorPane>

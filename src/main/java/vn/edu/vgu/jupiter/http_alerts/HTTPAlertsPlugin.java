@@ -1,4 +1,4 @@
-package vn.edu.vgu.jupiter.scan_alerts;
+package vn.edu.vgu.jupiter.http_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
@@ -6,8 +6,6 @@ import com.espertech.esper.runtime.client.plugin.PluginLoader;
 import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations;
-import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsMain;
 
 /**
  * PluginLoader for added this example as part of an Esper configuration file and therefore execute it during startup.
@@ -16,6 +14,7 @@ import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsMain;
  */
 public class HTTPAlertsPlugin implements PluginLoader {
     public static final String RUNTIME_URI_KEY = "runtimeURI";
+    public static final String LOG_PATH_KEY = "logPath";
 
     public static final String FAILED_LOGIN_ATTEMPTS_THRESHOLD_KEY = "failedLoginAttemptsThreshold";
     public static final String FAILED_LOGIN_TIME_WINDOW_KEY = "failedLoginTimeWindow";
@@ -35,11 +34,13 @@ public class HTTPAlertsPlugin implements PluginLoader {
     private static final Logger log = LoggerFactory.getLogger(HTTPAlertsPlugin.class);
 
     private String runtimeURI;
+    private String logPath;
     private Thread httpAlertsThread;
     private HTTPAlertsMain main;
     private HTTPAlertsConfigurations configs;
 
     public void init(PluginLoaderInitContext context) {
+        logPath = context.getProperties().getProperty(LOG_PATH_KEY, "/var/log/apache2/access.log");
         runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY, context.getRuntime().getURI());
         configs = new HTTPAlertsConfigurations(
                 new HTTPAlertsConfigurations.FailedLogin(
@@ -67,7 +68,7 @@ public class HTTPAlertsPlugin implements PluginLoader {
         log.info("Starting HTTPAlerts for runtime URI '" + runtimeURI + "'.");
 
         try {
-            main = new HTTPAlertsMain(configs);
+            main = new HTTPAlertsMain(logPath);
             main.deploy(configs);
             httpAlertsThread = new Thread(main, this.getClass().getName());
             httpAlertsThread.setDaemon(true);

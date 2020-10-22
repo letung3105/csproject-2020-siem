@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-
-
-<AnchorPane prefHeight="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.edu.vgu.jupiter.dashboard.PortScansAlertController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="vn.edu.vgu.jupiter.dashboard.PortScansAlertController">
    <children>
-      <Accordion layoutX="10.0" layoutY="10.0" prefWidth="300.0">
+      <Accordion layoutX="10.0" layoutY="10.0" prefWidth="300.0" AnchorPane.bottomAnchor="56.0"
+                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <panes>
             <TitledPane animated="false" text="Vertical port scan's thresholds">
                <content>
                   <GridPane prefHeight="156.0" prefWidth="286.0" vgap="8.0">
                      <columnConstraints>
-                        <ColumnConstraints percentWidth="80.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0" />
+                        <ColumnConstraints percentWidth="80.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES"/>
                         <RowConstraints vgrow="NEVER" />
                         <RowConstraints vgrow="NEVER" />
                         <RowConstraints vgrow="NEVER" />
@@ -102,6 +95,7 @@
             </TitledPane>
          </panes>
       </Accordion>
-      <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" text="Apply Changes" />
+      <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" text="Apply Changes" AnchorPane.bottomAnchor="16.0"
+              AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="101.0"/>
    </children>
 </AnchorPane>
