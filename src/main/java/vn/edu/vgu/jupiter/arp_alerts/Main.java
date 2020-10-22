@@ -30,6 +30,7 @@ public class Main implements Runnable {
 
         InetAddress inetAddress = null;
         try {
+            //Change the InetAddress to your desire interface's address
             inetAddress = InetAddress.getByName("192.168.1.200");
         } catch (UnknownHostException e) {
             e.printStackTrace();
