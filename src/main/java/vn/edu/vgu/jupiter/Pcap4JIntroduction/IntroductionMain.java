@@ -1,11 +1,14 @@
 package vn.edu.vgu.jupiter.Pcap4JIntroduction;
 
 import org.pcap4j.core.*;
+import org.pcap4j.packet.ArpPacket;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
+import org.pcap4j.packet.namednumber.ArpOperation;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 
 public class IntroductionMain {
     public static void main(String[] args){
@@ -13,7 +16,7 @@ public class IntroductionMain {
 
         //FIND A NETWORK INTERFACE TO CAPTURE PACKET ON
         try {
-            InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
+            InetAddress inetAddress = InetAddress.getByName("192.168.1.200");
             PcapNetworkInterface networkInterface = Pcaps.getDevByAddress(inetAddress);
 
             //OPEN PCAP HANDLE FROM NETWORK INTERFACE
@@ -25,24 +28,20 @@ public class IntroductionMain {
             PacketListener listener = new PacketListener() {
                 @Override
                 public void gotPacket(Packet packet) {
-                    //HANDLE INFORMATION FROM PACKET
-                    TcpPacket tcpPacket = packet.get(TcpPacket.class);
-                    IpPacket ipPacket = packet.get(IpPacket.class);
-
-                    //PUT INTO CLASS
-                    NetworkPacketEvent networkPacketEvent = new NetworkPacketEvent(tcpPacket.getHeader(), ipPacket.getHeader(), handle.getTimestamp());
-
-                    //TEST BY PRINT OUT
-                    System.out.println("Create Network Packet object!");
-                    System.out.println(networkPacketEvent.getTimeStamp());
-                    System.out.println("From: " + networkPacketEvent.getSourceAddress() + ", port " + networkPacketEvent.getSourcePort());
-                    System.out.println("To: " + networkPacketEvent.getDestinationAddress() + ", port " + networkPacketEvent.getDestinationPort());
+                    if (packet.contains(ArpPacket.class)) {
+                        ArpPacket arp = packet.get(ArpPacket.class);
+                        if (arp.getHeader().getOperation().equals(ArpOperation.REPLY)) {
+//                            SendArpRequest.resolvedAddr = arp.getHeader().getSrcHardwareAddr();
+                        }
+                    System.out.println(arp.getHeader());
+                    System.out.println("------------");
+                    }
                 }
             };
 
             //USE PACKET LISTENER TO LOOP
             try{
-                handle.loop(MAX_CAPTURE, listener);
+                handle.loop(-1, listener);
             } catch (PcapNativeException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
