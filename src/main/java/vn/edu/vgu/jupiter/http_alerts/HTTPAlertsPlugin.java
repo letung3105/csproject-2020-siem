@@ -84,6 +84,12 @@ public class HTTPAlertsPlugin implements PluginLoader {
         main.deploy(configs);
     }
 
+    public void undeploy() throws EPUndeployException {
+        if (main != null) {
+            main.undeploy();
+        }
+    }
+
     public void destroy() {
         if (main != null) {
             try {

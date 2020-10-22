@@ -1,6 +1,8 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntime;
+import com.espertech.esper.runtime.client.EPStatement;
+import com.espertech.esper.runtime.client.EPUndeployException;
 
 /**
  * This class compile the EPL statement to select failed authentication attempts
@@ -9,11 +11,19 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Bui Xuan Phuoc
  */
 public class HTTPFailedLoginEventStatement {
-    String statement = "insert into HTTPFailedLogin\n " +
+    String statementEPL = "insert into HTTPFailedLogin\n " +
             "select IPAddress, userID, time, timeZone from HTTPLog\n " +
             "where statusCode like \"401\"";
+    private EPStatement statement;
+
+    private EPRuntime runtime;
 
     public HTTPFailedLoginEventStatement(EPRuntime runtime) {
-        CEPSetupUtil.compileDeploy(statement, runtime);
+        this.runtime = runtime;
+        statement = CEPSetupUtil.compileDeploy(statementEPL, runtime);
+    }
+
+    public void undeploy() throws EPUndeployException {
+        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
     }
 }

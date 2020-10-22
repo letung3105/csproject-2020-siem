@@ -2,6 +2,7 @@ package vn.edu.vgu.jupiter.http_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
+import com.espertech.esper.runtime.client.EPUndeployException;
 import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
 
 import java.io.BufferedReader;
@@ -118,5 +119,25 @@ public class HTTPAlertsMain implements Runnable {
                 configs.getFailedLoginSameUserID().getTimeWindow(),
                 configs.getFailedLoginSameUserID().getAlertInterval(),
                 configs.getFailedLoginSameUserID().getHighPriorityThreshold());
+    }
+
+    /**
+     * Undeploy all the modules related to HTTP alerts with the given configurations
+     *
+     * @author Vo Le Tung
+     */
+    public void undeploy() throws EPUndeployException {
+        if (httpFailedLoginEventStmt != null) {
+            httpFailedLoginEventStmt.undeploy();
+        }
+        if (failedLoginAlertStmt != null) {
+            failedLoginAlertStmt.undeploy();
+        }
+        if (failedLoginFromSameIPAlertStmt != null) {
+            failedLoginFromSameIPAlertStmt.undeploy();
+        }
+        if (failedLoginSameUserIDAlertStmt != null) {
+            failedLoginSameUserIDAlertStmt.undeploy();
+        }
     }
 }
