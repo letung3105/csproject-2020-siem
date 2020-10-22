@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertMain;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * This contains the implementation for the graphical interface that is used to control the SIEM system,
@@ -22,9 +23,8 @@ public class Dashboard extends Application {
     public static final double HEIGHT = 300;
     public static final double WIDTH = 400;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static Dashboard dashboard;
+    public static final CountDownLatch latch = new CountDownLatch(1);
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -32,6 +32,24 @@ public class Dashboard extends Application {
         primaryStage.setTitle("SIEM Dashboard");
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
         primaryStage.show();
+    }
+
+    public Dashboard(){
+        setDashboard(this);
+    }
+
+    public static void setDashboard(Dashboard thisDashboard){
+        dashboard = thisDashboard;
+        latch.countDown();
+    }
+
+    public static Dashboard waitAndGetDashboard(){
+        try{
+            latch.wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return dashboard;
     }
 
     //PORT SCAN
