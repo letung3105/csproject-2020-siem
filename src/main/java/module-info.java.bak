@@ -2,6 +2,8 @@ module vn.edu.vgu.jupiter {
     requires java.sql;
     requires java.naming;
     requires slf4j.api;
+    requires org.apache.logging.log4j.slf4j;
+    requires org.apache.logging.log4j.core;
     requires org.pcap4j.core;
     requires esper.common;
     requires esper.compiler;

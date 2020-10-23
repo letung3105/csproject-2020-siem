@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error">
+    <Properties>
+        <Property name="all_log">logs/all.log</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%msg%n"/>
+            <Filters>
+                <ThresholdFilter level="info"/>
+            </Filters>
+        </Console>
+        <File name="AllLog" fileName="${all_log}">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level: %msg%n"/>
+            <Filters>
+                <ThresholdFilter level="info"/>
+            </Filters>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AllLog"/>
+        </Root>
+    </Loggers>
+</Configuration>
