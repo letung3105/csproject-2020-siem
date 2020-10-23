@@ -1,6 +1,5 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
-import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
@@ -33,13 +32,13 @@ public class PortScansAlertMain implements Runnable {
 
     private PortScansAlertConfigurations portScanAlertConfig;
 
-    public PortScansAlertMain(String netDevName){
+    public PortScansAlertMain(String netDevName) {
         this.netDevName = netDevName;
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(),
                 PortScansAlertUtil.getConfiguration());
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         PortScansAlertConfigurations portScanAlertConfig = new PortScansAlertConfigurations(
                 new PortScansAlertConfigurations.VerticalScan(60, 10, 100, 60),
                 new PortScansAlertConfigurations.HorizontalScan(60, 10, 100, 60),
@@ -54,7 +53,7 @@ public class PortScansAlertMain implements Runnable {
      * Setup the runtime, deploys the necessary statements and starts capturing packets
      */
     public void run() {
-        try{
+        try {
             // getting the network interface
             PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);
             log.info(nif.getName() + "(" + nif.getDescription() + ")");
@@ -64,25 +63,29 @@ public class PortScansAlertMain implements Runnable {
             try {
                 // capturing packet and send the Esper engine
                 handle.loop(COUNT, (PacketListener) packet -> {
-                    IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
-                    TcpPacket tcpPacket = ipV4Packet.get(TcpPacket.class);
-                    TcpPacketEvent evt = new TcpPacketEvent(
-                            handle.getTimestamp().getTime(),
-                            tcpPacket.getHeader(),
-                            ipV4Packet.getHeader()
-                    );
-                    runtime.getEventService().sendEventBean(evt, TcpPacketEvent.class.getSimpleName());
+                    if (packet.contains(IpV4Packet.class)) {
+                        IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
+                        if (ipV4Packet.contains(TcpPacket.class)) {
+                            TcpPacket tcpPacket = ipV4Packet.get(TcpPacket.class);
+                            TcpPacketEvent evt = new TcpPacketEvent(
+                                    handle.getTimestamp().getTime(),
+                                    tcpPacket.getHeader(),
+                                    ipV4Packet.getHeader()
+                            );
+                            runtime.getEventService().sendEventBean(evt, TcpPacketEvent.class.getSimpleName());
+                        }
+                    }
                 });
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             handle.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void deploy(PortScansAlertConfigurations portScanAlertConfig){
+    public void deploy(PortScansAlertConfigurations portScanAlertConfig) {
         tcpClosedStatement = new TcpPacketWithClosedPortStatement(runtime);
         verticalStatement = new VerticalPortScanAlertStatement(
                 runtime,
@@ -106,16 +109,16 @@ public class PortScansAlertMain implements Runnable {
     }
 
     public void undeploy() throws EPUndeployException {
-        if(tcpClosedStatement != null){
+        if (tcpClosedStatement != null) {
             tcpClosedStatement.undeploy();
         }
-        if(verticalStatement != null){
+        if (verticalStatement != null) {
             verticalStatement.undeploy();
         }
-        if(horizontalStatement != null){
+        if (horizontalStatement != null) {
             horizontalStatement.undeploy();
         }
-        if(blockStatement != null){
+        if (blockStatement != null) {
             blockStatement.undeploy();
         }
     }
