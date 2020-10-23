@@ -26,6 +26,8 @@ public class VerticalPortScanAlertStatement {
     private EPRuntime runtime;
 
     public VerticalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval, int countThreshold) {
+        this.runtime = runtime;
+
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
                     prepared.setObject("minConnectionsCount", minConnectionsCount);
