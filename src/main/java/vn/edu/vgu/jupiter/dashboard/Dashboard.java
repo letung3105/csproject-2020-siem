@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
  */
 public class Dashboard extends Application implements Initializable {
 
-    public static final double HEIGHT = 300;
+    public static final double HEIGHT = 600;
     public static final double WIDTH = 400;
 
     private EPRuntime runtime;
