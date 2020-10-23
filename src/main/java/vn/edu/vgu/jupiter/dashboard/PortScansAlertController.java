@@ -19,21 +19,34 @@ public class PortScansAlertController implements Initializable {
     /**
      * FXML fields id
      */
-    @FXML private TextField verticalMinCount;
-    @FXML private TextField verticalTime;
-    @FXML private TextField verticalTimeInterval;
-    @FXML private TextField verticalWarnCount;
+    @FXML
+    private TextField verticalMinCount;
+    @FXML
+    private TextField verticalTime;
+    @FXML
+    private TextField verticalTimeInterval;
+    @FXML
+    private TextField verticalWarnCount;
 
-    @FXML private TextField horizontalMinCount;
-    @FXML private TextField horizontalTime;
-    @FXML private TextField horizontalTimeInterval;
-    @FXML private TextField horizontalWarnCount;
+    @FXML
+    private TextField horizontalMinCount;
+    @FXML
+    private TextField horizontalTime;
+    @FXML
+    private TextField horizontalTimeInterval;
+    @FXML
+    private TextField horizontalWarnCount;
 
-    @FXML private TextField blockMinPortCount;
-    @FXML private TextField blockMinAddressCount;
-    @FXML private TextField blockTime;
-    @FXML private TextField blockTimeInterval;
-    @FXML private TextField blockWarnAddressCount;
+    @FXML
+    private TextField blockMinPortCount;
+    @FXML
+    private TextField blockMinAddressCount;
+    @FXML
+    private TextField blockTime;
+    @FXML
+    private TextField blockTimeInterval;
+    @FXML
+    private TextField blockWarnAddressCount;
 
     private EPRuntime runtime;
 
@@ -41,7 +54,8 @@ public class PortScansAlertController implements Initializable {
         this.runtime = runtime;
     }
 
-    @FXML public void applyVariableChanges() throws NamingException, EPUndeployException {
+    @FXML
+    public void applyVariableChanges() throws NamingException, EPUndeployException {
         PortScansAlertPlugin plugin = (PortScansAlertPlugin) runtime.getContext().getEnvironment()
                 .get("plugin-loader/PortScansAlertPlugin");
         PortScansAlertConfigurations newConfig = new PortScansAlertConfigurations(
@@ -88,7 +102,7 @@ public class PortScansAlertController implements Initializable {
         blockWarnAddressCount.setText(String.valueOf(5));
     }
 
-    private void updateFieldsValue(PortScansAlertConfigurations config){
+    private void updateFieldsValue(PortScansAlertConfigurations config) {
         verticalMinCount.setText(String.valueOf(config.getVerticalScan().getConnectionsCountThreshold()));
         verticalTime.setText(String.valueOf(config.getVerticalScan().getTimeWindow()));
         verticalTimeInterval.setText(String.valueOf(config.getVerticalScan().getAlertInterval()));

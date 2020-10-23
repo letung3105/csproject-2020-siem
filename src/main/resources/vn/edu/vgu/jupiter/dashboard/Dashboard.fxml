@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
             fx:controller="vn.edu.vgu.jupiter.dashboard.Dashboard">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
@@ -19,7 +19,7 @@
                     <tabs>
                         <Tab text="PortScansAlert">
                             <content>
-                                <fx:include fx:id= "portScansAlertControlPanel" source="PortScansAlertPanel.fxml"/>
+                                <fx:include fx:id="portScansAlertControlPanel" source="PortScansAlertPanel.fxml"/>
                             </content>
                         </Tab>
                         <Tab text="HTTPAlerts">

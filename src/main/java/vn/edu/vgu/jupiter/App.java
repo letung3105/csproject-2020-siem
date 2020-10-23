@@ -3,9 +3,6 @@ package vn.edu.vgu.jupiter;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import vn.edu.vgu.jupiter.dashboard.Dashboard;
-import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertMain;
-import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin;
 
 import java.util.Properties;
 

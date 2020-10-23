@@ -6,7 +6,6 @@ import com.espertech.esper.runtime.client.plugin.PluginLoader;
 import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations;
 
 /**
  * PluginLoader for added this example as part of an Esper configuration file and therefore execute it during startup.

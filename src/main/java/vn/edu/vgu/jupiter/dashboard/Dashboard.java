@@ -28,39 +28,27 @@ public class Dashboard extends Application implements Initializable {
 
     public static final double HEIGHT = 300;
     public static final double WIDTH = 400;
-
-    private EPRuntime runtime;
-
     @FXML
     public AnchorPane httpAlertControlPanel;
     @FXML
     public HTTPAlertControlPanel httpAlertControlPanelController;
-
     @FXML
     public AnchorPane portScansAlertControlPanel;
     @FXML
     public PortScansAlertController portScansAlertControlPanelController;
+    private EPRuntime runtime;
 
     public Dashboard() {
         Configuration config = new Configuration();
 
         Properties httpAlertsProps = new Properties();
         httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "HTTPAlertsPlugin");
-        // httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, "/private/var/log/apache2/access.log");
+        httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, "/var/log/apache2/access.log");
         config.getRuntime().addPluginLoader(
                 "HTTPAlertsPlugin",
                 "vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin",
                 httpAlertsProps);
 
-        // Properties portScansAlertProps = new Properties();
-        // httpAlertsProps.put(PortScansAlertPlugin.RUNTIME_URI_KEY, "PortScansAlertPlugin");
-        // httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "PortScansAlertPlugin");
-        // config.getRuntime().addPluginLoader(
-        //         "PortScansAlertPlugin",
-        //         "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
-        //         portScansAlertProps);
-
-        //Port scans
         Properties portScansAlertProps = new Properties();
         portScansAlertProps.put("runtimeURI", "PortScansAlertPlugin");
         portScansAlertProps.put("netdev", "lo0");
