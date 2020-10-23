@@ -5,8 +5,9 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
-            fx:controller="vn.edu.vgu.jupiter.dashboard.Dashboard">
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.edu.vgu.jupiter.dashboard.Dashboard">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                     prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -29,12 +30,15 @@
                 </TabPane>
             </children>
         </AnchorPane>
-        <TextArea editable="false" prefHeight="600.0" prefWidth="500.0" text="LOG MESSAGES"
+        <TextArea fx:id="logArea" editable="false" prefHeight="600.0" prefWidth="500.0" wrapText="true"
                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0"
                   AnchorPane.topAnchor="0.0">
             <padding>
                 <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
             </padding>
+            <font>
+                <Font size="16.0"/>
+            </font>
         </TextArea>
     </children>
 </AnchorPane>

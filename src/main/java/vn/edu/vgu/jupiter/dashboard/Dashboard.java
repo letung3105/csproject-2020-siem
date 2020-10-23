@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin;
@@ -28,6 +29,9 @@ public class Dashboard extends Application implements Initializable {
 
     public static final double HEIGHT = 300;
     public static final double WIDTH = 400;
+
+    private EPRuntime runtime;
+
     @FXML
     public AnchorPane httpAlertControlPanel;
     @FXML
@@ -36,7 +40,8 @@ public class Dashboard extends Application implements Initializable {
     public AnchorPane portScansAlertControlPanel;
     @FXML
     public PortScansAlertController portScansAlertControlPanelController;
-    private EPRuntime runtime;
+    @FXML
+    public TextArea logArea;
 
     public Dashboard() {
         Configuration config = new Configuration();
@@ -76,6 +81,7 @@ public class Dashboard extends Application implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.httpAlertControlPanelController.setRuntime(runtime);
         this.portScansAlertControlPanelController.setRuntime(runtime);
+        TextAreaAppender.setTextArea(this.logArea);
     }
 }
 

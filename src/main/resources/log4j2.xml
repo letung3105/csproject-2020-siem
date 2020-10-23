@@ -6,23 +6,27 @@
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%msg%n"/>
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-5level]: %msg%n"/>
             <Filters>
                 <ThresholdFilter level="info"/>
             </Filters>
         </Console>
         <File name="AllLog" fileName="${all_log}">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level: %msg%n"/>
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-5level]: %msg%n"/>
             <Filters>
                 <ThresholdFilter level="info"/>
             </Filters>
         </File>
+        <TextAreaAppender name="JavaFXLogger">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-5level]: %msg%n"/>
+        </TextAreaAppender>
     </Appenders>
 
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="AllLog"/>
+            <AppenderRef ref="JavaFXLogger"/>
         </Root>
     </Loggers>
 </Configuration>
