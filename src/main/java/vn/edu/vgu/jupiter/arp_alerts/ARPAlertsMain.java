@@ -118,7 +118,6 @@ public class ARPAlertsMain implements Runnable {
         try(final DatagramSocket socket = new DatagramSocket()){
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
             ip = socket.getLocalAddress().getHostAddress();
-            System.out.println(ip);
         } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
