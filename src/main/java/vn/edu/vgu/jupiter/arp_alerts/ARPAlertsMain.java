@@ -8,8 +8,7 @@ import org.pcap4j.packet.ArpPacket;
 import org.pcap4j.packet.Packet;
 import vn.edu.vgu.jupiter.eventbean_arp.ARPPacketEvent;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 
 public class ARPAlertsMain implements Runnable {
     private EPRuntime runtime;
@@ -24,7 +23,7 @@ public class ARPAlertsMain implements Runnable {
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), ARPAlertUtils.getConfiguration());
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SocketException {
         ARPAlertsConfigurations arpAlertsConfigurations = new ARPAlertsConfigurations(
                 new ARPAlertsConfigurations.ARPDuplicateIP(),
                 new ARPAlertsConfigurations.ARPCacheFlood(10, 120),
@@ -51,8 +50,6 @@ public class ARPAlertsMain implements Runnable {
     }
 
     public void run() {
-
-
 //        Configuration configuration = ARPAlertUtils.getConfiguration();
 //        EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
 //        new ARPAnnouncementStatement(runtime);
@@ -61,11 +58,12 @@ public class ARPAlertsMain implements Runnable {
 //        new ARPDuplicateIPAlertStatement(runtime);
 //        new ARPCacheUpdateStatement(runtime);
 //        new ARPMultipleUnaskedForAnnouncementAlertStatement(runtime, 6, 10, 10, 4);
+        String ip = getPreferredOutboundIP();
 
         InetAddress inetAddress = null;
         try {
             //Change the InetAddress to your desire interface's address
-            inetAddress = InetAddress.getByName("192.168.1.200");
+            inetAddress = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -107,6 +105,26 @@ public class ARPAlertsMain implements Runnable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method to get the preferred outbound IP of the machine's network interfaces
+     *
+     * @author Bui Xuan Phuoc
+     * @return preferred outbound IP of the machine
+     */
+    public String getPreferredOutboundIP() {
+        String ip = null;
+        //ip always takes the value of the preferred outbound ip
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress().getHostAddress();
+            System.out.println(ip);
+        } catch (UnknownHostException | SocketException e) {
+            e.printStackTrace();
+        }
+        return ip;
+    }
+
     public void undeploy() throws EPUndeployException {
         if (arpAnnouncementStatement != null) {
             arpAnnouncementStatement.undeploy();
