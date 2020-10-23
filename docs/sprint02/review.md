@@ -174,3 +174,31 @@ public void deploy(ActionEvent actionEvent) throws NamingException, EPUndeployEx
 # System design
 
 ![](images/Module.png)
+
+---
+
+# Port scan alerts: Events hierarchy
+
+```text
+                                 |--> VerticalScanAlert
+                                 |
+TcpPacket --> TcpToClosedPort -->|--> HorizontalScanAlert
+                                 |
+                                 |--> ClosedPortsPerAddr --> BlockScanAlert
+```
+
+---
+
+# HTTP service alerts: Events hierarchy
+
+```text
+                                httpLogEvent
+                                     |
+                                     |
+                                     v
+ConsecutiveSameUserID <-- httpFailedLoginEvent --> ConsecutiveFromSameIP
+                                     |
+                                     |
+                                     v
+                             ConsecutiveFailures
+```
