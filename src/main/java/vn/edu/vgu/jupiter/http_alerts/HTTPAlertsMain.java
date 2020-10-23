@@ -122,7 +122,7 @@ public class HTTPAlertsMain implements Runnable {
     }
 
     /**
-     * Undeploy all the modules related to HTTP alerts with the given configurations
+     * Undeploy all the modules related to HTTP service alerts.
      *
      * @author Vo Le Tung
      */

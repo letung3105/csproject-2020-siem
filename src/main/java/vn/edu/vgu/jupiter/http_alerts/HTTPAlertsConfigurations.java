@@ -1,7 +1,7 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
 /**
- * Classes that contain all the parameters for raising http alerts.
+ * Sets of parameters for raising http alerts.
  *
  * @author Vo Le Tung
  */
@@ -30,7 +30,7 @@ public class HTTPAlertsConfigurations {
     }
 
     /**
-     * Contains parameters that are common across all alerts
+     * Set of parameters that are common across all alerts
      *
      * @author Vo Le Tung
      */
@@ -41,12 +41,12 @@ public class HTTPAlertsConfigurations {
         private long highPriorityThreshold;
 
         /**
-         * Setting parameters for HTTP alerts.
+         * Set of parameters for HTTP alerts.
          *
-         * @param consecutiveAttemptsThreshold threshold for the number of events that can happen
-         * @param timeWindow                   in seconds, the sliding time window of events to be considered
-         * @param alertInterval                in seconds, the interval of alert messages raising to the user
-         * @param highPriorityThreshold        threshold for classifying a high priority event
+         * @param consecutiveAttemptsThreshold Threshold for the number of events that can happen
+         * @param timeWindow                   In seconds, the sliding time window of events to be considered
+         * @param alertInterval                In seconds, the interval of alert messages raising to the user
+         * @param highPriorityThreshold        Threshold for classifying a high priority event
          */
         public GeneralHTTPAlert(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
             this.consecutiveAttemptsThreshold = consecutiveAttemptsThreshold;
@@ -73,7 +73,7 @@ public class HTTPAlertsConfigurations {
     }
 
     /**
-     * Contains parameters for raising failed login alerts.
+     * Set of parameters for raising failed login alerts.
      *
      * @author Vo Le Tung
      */
@@ -84,7 +84,7 @@ public class HTTPAlertsConfigurations {
     }
 
     /**
-     * Contains parameters for raising failed login from one same ip address alerts.
+     * Set of parameters for raising failed login from one same ip address alerts.
      *
      * @author Vo Le Tung
      */
@@ -95,7 +95,7 @@ public class HTTPAlertsConfigurations {
     }
 
     /**
-     * Contains parameters for raising failed login using one same user id alerts.
+     * Set of parameters for raising failed login using one same user id alerts.
      *
      * @author Vo Le Tung
      */

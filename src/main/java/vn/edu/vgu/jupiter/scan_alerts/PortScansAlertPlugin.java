@@ -25,6 +25,7 @@ public class PortScansAlertPlugin implements PluginLoader {
     private PortScansAlertConfigurations configs;
 
     public void init(PluginLoaderInitContext context) {
+        // TODO: setting initial parameters
         if (context.getProperties().getProperty(RUNTIME_URI_KEY) != null) {
             runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY);
         } else {

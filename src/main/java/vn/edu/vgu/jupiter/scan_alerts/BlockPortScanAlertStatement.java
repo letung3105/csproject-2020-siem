@@ -12,12 +12,14 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  * @author Vo Le Tung
  */
 public class BlockPortScanAlertStatement {
-    private static final String portsCountStmt =
+
+    private static final String eplPortsCountPerAddr =
             "insert into ClosedPortsCountPerAddress\n" +
                     "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
-                    "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer seconds)\n" +
+                    "from TcpPacketWithClosedPort#time(?:timeWindow:integer seconds)\n" +
                     "group by ipHeader.dstAddr\n";
-    private static final String alertStmt =
+
+    private static final String eplRaiseAlert =
             "insert into BlockPortScanAlert\n" +
                     "select timestamp, count(distinct addr)\n" +
                     "from ClosedPortsCountPerAddress#time(?:timeWindow:integer seconds)\n" +
@@ -25,13 +27,19 @@ public class BlockPortScanAlertStatement {
                     "having count(distinct addr) >= ?:minAddressesCount:integer\n" +
                     "output first every ?:alertInterval:integer seconds";
 
-    private EPStatement portsCountStatement;
-    private EPStatement statement;
-    private EPStatement listenStatement;
+    private static final String eplListen = "select * from BlockPortScanAlert";
 
     private EPRuntime runtime;
+    private EPStatement stmtPortsCountPerAddr;
+    private EPStatement stmtRaiseAlert;
+    private EPStatement stmtListen;
 
-    public BlockPortScanAlertStatement(EPRuntime runtime, int minPortsCount, int minAddressesCount, int timeWindow, int alertInterval, int countThreshold) {
+    public BlockPortScanAlertStatement(EPRuntime runtime,
+                                       int minPortsCount,
+                                       int minAddressesCount,
+                                       int timeWindow,
+                                       int alertInterval,
+                                       int countThreshold) {
         this.runtime = runtime;
 
         DeploymentOptions portsCountOpts = new DeploymentOptions();
@@ -39,7 +47,7 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("timeWindow", timeWindow);
                 }
         );
-        portsCountStatement = PortScansAlertUtil.compileDeploy(portsCountStmt, runtime, portsCountOpts);
+        stmtPortsCountPerAddr = PortScansAlertUtil.compileDeploy(eplPortsCountPerAddr, runtime, portsCountOpts);
 
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
@@ -49,14 +57,20 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        statement = PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
-        listenStatement = PortScansAlertUtil.compileDeploy("select * from BlockPortScanAlert", runtime);
-        listenStatement.addListener(new BlockPortScanAlertListener(countThreshold));
+        stmtRaiseAlert = PortScansAlertUtil.compileDeploy(eplRaiseAlert, runtime, alertOpts);
+
+        stmtListen = PortScansAlertUtil.compileDeploy("", runtime);
+        stmtListen.addListener(new BlockPortScanAlertListener(countThreshold));
     }
 
+    /**
+     * Undeploy the set of statements managed by this class
+     *
+     * @throws EPUndeployException Exception will undeploying the EPL statements
+     */
     public void undeploy() throws EPUndeployException {
-        runtime.getDeploymentService().undeploy(portsCountStatement.getDeploymentId());
-        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
-        runtime.getDeploymentService().undeploy(listenStatement.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtPortsCountPerAddr.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtRaiseAlert.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtListen.getDeploymentId());
     }
 }

@@ -12,20 +12,24 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  * @author Vo Le Tung
  */
 public class VerticalPortScanAlertStatement {
-    private static final String alertStmt = "insert into VerticalPortScanAlert\n" +
-            "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
-            "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer seconds)\n" +
-            "group by ipHeader.dstAddr\n" +
-            "having count(distinct tcpHeader.dstPort) >= ?:minConnectionsCount:integer\n" +
-            "output first every ?:alertInterval:integer seconds";
-    private static final String listenStmt = "select * from VerticalPortScanAlert";
-
-    private EPStatement statement;
-    private EPStatement listenStatement;
+    private static final String eplRaiseAlert =
+            "insert into VerticalPortScanAlert\n" +
+                    "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
+                    "from TcpPacketWithClosedPort#time(?:timeWindow:integer seconds)\n" +
+                    "group by ipHeader.dstAddr\n" +
+                    "having count(distinct tcpHeader.dstPort) >= ?:minConnectionsCount:integer\n" +
+                    "output first every ?:alertInterval:integer seconds";
+    private static final String eplListen = "select * from VerticalPortScanAlert";
 
     private EPRuntime runtime;
+    private EPStatement stmtRaiseAlert;
+    private EPStatement stmtListen;
 
-    public VerticalPortScanAlertStatement(EPRuntime runtime, int minConnectionsCount, int timeWindow, int alertInterval, int countThreshold) {
+    public VerticalPortScanAlertStatement(EPRuntime runtime,
+                                          int minConnectionsCount,
+                                          int timeWindow,
+                                          int alertInterval,
+                                          int countThreshold) {
         this.runtime = runtime;
 
         DeploymentOptions alertOpts = new DeploymentOptions();
@@ -35,13 +39,14 @@ public class VerticalPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        statement = PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
-        listenStatement = PortScansAlertUtil.compileDeploy(listenStmt, runtime);
-        listenStatement.addListener(new VerticalPortScanAlertListener(countThreshold));
+        stmtRaiseAlert = PortScansAlertUtil.compileDeploy(eplRaiseAlert, runtime, alertOpts);
+
+        stmtListen = PortScansAlertUtil.compileDeploy(eplListen, runtime);
+        stmtListen.addListener(new VerticalPortScanAlertListener(countThreshold));
     }
 
     public void undeploy() throws EPUndeployException {
-        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
-        runtime.getDeploymentService().undeploy(listenStatement.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtRaiseAlert.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtListen.getDeploymentId());
     }
 }

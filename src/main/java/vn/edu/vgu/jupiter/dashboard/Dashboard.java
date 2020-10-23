@@ -20,10 +20,16 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
- * This contains the implementation for the graphical interface that is used to control the SIEM system,
- * and display the information processed by the the system.
+ * This contains the implementation for the graphical interface that is used to control the SIEM system, * and display
+ * the information processed by the the system.
+ * <p>
+ * The log messages are displayed using a custom Log4j2 appender which takes all the log messages that are produced
+ * by the system and appends it the the content of the designated TextArea. To control the SIEM system, the main Esper's
+ * runtime is shared across individual controller, each controller can then access the plugin that was loaded with the
+ * runtime to control the parameters for raising alerts corresponding to the plugin.
  *
  * @author Vo Le Tung
+ * @author Pham Nguyen Than hAn
  */
 public class Dashboard extends Application implements Initializable {
 
@@ -46,6 +52,7 @@ public class Dashboard extends Application implements Initializable {
     public Dashboard() {
         Configuration config = new Configuration();
 
+        // configure HTTPAlertPlugin
         Properties httpAlertsProps = new Properties();
         httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "HTTPAlertsPlugin");
         httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, "/var/log/apache2/access.log");
@@ -54,6 +61,7 @@ public class Dashboard extends Application implements Initializable {
                 "vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin",
                 httpAlertsProps);
 
+        // configure PortScanPlugin
         Properties portScansAlertProps = new Properties();
         portScansAlertProps.put("runtimeURI", "PortScansAlertPlugin");
         portScansAlertProps.put("netdev", "lo0");
@@ -71,6 +79,7 @@ public class Dashboard extends Application implements Initializable {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        // set scene
         var root = (Parent) FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
         primaryStage.setTitle("SIEM Dashboard");
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
@@ -79,6 +88,7 @@ public class Dashboard extends Application implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // shared the runtime with the controllers
         this.httpAlertControlPanelController.setRuntime(runtime);
         this.portScansAlertControlPanelController.setRuntime(runtime);
         TextAreaAppender.setTextArea(this.logArea);

@@ -18,7 +18,11 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * TextAreaAppender for Log4j 2
+ * TextAreaAppender for Log4j2
+ * <p>
+ * https://blog.pikodat.com/2015/10/11/frontend-logging-with-javafx/
+ *
+ * @author Veit Weber (https://www.pikodat.de)
  */
 @Plugin(
         name = "TextAreaAppender",
@@ -29,10 +33,8 @@ public final class TextAreaAppender extends AbstractAppender {
 
     private static TextArea textArea;
 
-
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
     private final Lock readLock = rwLock.readLock();
-
 
     protected TextAreaAppender(String name, Filter filter,
                                Layout<? extends Serializable> layout,
@@ -49,9 +51,8 @@ public final class TextAreaAppender extends AbstractAppender {
     public void append(LogEvent event) {
         readLock.lock();
 
-        final String message = new String(getLayout().toByteArray(event));
-
         // append log text to TextArea
+        final String message = new String(getLayout().toByteArray(event));
         try {
             Platform.runLater(() -> {
                 try {
@@ -60,26 +61,22 @@ public final class TextAreaAppender extends AbstractAppender {
                             textArea.setText(message);
                         } else {
                             textArea.selectEnd();
-                            textArea.insertText(textArea.getText().length(),
-                                    message);
+                            textArea.insertText(textArea.getText().length(), message);
                         }
                     }
                 } catch (final Throwable t) {
-                    System.out.println("Error while append to TextArea: "
-                            + t.getMessage());
+                    System.out.println("Error while append to TextArea: " + t.getMessage());
                 }
             });
         } catch (final IllegalStateException ex) {
             ex.printStackTrace();
-
         } finally {
             readLock.unlock();
         }
     }
 
     /**
-     * Factory method. Log4j will parse the configuration and call this factory
-     * method to construct the appender with
+     * Factory method. Log4j will parse the configuration and call this factory method to construct the appender with
      * the configured attributes.
      *
      * @param name   Name of appender
@@ -91,7 +88,8 @@ public final class TextAreaAppender extends AbstractAppender {
     public static TextAreaAppender createAppender(
             @PluginAttribute("name") String name,
             @PluginElement("Layout") Layout<? extends Serializable> layout,
-            @PluginElement("Filter") final Filter filter) {
+            @PluginElement("Filter") final Filter filter
+    ) {
         if (name == null) {
             LOGGER.error("No name provided for TextAreaAppender");
             return null;
@@ -104,7 +102,7 @@ public final class TextAreaAppender extends AbstractAppender {
 
 
     /**
-     * Set TextArea to append
+     * Set TextArea to append.
      *
      * @param textArea TextArea to append
      */

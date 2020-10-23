@@ -8,7 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * PluginLoader for added this example as part of an Esper configuration file and therefore execute it during startup.
+ * Implements PluginLoader for adding the Esper's runtime that handles events for raising alerts relating to a HTTP service into a
+ * larger main runtime.
  *
  * @author Vo Le Tung
  */
@@ -39,6 +40,13 @@ public class HTTPAlertsPlugin implements PluginLoader {
     private HTTPAlertsMain main;
     private HTTPAlertsConfigurations configs;
 
+    /**
+     * Set the default configurations that is used when the runtime first started.
+     * <p>
+     * This function is called by Esper's engine.
+     *
+     * @param context The context given by Esper
+     */
     public void init(PluginLoaderInitContext context) {
         logPath = context.getProperties().getProperty(LOG_PATH_KEY, "/var/log/apache2/access.log");
         runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY, context.getRuntime().getURI());
@@ -64,6 +72,11 @@ public class HTTPAlertsPlugin implements PluginLoader {
         );
     }
 
+    /**
+     * Start the daemon thread that continuously receives raw events and sends it to the system.
+     * <p>
+     * This function is called by Esper's engine.
+     */
     public void postInitialize() {
         log.info("Starting HTTPAlerts for runtime URI '" + runtimeURI + "'.");
 
@@ -80,16 +93,29 @@ public class HTTPAlertsPlugin implements PluginLoader {
         log.info("HTTPAlerts started.");
     }
 
+    /**
+     * Deploy the EPL statements that are managed by the runtime that is associated with this plugin
+     * using the given configurations.
+     *
+     * @param configs
+     */
     public void deploy(HTTPAlertsConfigurations configs) {
         main.deploy(configs);
     }
 
+    /**
+     * Undeploy the EPL statements that are managed by the runtime that is associated with this plugin
+     * using the given configurations
+     */
     public void undeploy() throws EPUndeployException {
         if (main != null) {
             main.undeploy();
         }
     }
 
+    /**
+     * Undeploy all statements and stop the daemon.
+     */
     public void destroy() {
         if (main != null) {
             try {

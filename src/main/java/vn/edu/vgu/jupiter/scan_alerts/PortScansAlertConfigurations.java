@@ -1,7 +1,7 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
 /**
- * Classes that contain parameters for raising port scan alerts.
+ * Sets of parameters for raising port scan alerts.
  *
  * @author Vo Le tung
  */
@@ -10,7 +10,9 @@ public class PortScansAlertConfigurations {
     private HorizontalScan horizontalScan;
     private BlockScan blockScan;
 
-    public PortScansAlertConfigurations(VerticalScan verticalScan, HorizontalScan horizontalScan, BlockScan blockScan) {
+    public PortScansAlertConfigurations(VerticalScan verticalScan,
+                                        HorizontalScan horizontalScan,
+                                        BlockScan blockScan) {
         this.verticalScan = verticalScan;
         this.horizontalScan = horizontalScan;
         this.blockScan = blockScan;
@@ -29,7 +31,7 @@ public class PortScansAlertConfigurations {
     }
 
     /**
-     * Contains paramters that are common among different types of alerts
+     * Set of parameters that are common among different types of alerts.
      *
      * @author Vo Le Tung
      */
@@ -39,11 +41,9 @@ public class PortScansAlertConfigurations {
         private int highPriorityThreshold;
 
         /**
-         * Setting parameters for port scan alert
-         *
-         * @param timeWindow            in seconds, the sliding time window of events to be considered
-         * @param alertInterval         in seconds, the interval of alert messages raising to the user
-         * @param highPriorityThreshold threshold for classifying a high priority event
+         * @param timeWindow            In seconds, the sliding time window of events to be considered
+         * @param alertInterval         In seconds, the interval of alert messages raising to the user
+         * @param highPriorityThreshold Threshold for classifying a high priority event
          */
         public GeneralScan(int timeWindow, int alertInterval, int highPriorityThreshold) {
             this.timeWindow = timeWindow;
@@ -65,7 +65,7 @@ public class PortScansAlertConfigurations {
     }
 
     /**
-     * Contains parameters for raising vertical port scan alerts
+     * Set of  parameters for raising vertical port scan alerts.
      *
      * @author Vo Le Tung
      */
@@ -73,12 +73,13 @@ public class PortScansAlertConfigurations {
         private int connectionsCountThreshold;
 
         /**
-         * @param timeWindow                in seconds, the sliding time window of events to be considered
-         * @param alertInterval             in seconds, the interval of alert messages raising to the user
-         * @param highPriorityThreshold     threshold for classifying a high priority event
-         * @param connectionsCountThreshold threshold for the number of connections that can happen
+         * @param timeWindow                In seconds, the sliding time window of events to be considered
+         * @param alertInterval             In seconds, the interval of alert messages raising to the user
+         * @param highPriorityThreshold     Threshold for classifying a high priority event
+         * @param connectionsCountThreshold Threshold for the number of connections that can happen
          */
-        public VerticalScan(int timeWindow, int alertInterval, int highPriorityThreshold, int connectionsCountThreshold) {
+        public VerticalScan(int timeWindow, int alertInterval,
+                            int highPriorityThreshold, int connectionsCountThreshold) {
             super(timeWindow, alertInterval, highPriorityThreshold);
             this.connectionsCountThreshold = connectionsCountThreshold;
         }
@@ -89,7 +90,7 @@ public class PortScansAlertConfigurations {
     }
 
     /**
-     * Contains parameters for raising horizontal port scan alerts
+     * Set of parameters for raising horizontal port scan alerts.
      *
      * @author Vo Le Tung
      */
@@ -102,7 +103,8 @@ public class PortScansAlertConfigurations {
          * @param highPriorityThreshold     threshold for classifying a high priority event
          * @param connectionsCountThreshold threshold for the number of connections that can happen
          */
-        public HorizontalScan(int timeWindow, int alertInterval, int highPriorityThreshold, int connectionsCountThreshold) {
+        public HorizontalScan(int timeWindow, int alertInterval,
+                              int highPriorityThreshold, int connectionsCountThreshold) {
             super(timeWindow, alertInterval, highPriorityThreshold);
             this.connectionsCountThreshold = connectionsCountThreshold;
         }

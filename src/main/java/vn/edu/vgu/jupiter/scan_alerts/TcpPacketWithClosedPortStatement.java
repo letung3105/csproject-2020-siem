@@ -11,10 +11,10 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  * @author Vo Le Tung
  */
 public class TcpPacketWithClosedPortStatement {
-    private static final String filterClosedPortStmt =
-            "insert into TcpPacketWithClosedPortEvent\n" +
+    private static final String eplTcpPacketToClosedPort =
+            "insert into TcpPacketWithClosedPort\n" +
                     "select a.timestamp, a.tcpHeader, a.ipHeader from pattern [\n" +
-                    "every a=TcpPacketEvent(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
+                    "every a=TcpPacket(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
                     "b=TcpPacketEvent(\n" +
                     "   tcpHeader.rst = true and\n" +
                     "   ipHeader.srcAddr = a.ipHeader.dstAddr and\n" +
@@ -25,16 +25,21 @@ public class TcpPacketWithClosedPortStatement {
                     "where timer:within(100 millisecond)\n" +
                     "]";
 
-    private EPStatement statement;
-
     private EPRuntime runtime;
+    private EPStatement stmtTcpPacketToClosedPort;
+
 
     public TcpPacketWithClosedPortStatement(EPRuntime runtime) {
         this.runtime = runtime;
-        statement = PortScansAlertUtil.compileDeploy(filterClosedPortStmt, runtime);
+        stmtTcpPacketToClosedPort = PortScansAlertUtil.compileDeploy(eplTcpPacketToClosedPort, runtime);
     }
 
+    /**
+     * Undeploy all statements managed by the object.
+     *
+     * @throws EPUndeployException Exception while undeploying statements.
+     */
     public void undeploy() throws EPUndeployException {
-        runtime.getDeploymentService().undeploy(statement.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtTcpPacketToClosedPort.getDeploymentId());
     }
 }
