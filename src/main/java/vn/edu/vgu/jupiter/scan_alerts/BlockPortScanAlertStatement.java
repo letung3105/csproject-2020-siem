@@ -14,13 +14,15 @@ import com.espertech.esper.runtime.client.EPUndeployException;
 public class BlockPortScanAlertStatement {
 
     private static final String eplPortsCountPerAddr =
-            "insert into ClosedPortsCountPerAddress\n" +
+            "@Name('ClosedPortsCountPerAddress')\n" +
+                    "insert into ClosedPortsCountPerAddress\n" +
                     "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
                     "from TcpPacketWithClosedPort#time(?:timeWindow:integer seconds)\n" +
                     "group by ipHeader.dstAddr\n";
 
     private static final String eplRaiseAlert =
-            "insert into BlockPortScanAlert\n" +
+            "@Name('BlockPortScanAlert')\n" +
+                    "insert into BlockPortScanAlert\n" +
                     "select timestamp, count(distinct addr)\n" +
                     "from ClosedPortsCountPerAddress#time(?:timeWindow:integer seconds)\n" +
                     "where portsCount >= ?:minPortsCount:integer\n" +

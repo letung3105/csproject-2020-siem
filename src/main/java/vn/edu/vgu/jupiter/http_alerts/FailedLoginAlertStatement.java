@@ -13,18 +13,17 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class FailedLoginAlertStatement {
     private String statementEPL =
-            "insert into FailedLoginAlert\n " +
+            "@Name('FailedLoginAlert')\n" +
+                    "insert into FailedLoginAlert\n " +
                     "select timeZone, time, count(*)\n " +
                     "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
     private String listenEPL = "select * from FailedLoginAlert";
 
+    private EPRuntime runtime;
     private EPStatement statement;
     private EPStatement listenStatement;
-
-
-    private EPRuntime runtime;
 
     public FailedLoginAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         this.runtime = runtime;

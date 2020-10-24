@@ -13,7 +13,8 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class HorizontalPortScanAlertStatement {
     private static final String alertStmt =
-            "insert into HorizontalPortScanAlert\n" +
+            "@Name('HorizontalPortScanAlert')\n" +
+                    "insert into HorizontalPortScanAlert\n" +
                     "select timestamp, tcpHeader.dstPort, count(distinct ipHeader.dstAddr)\n" +
                     "from TcpPacketWithClosedPort#time(?:timeWindow:integer second)\n" +
                     "group by tcpHeader.dstPort\n" +

@@ -12,7 +12,8 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class TcpPacketWithClosedPortStatement {
     private static final String eplTcpPacketToClosedPort =
-            "insert into TcpPacketWithClosedPort\n" +
+            "@Name('TcpPacketWithClosedPort')\n" +
+                    "insert into TcpPacketWithClosedPort\n" +
                     "select a.timestamp, a.tcpHeader, a.ipHeader from pattern [\n" +
                     "every a=TcpPacket(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
                     "b=TcpPacket(\n" +

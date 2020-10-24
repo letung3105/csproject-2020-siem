@@ -11,12 +11,14 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  * @author Bui Xuan Phuoc
  */
 public class HTTPFailedLoginEventStatement {
-    String statementEPL = "insert into HTTPFailedLogin\n " +
-            "select IPAddress, userID, time, timeZone from HTTPLog\n " +
-            "where statusCode like \"401\"";
-    private EPStatement statement;
+    private static final String statementEPL =
+            "@Name('HTTPFailedLogin')\n" +
+                    "insert into HTTPFailedLogin\n " +
+                    "select IPAddress, userID, time, timeZone from HTTPLog\n " +
+                    "where statusCode like \"401\"";
 
     private EPRuntime runtime;
+    private EPStatement statement;
 
     public HTTPFailedLoginEventStatement(EPRuntime runtime) {
         this.runtime = runtime;

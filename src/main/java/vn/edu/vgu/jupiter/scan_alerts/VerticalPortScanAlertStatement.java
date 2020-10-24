@@ -13,7 +13,8 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class VerticalPortScanAlertStatement {
     private static final String eplRaiseAlert =
-            "insert into VerticalPortScanAlert\n" +
+            "@Name('VerticalPortScanAlert')\n" +
+                    "insert into VerticalPortScanAlert\n" +
                     "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
                     "from TcpPacketWithClosedPort#time(?:timeWindow:integer seconds)\n" +
                     "group by ipHeader.dstAddr\n" +

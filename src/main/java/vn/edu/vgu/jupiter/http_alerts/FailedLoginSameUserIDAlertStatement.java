@@ -13,7 +13,8 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class FailedLoginSameUserIDAlertStatement {
     private String statementEPL =
-            "insert into FailedLoginSameUserIDAlert\n " +
+            "@Name('FailedLoginSameUserIDAlert')\n" +
+                    "insert into FailedLoginSameUserIDAlert\n " +
                     "select IPAddress, userID, time, timeZone, count(*)\n " +
                     "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "group by userID\n " +
@@ -21,10 +22,9 @@ public class FailedLoginSameUserIDAlertStatement {
                     "output last every ?:alertInterval:integer second";
     private String listenStatementEPL = "select * from FailedLoginSameUserIDAlert";
 
+    private EPRuntime runtime;
     private EPStatement statement;
     private EPStatement listenStatement;
-
-    private EPRuntime runtime;
 
     public FailedLoginSameUserIDAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         this.runtime = runtime;
