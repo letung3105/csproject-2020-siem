@@ -54,7 +54,7 @@ public class Dashboard extends Application implements Initializable {
 
         // configure HTTPAlertPlugin
         Properties httpAlertsProps = new Properties();
-        httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "HTTPAlertsPlugin");
+        httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "SIEM");
         httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, "/var/log/apache2/access.log");
         config.getRuntime().addPluginLoader(
                 "HTTPAlertsPlugin",
@@ -63,7 +63,7 @@ public class Dashboard extends Application implements Initializable {
 
         // configure PortScanPlugin
         Properties portScansAlertProps = new Properties();
-        portScansAlertProps.put("runtimeURI", "PortScansAlertPlugin");
+        portScansAlertProps.put("runtimeURI", "SIEM");
         portScansAlertProps.put("netdev", "lo0");
         config.getRuntime().addPluginLoader(
                 "PortScansAlertPlugin",
@@ -75,6 +75,12 @@ public class Dashboard extends Application implements Initializable {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        runtime.destroy();
+        super.stop();
     }
 
     @Override

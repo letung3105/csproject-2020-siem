@@ -15,7 +15,7 @@ public class TcpPacketWithClosedPortStatement {
             "insert into TcpPacketWithClosedPort\n" +
                     "select a.timestamp, a.tcpHeader, a.ipHeader from pattern [\n" +
                     "every a=TcpPacket(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
-                    "b=TcpPacketEvent(\n" +
+                    "b=TcpPacket(\n" +
                     "   tcpHeader.rst = true and\n" +
                     "   ipHeader.srcAddr = a.ipHeader.dstAddr and\n" +
                     "   ipHeader.dstAddr = a.ipHeader.srcAddr and\n" +

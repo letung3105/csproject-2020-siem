@@ -59,7 +59,7 @@ public class BlockPortScanAlertStatement {
         );
         stmtRaiseAlert = PortScansAlertUtil.compileDeploy(eplRaiseAlert, runtime, alertOpts);
 
-        stmtListen = PortScansAlertUtil.compileDeploy("", runtime);
+        stmtListen = PortScansAlertUtil.compileDeploy(eplListen, runtime);
         stmtListen.addListener(new BlockPortScanAlertListener(countThreshold));
     }
 
