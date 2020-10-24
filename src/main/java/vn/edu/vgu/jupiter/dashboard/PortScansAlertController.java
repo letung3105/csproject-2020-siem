@@ -14,6 +14,15 @@ import javax.naming.NamingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This controller can access the runtime to get the plugin to deploy and undeploy deployments for port scans alert
+ * <p>
+ * This controller consists of text fields to get player inputs and a button if pressed, will apply the changes to
+ * the system. Upon clicking the button, by using the plugin gotten from runtime, the system will undeploy all statements
+ * related to port scans, and redeploy with new parameters. If the input is of incorrect format, default values will be used.
+ *
+ * @author Pham Nguyen Thanh An
+ */
 public class PortScansAlertController implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertController.class);
     /**
