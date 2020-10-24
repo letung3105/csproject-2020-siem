@@ -108,7 +108,6 @@ public class HTTPAlertControlPanel implements Initializable {
         // redeployment
         plugin.undeploy();
         plugin.deploy(configs);
-        //
         updateFieldsValue(configs);
 
         // message to user

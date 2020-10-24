@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.edu.vgu.jupiter.dashboard.Dashboard">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
@@ -18,20 +16,25 @@
                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                          AnchorPane.topAnchor="0.0">
                     <tabs>
-                        <Tab text="PortScansAlert">
+                        <Tab closable="false" text="PortScansAlert">
                             <content>
                                 <fx:include fx:id="portScansAlertControlPanel" source="PortScansAlertPanel.fxml"/>
                             </content>
                         </Tab>
-                        <Tab text="HTTPAlerts">
+                        <Tab closable="false" text="HTTPAlerts">
                             <fx:include fx:id="httpAlertControlPanel" source="HTTPAlertControlPanel.fxml"/>
+                        </Tab>
+                        <Tab text="ARPAlerts">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                            </content>
                         </Tab>
                     </tabs>
                 </TabPane>
             </children>
         </AnchorPane>
         <TextArea fx:id="logArea" editable="false" prefHeight="600.0" prefWidth="500.0" wrapText="true"
-                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="200.0"
                   AnchorPane.topAnchor="0.0">
             <padding>
                 <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
@@ -40,5 +43,8 @@
                 <Font size="16.0"/>
             </font>
         </TextArea>
+        <fx:include fx:id="metricsPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" prefWidth="200.0" source="MetricsPanel.fxml" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
     </children>
 </AnchorPane>

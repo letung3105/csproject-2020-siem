@@ -9,11 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin;
+import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -33,8 +36,8 @@ import java.util.ResourceBundle;
  */
 public class Dashboard extends Application implements Initializable {
 
-    public static final double HEIGHT = 600;
-    public static final double WIDTH = 400;
+    public static final double WIDTH = 960;
+    public static final double HEIGHT = 640;
 
     private EPRuntime runtime;
 
@@ -46,6 +49,10 @@ public class Dashboard extends Application implements Initializable {
     public AnchorPane portScansAlertControlPanel;
     @FXML
     public PortScansAlertController portScansAlertControlPanelController;
+    @FXML
+    public TabPane metricsPanel;
+    @FXML
+    public MetricsPanel metricsPanelController;
     @FXML
     public TextArea logArea;
 
@@ -98,6 +105,18 @@ public class Dashboard extends Application implements Initializable {
         this.httpAlertControlPanelController.setRuntime(runtime);
         this.portScansAlertControlPanelController.setRuntime(runtime);
         TextAreaAppender.setTextArea(this.logArea);
+
+        try {
+            HTTPAlertsPlugin httpPlugin = (HTTPAlertsPlugin) runtime
+                    .getContext().getEnvironment().get("plugin-loader/HTTPAlertsPlugin");
+            PortScansAlertPlugin portScanPlugin = (PortScansAlertPlugin) runtime
+                    .getContext().getEnvironment().get("plugin-loader/PortScansAlertPlugin");
+
+            httpPlugin.addStatementMetricListener(metricsPanelController);
+            portScanPlugin.addStatementMetricListener(metricsPanelController);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
     }
 }
 
