@@ -18,7 +18,7 @@ public class HorizontalPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(HorizontalPortScanAlertListener.class);
     private int countThreshold;
 
-    public HorizontalPortScanAlertListener(int countThreshold){
+    public HorizontalPortScanAlertListener(int countThreshold) {
         this.countThreshold = countThreshold;
     }
 
@@ -31,7 +31,7 @@ public class HorizontalPortScanAlertListener implements UpdateListener {
         Port hostPort = (Port) newEvents[0].get("hostPort");
         int count = ((Long) newEvents[0].get("count")).intValue();
 
-        if(count < countThreshold){
+        if (count < countThreshold) {
             logger.info("[ts={}] LOW PRIORITY: POTENTIAL HORIZONTAL PORT SCAN ON PORT {}", ts, hostPort.valueAsInt());
         } else {
             logger.warn("[ts={}] HIGH PRIORITY: HORIZONTAL PORT SCAN ON PORT {}", ts, hostPort.valueAsInt());

@@ -30,7 +30,8 @@ public class PortScansAlertUtil {
             CompilerArguments args = new CompilerArguments(getConfiguration());
             args.getPath().add(runtime.getRuntimePath());
             EPCompiled compiled = EPCompilerProvider.getCompiler().compile(epl, args);
-            return runtime.getDeploymentService().deploy(compiled, deployOpts).getStatements()[0];
+            EPStatement epStatement = runtime.getDeploymentService().deploy(compiled, deployOpts).getStatements()[0];
+            return epStatement;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -61,8 +62,8 @@ public class PortScansAlertUtil {
      */
     public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
-        configuration.getCommon().addEventType(TcpPacketEvent.class);
-        configuration.getCommon().addEventType(TcpPacketWithClosedPortEvent.class);
+        configuration.getCommon().addEventType(TcpPacket.class);
+        configuration.getCommon().addEventType(TcpPacketWithClosedPort.class);
         configuration.getCommon().addEventType(ClosedPortsCountPerAddress.class);
         configuration.getCommon().addEventType(VerticalPortScanAlert.class);
         configuration.getCommon().addEventType(HorizontalPortScanAlert.class);

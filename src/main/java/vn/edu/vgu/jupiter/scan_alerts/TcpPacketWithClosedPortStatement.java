@@ -1,6 +1,8 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntime;
+import com.espertech.esper.runtime.client.EPStatement;
+import com.espertech.esper.runtime.client.EPUndeployException;
 
 /**
  * This class compile the EPL statement for selecting packets of TCP connection to closed port
@@ -9,10 +11,10 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Vo Le Tung
  */
 public class TcpPacketWithClosedPortStatement {
-    private static final String filterClosedPortStmt =
-            "insert into TcpPacketWithClosedPortEvent\n" +
+    private static final String eplTcpPacketToClosedPort =
+            "insert into TcpPacketWithClosedPort\n" +
                     "select a.timestamp, a.tcpHeader, a.ipHeader from pattern [\n" +
-                    "every a=TcpPacketEvent(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
+                    "every a=TcpPacket(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
                     "b=TcpPacketEvent(\n" +
                     "   tcpHeader.rst = true and\n" +
                     "   ipHeader.srcAddr = a.ipHeader.dstAddr and\n" +
@@ -23,7 +25,21 @@ public class TcpPacketWithClosedPortStatement {
                     "where timer:within(100 millisecond)\n" +
                     "]";
 
+    private EPRuntime runtime;
+    private EPStatement stmtTcpPacketToClosedPort;
+
+
     public TcpPacketWithClosedPortStatement(EPRuntime runtime) {
-        PortScansAlertUtil.compileDeploy(filterClosedPortStmt, runtime);
+        this.runtime = runtime;
+        stmtTcpPacketToClosedPort = PortScansAlertUtil.compileDeploy(eplTcpPacketToClosedPort, runtime);
+    }
+
+    /**
+     * Undeploy all statements managed by the object.
+     *
+     * @throws EPUndeployException Exception while undeploying statements.
+     */
+    public void undeploy() throws EPUndeployException {
+        runtime.getDeploymentService().undeploy(stmtTcpPacketToClosedPort.getDeploymentId());
     }
 }

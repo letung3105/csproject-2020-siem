@@ -18,6 +18,7 @@ public class App {
         config.getRuntime().addPluginLoader("PortScansAlertPlugin", "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin", props);
 
         EPRuntime runtime = EPRuntimeProvider.getRuntime("PortScansAlertPlugin", config);
+
         try {
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException e) {

@@ -22,8 +22,10 @@ public class PortScansAlertPlugin implements PluginLoader {
     private String runtimeURI;
     private PortScansAlertMain main;
     private Thread portScansAlertThread;
+    private PortScansAlertConfigurations configs;
 
     public void init(PluginLoaderInitContext context) {
+        // TODO: setting initial parameters
         if (context.getProperties().getProperty(RUNTIME_URI_KEY) != null) {
             runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY);
         } else {
@@ -35,6 +37,11 @@ public class PortScansAlertPlugin implements PluginLoader {
         } else {
             netdev = context.getRuntime().getURI();
         }
+
+        configs = new PortScansAlertConfigurations(
+                new PortScansAlertConfigurations.VerticalScan(60, 10, 100, 60),
+                new PortScansAlertConfigurations.HorizontalScan(60, 10, 100, 60),
+                new PortScansAlertConfigurations.BlockScan(60, 10, 5, 50, 2));
     }
 
     public void postInitialize() {
@@ -42,6 +49,7 @@ public class PortScansAlertPlugin implements PluginLoader {
 
         try {
             main = new PortScansAlertMain(netdev);
+            main.deploy(configs);
             portScansAlertThread = new Thread(main, this.getClass().getName());
             portScansAlertThread.setDaemon(true);
             portScansAlertThread.start();
@@ -50,6 +58,16 @@ public class PortScansAlertPlugin implements PluginLoader {
         }
 
         log.info("PortScansAlert started.");
+    }
+
+    public void deploy(PortScansAlertConfigurations configs) {
+        main.deploy(configs);
+    }
+
+    public void undeploy() throws EPUndeployException {
+        if (main != null) {
+            main.undeploy();
+        }
     }
 
     public void destroy() {

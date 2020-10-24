@@ -59,13 +59,11 @@ public class CEPSetupUtil {
      */
     public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
-        configuration.getCommon().addEventType(httpLogEvent.class);
-        configuration.getCommon().addEventType(httpFailedLoginEvent.class);
-        configuration.getCommon().addEventType(httpConsecutiveFailedLoginFromSameIPAlertEvent.class);
-        configuration.getCommon().addEventType(httpFileTooLargeEvent.class);
-        configuration.getCommon().addEventType(httpFileTooLargeFromSameIPAlertEvent.class);
-        configuration.getCommon().addEventType(httpConsecutiveFailedLoginAlertEvent.class);
-        configuration.getCommon().addEventType(httpConsecutiveFailedLoginOneUserIDAlertEvent.class);
+        configuration.getCommon().addEventType(HTTPLog.class);
+        configuration.getCommon().addEventType(HTTPFailedLogin.class);
+        configuration.getCommon().addEventType(FailedLoginFromSameIPAlert.class);
+        configuration.getCommon().addEventType(FailedLoginAlert.class);
+        configuration.getCommon().addEventType(FailedLoginSameUserIDAlert.class);
         return configuration;
     }
 }

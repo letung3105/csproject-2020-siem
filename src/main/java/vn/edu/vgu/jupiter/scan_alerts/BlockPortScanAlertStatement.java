@@ -2,6 +2,8 @@ package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
+import com.espertech.esper.runtime.client.EPStatement;
+import com.espertech.esper.runtime.client.EPUndeployException;
 
 /**
  * This class compile the EPL statement for raising alerts for block port scan events that might be
@@ -10,12 +12,14 @@ import com.espertech.esper.runtime.client.EPRuntime;
  * @author Vo Le Tung
  */
 public class BlockPortScanAlertStatement {
-    private static final String portsCountStmt =
+
+    private static final String eplPortsCountPerAddr =
             "insert into ClosedPortsCountPerAddress\n" +
                     "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
-                    "from TcpPacketWithClosedPortEvent#time(?:timeWindow:integer seconds)\n" +
+                    "from TcpPacketWithClosedPort#time(?:timeWindow:integer seconds)\n" +
                     "group by ipHeader.dstAddr\n";
-    private static final String alertStmt =
+
+    private static final String eplRaiseAlert =
             "insert into BlockPortScanAlert\n" +
                     "select timestamp, count(distinct addr)\n" +
                     "from ClosedPortsCountPerAddress#time(?:timeWindow:integer seconds)\n" +
@@ -23,13 +27,27 @@ public class BlockPortScanAlertStatement {
                     "having count(distinct addr) >= ?:minAddressesCount:integer\n" +
                     "output first every ?:alertInterval:integer seconds";
 
-    public BlockPortScanAlertStatement(EPRuntime runtime, int minPortsCount, int minAddressesCount, int timeWindow, int alertInterval, int countThreshold) {
+    private static final String eplListen = "select * from BlockPortScanAlert";
+
+    private EPRuntime runtime;
+    private EPStatement stmtPortsCountPerAddr;
+    private EPStatement stmtRaiseAlert;
+    private EPStatement stmtListen;
+
+    public BlockPortScanAlertStatement(EPRuntime runtime,
+                                       int minPortsCount,
+                                       int minAddressesCount,
+                                       int timeWindow,
+                                       int alertInterval,
+                                       int countThreshold) {
+        this.runtime = runtime;
+
         DeploymentOptions portsCountOpts = new DeploymentOptions();
         portsCountOpts.setStatementSubstitutionParameter(prepared -> {
                     prepared.setObject("timeWindow", timeWindow);
                 }
         );
-        PortScansAlertUtil.compileDeploy(portsCountStmt, runtime, portsCountOpts);
+        stmtPortsCountPerAddr = PortScansAlertUtil.compileDeploy(eplPortsCountPerAddr, runtime, portsCountOpts);
 
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
@@ -39,9 +57,20 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        PortScansAlertUtil.compileDeploy(alertStmt, runtime, alertOpts);
-        PortScansAlertUtil
-                .compileDeploy("select * from BlockPortScanAlert", runtime)
-                .addListener(new BlockPortScanAlertListener(countThreshold));
+        stmtRaiseAlert = PortScansAlertUtil.compileDeploy(eplRaiseAlert, runtime, alertOpts);
+
+        stmtListen = PortScansAlertUtil.compileDeploy("", runtime);
+        stmtListen.addListener(new BlockPortScanAlertListener(countThreshold));
+    }
+
+    /**
+     * Undeploy the set of statements managed by this class
+     *
+     * @throws EPUndeployException Exception will undeploying the EPL statements
+     */
+    public void undeploy() throws EPUndeployException {
+        runtime.getDeploymentService().undeploy(stmtPortsCountPerAddr.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtRaiseAlert.getDeploymentId());
+        runtime.getDeploymentService().undeploy(stmtListen.getDeploymentId());
     }
 }

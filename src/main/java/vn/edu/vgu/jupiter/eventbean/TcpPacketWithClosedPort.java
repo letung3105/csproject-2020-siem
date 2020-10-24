@@ -9,12 +9,12 @@ import org.pcap4j.packet.TcpPacket;
  *
  * @author Vo Le Tung
  */
-public class TcpPacketWithClosedPortEvent {
+public class TcpPacketWithClosedPort {
     private Long timestamp;
     private TcpPacket.TcpHeader tcpHeader;
     private IpPacket.IpHeader ipHeader;
 
-    public TcpPacketWithClosedPortEvent(Long timestamp, TcpPacket.TcpHeader tcpHeader, IpPacket.IpHeader ipHeader) {
+    public TcpPacketWithClosedPort(Long timestamp, TcpPacket.TcpHeader tcpHeader, IpPacket.IpHeader ipHeader) {
         this.timestamp = timestamp;
         this.tcpHeader = tcpHeader;
         this.ipHeader = ipHeader;

@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Bui Xuan Phuoc
  */
-public class ConsecutiveFailedLoginAlertListener implements UpdateListener {
-    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedLoginAlertListener.class);
+public class FailedLoginAlertListener implements UpdateListener {
+    private static final Logger log = LoggerFactory.getLogger(FailedLoginAlertListener.class);
 
     private long highPriorityThreshold;
 
-    public ConsecutiveFailedLoginAlertListener(long highPriorityThreshold) {
+    public FailedLoginAlertListener(long highPriorityThreshold) {
         this.highPriorityThreshold = highPriorityThreshold;
     }
 

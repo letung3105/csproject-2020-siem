@@ -20,7 +20,7 @@ public class VerticalPortScanAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(VerticalPortScanAlertListener.class);
     private int countThreshold;
 
-    public VerticalPortScanAlertListener(int countThreshold){
+    public VerticalPortScanAlertListener(int countThreshold) {
         this.countThreshold = countThreshold;
     }
 
@@ -32,7 +32,7 @@ public class VerticalPortScanAlertListener implements UpdateListener {
         Long ts = (Long) newEvents[0].get("timestamp");
         InetAddress hostAddr = (InetAddress) newEvents[0].get("hostAddr");
         int count = ((Long) newEvents[0].get("count")).intValue();
-        if(count < countThreshold){
+        if (count < countThreshold) {
             logger.info("[ts={}] LOW PRIORITY: POTENTIAL VERTICAL PORT SCAN ON {}", ts, hostAddr.getHostAddress()); //info
         } else {
             logger.warn("[ts={}] HIGH PRIORITY: VERTICAL PORT SCAN ON {}", ts, hostAddr.getHostAddress()); //warn

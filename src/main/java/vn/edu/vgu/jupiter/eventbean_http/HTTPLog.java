@@ -2,7 +2,7 @@ package vn.edu.vgu.jupiter.eventbean_http;
 
 import java.util.ArrayList;
 
-public class httpLogEvent {
+public class HTTPLog {
     String IPAddress;
     String identd;
     String userID;
@@ -13,6 +13,19 @@ public class httpLogEvent {
     String returnObjSize;
     String referer;
     String clientBrowser;
+
+    public HTTPLog(ArrayList<String> splittedLog) {
+        IPAddress = splittedLog.get(0);
+        identd = splittedLog.get(1);
+        userID = splittedLog.get(2);
+        time = splittedLog.get(3);
+        timeZone = splittedLog.get(4);
+        protocol = splittedLog.get(5);
+        statusCode = splittedLog.get(6);
+        returnObjSize = splittedLog.get(7);
+        referer = splittedLog.get(8);
+        clientBrowser = splittedLog.get(9);
+    }
 
     public String getIPAddress() {
         return IPAddress;
@@ -48,21 +61,6 @@ public class httpLogEvent {
 
     public String getClientBrowser() {
         return clientBrowser;
-    }
-
-
-
-    public httpLogEvent(ArrayList<String> splittedLog) {
-        IPAddress = splittedLog.get(0);
-        identd = splittedLog.get(1);
-        userID = splittedLog.get(2);
-        time = splittedLog.get(3);
-        timeZone = splittedLog.get(4);
-        protocol = splittedLog.get(5);
-        statusCode = splittedLog.get(6);
-        returnObjSize = splittedLog.get(7);
-        referer = splittedLog.get(8);
-        clientBrowser = splittedLog.get(9);
     }
 
     public String getStatusCode() {
