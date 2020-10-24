@@ -97,6 +97,11 @@ public class PortScansAlertMain implements Runnable {
         }
     }
 
+    /**
+     * Deploy all modules related to port scans alert with given configurations
+     *
+     * @param portScanAlertConfig configurations for port scans alert
+     */
     public void deploy(PortScansAlertConfigurations portScanAlertConfig) {
         tcpClosedStatement = new TcpPacketWithClosedPortStatement(runtime);
         verticalStatement = new VerticalPortScanAlertStatement(
@@ -120,6 +125,11 @@ public class PortScansAlertMain implements Runnable {
                 portScanAlertConfig.getHorizontalScan().getHighPriorityThreshold());
     }
 
+    /**
+    * Undeploy all the modules related to port scan service alerts
+    *
+    *  @throws EPUndeployException
+    */
     public void undeploy() throws EPUndeployException {
         if (tcpClosedStatement != null) {
             tcpClosedStatement.undeploy();

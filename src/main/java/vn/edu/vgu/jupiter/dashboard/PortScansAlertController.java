@@ -50,10 +50,21 @@ public class PortScansAlertController implements Initializable {
 
     private EPRuntime runtime;
 
+    /**
+     * Set the runtime that is used by this controller.
+     *
+     * @param runtime The runtime
+     */
     public void setRuntime(EPRuntime runtime) {
         this.runtime = runtime;
     }
 
+    /**
+     * Get plugin from runtime and undeploy, deploy with new parameters.
+     *
+     * @throws NamingException plugin id not found
+     * @throws EPUndeployException deployments can not be undeploy
+     */
     @FXML
     public void applyVariableChanges() throws NamingException, EPUndeployException {
         PortScansAlertPlugin plugin = (PortScansAlertPlugin) runtime.getContext().getEnvironment()
@@ -102,6 +113,11 @@ public class PortScansAlertController implements Initializable {
         blockWarnAddressCount.setText(String.valueOf(5));
     }
 
+    /**
+     * Update values of text fields based on the configurations.
+     *
+     * @param config Parameters for the CEP engine
+     */
     private void updateFieldsValue(PortScansAlertConfigurations config) {
         verticalMinCount.setText(String.valueOf(config.getVerticalScan().getConnectionsCountThreshold()));
         verticalTime.setText(String.valueOf(config.getVerticalScan().getTimeWindow()));
@@ -120,6 +136,15 @@ public class PortScansAlertController implements Initializable {
         blockWarnAddressCount.setText(String.valueOf(config.getBlockScan().getHighPriorityThreshold()));
     }
 
+    /**
+     * Simple helper for parsing strings as integers.
+     * <p>
+     * If the given string is not an integer, returns the given default value.
+     *
+     * @param text          The string representation of the integer
+     * @param defaultVal The default value that might be returned
+     * @return The parsed integer, if the given string is valid, otherwise the default value
+     */
     private int parseIntoIntOrDefault(String text, int defaultVal) {
         int number;
         try {

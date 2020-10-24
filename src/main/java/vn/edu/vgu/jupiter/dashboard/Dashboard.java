@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin;
+import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,8 +64,8 @@ public class Dashboard extends Application implements Initializable {
 
         // configure PortScanPlugin
         Properties portScansAlertProps = new Properties();
-        portScansAlertProps.put("runtimeURI", "SIEM");
-        portScansAlertProps.put("netdev", "lo0");
+        portScansAlertProps.put(PortScansAlertPlugin.RUNTIME_URI_KEY, "PortScansAlertPlugin");
+        portScansAlertProps.put(PortScansAlertPlugin.NETDEV_KEY, "lo0");
         config.getRuntime().addPluginLoader(
                 "PortScansAlertPlugin",
                 "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
