@@ -70,6 +70,7 @@ public class PortScansAlertUtil {
         configuration.getCommon().addEventType(BlockPortScanAlert.class);
         configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
         configuration.getRuntime().getLogging().setEnableTimerDebug(false);
+        configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
         return configuration;
     }
 }

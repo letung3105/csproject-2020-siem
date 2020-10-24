@@ -2,6 +2,7 @@ package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import com.espertech.esper.runtime.client.UpdateListener;
 import com.espertech.esper.runtime.client.plugin.PluginLoader;
 import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
@@ -23,6 +24,24 @@ public class PortScansAlertPlugin implements PluginLoader {
     private PortScansAlertMain main;
     private Thread portScansAlertThread;
     private PortScansAlertConfigurations configs;
+
+    public void deploy(PortScansAlertConfigurations configs) {
+        if (main != null) {
+            main.deploy(configs);
+        }
+    }
+
+    public void undeploy() throws EPUndeployException {
+        if (main != null) {
+            main.undeploy();
+        }
+    }
+
+    public void addStatementMetricListener(UpdateListener listener) {
+        if (main != null) {
+            main.addStatementMetricListener(listener);
+        }
+    }
 
     public void init(PluginLoaderInitContext context) {
         // TODO: setting initial parameters
@@ -58,16 +77,6 @@ public class PortScansAlertPlugin implements PluginLoader {
         }
 
         log.info("PortScansAlert started.");
-    }
-
-    public void deploy(PortScansAlertConfigurations configs) {
-        main.deploy(configs);
-    }
-
-    public void undeploy() throws EPUndeployException {
-        if (main != null) {
-            main.undeploy();
-        }
     }
 
     public void destroy() {

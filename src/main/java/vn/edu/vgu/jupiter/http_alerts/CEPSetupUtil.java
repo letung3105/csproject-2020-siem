@@ -64,6 +64,7 @@ public class CEPSetupUtil {
         configuration.getCommon().addEventType(FailedLoginFromSameIPAlert.class);
         configuration.getCommon().addEventType(FailedLoginAlert.class);
         configuration.getCommon().addEventType(FailedLoginSameUserIDAlert.class);
+        configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
         return configuration;
     }
 }

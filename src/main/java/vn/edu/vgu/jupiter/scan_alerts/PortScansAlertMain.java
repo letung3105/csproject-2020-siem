@@ -1,8 +1,6 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import com.espertech.esper.runtime.client.EPUndeployException;
+import com.espertech.esper.runtime.client.*;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.IpV4Packet;
 import org.slf4j.Logger;
@@ -26,6 +24,7 @@ public class PortScansAlertMain implements Runnable {
     private PortScansAlertConfigurations portScanAlertConfig;
 
     private EPRuntime runtime;
+    private EPStatement epStatementMetric;
     private TcpPacketWithClosedPortStatement tcpClosedStatement;
     private VerticalPortScanAlertStatement verticalStatement;
     private HorizontalPortScanAlertStatement horizontalStatement;
@@ -35,6 +34,9 @@ public class PortScansAlertMain implements Runnable {
         this.netDevName = netDevName;
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(),
                 PortScansAlertUtil.getConfiguration());
+        this.epStatementMetric = PortScansAlertUtil.compileDeploy(
+                "select * from com.espertech.esper.common.client.metric.StatementMetric",
+                runtime);
     }
 
     public static void main(String[] args) {
@@ -123,15 +125,23 @@ public class PortScansAlertMain implements Runnable {
     public void undeploy() throws EPUndeployException {
         if (tcpClosedStatement != null) {
             tcpClosedStatement.undeploy();
+            tcpClosedStatement = null;
         }
         if (verticalStatement != null) {
             verticalStatement.undeploy();
+            verticalStatement = null;
         }
         if (horizontalStatement != null) {
             horizontalStatement.undeploy();
+            horizontalStatement = null;
         }
         if (blockStatement != null) {
             blockStatement.undeploy();
+            blockStatement = null;
         }
+    }
+
+    public void addStatementMetricListener(UpdateListener listener) {
+        epStatementMetric.addListener(listener);
     }
 }

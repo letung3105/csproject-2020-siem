@@ -1,8 +1,6 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import com.espertech.esper.runtime.client.EPUndeployException;
+import com.espertech.esper.runtime.client.*;
 import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
 
 import java.io.BufferedReader;
@@ -16,6 +14,7 @@ import java.util.regex.Pattern;
 public class HTTPAlertsMain implements Runnable {
 
     private EPRuntime runtime;
+    private EPStatement epStatementMetric;
     private HTTPFailedLoginEventStatement httpFailedLoginEventStmt;
     private FailedLoginAlertStatement failedLoginAlertStmt;
     private FailedLoginFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
@@ -24,6 +23,9 @@ public class HTTPAlertsMain implements Runnable {
 
     public HTTPAlertsMain(String logPath) {
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), CEPSetupUtil.getConfiguration());
+        this.epStatementMetric = CEPSetupUtil.compileDeploy(
+                "select * from com.espertech.esper.common.client.metric.StatementMetric",
+                runtime);
         this.logPath = logPath;
     }
 
@@ -129,15 +131,23 @@ public class HTTPAlertsMain implements Runnable {
     public void undeploy() throws EPUndeployException {
         if (httpFailedLoginEventStmt != null) {
             httpFailedLoginEventStmt.undeploy();
+            httpFailedLoginEventStmt = null;
         }
         if (failedLoginAlertStmt != null) {
             failedLoginAlertStmt.undeploy();
+            failedLoginAlertStmt = null;
         }
         if (failedLoginFromSameIPAlertStmt != null) {
             failedLoginFromSameIPAlertStmt.undeploy();
+            failedLoginFromSameIPAlertStmt = null;
         }
         if (failedLoginSameUserIDAlertStmt != null) {
             failedLoginSameUserIDAlertStmt.undeploy();
+            failedLoginSameUserIDAlertStmt = null;
         }
+    }
+
+    public void addStatementMetricListener(UpdateListener listener) {
+        epStatementMetric.addListener(listener);
     }
 }

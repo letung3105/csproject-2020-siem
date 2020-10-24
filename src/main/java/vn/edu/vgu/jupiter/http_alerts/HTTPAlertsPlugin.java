@@ -2,6 +2,7 @@ package vn.edu.vgu.jupiter.http_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import com.espertech.esper.runtime.client.UpdateListener;
 import com.espertech.esper.runtime.client.plugin.PluginLoader;
 import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
@@ -39,6 +40,35 @@ public class HTTPAlertsPlugin implements PluginLoader {
     private Thread httpAlertsThread;
     private HTTPAlertsMain main;
     private HTTPAlertsConfigurations configs;
+
+    /**
+     * Deploy the EPL statements that are managed by the runtime that is associated with this plugin
+     * using the given configurations.
+     *
+     * @param configs
+     */
+    public void deploy(HTTPAlertsConfigurations configs) {
+        if (main != null) {
+            main.deploy(configs);
+        }
+    }
+
+    /**
+     * Undeploy the EPL statements that are managed by the runtime that is associated with this plugin
+     * using the given configurations
+     */
+    public void undeploy() throws EPUndeployException {
+        if (main != null) {
+            main.undeploy();
+        }
+    }
+
+    public void addStatementMetricListener(UpdateListener listener) {
+        if (main != null) {
+            main.addStatementMetricListener(listener);
+        }
+    }
+
 
     /**
      * Set the default configurations that is used when the runtime first started.
@@ -91,26 +121,6 @@ public class HTTPAlertsPlugin implements PluginLoader {
         }
 
         log.info("HTTPAlerts started.");
-    }
-
-    /**
-     * Deploy the EPL statements that are managed by the runtime that is associated with this plugin
-     * using the given configurations.
-     *
-     * @param configs
-     */
-    public void deploy(HTTPAlertsConfigurations configs) {
-        main.deploy(configs);
-    }
-
-    /**
-     * Undeploy the EPL statements that are managed by the runtime that is associated with this plugin
-     * using the given configurations
-     */
-    public void undeploy() throws EPUndeployException {
-        if (main != null) {
-            main.undeploy();
-        }
     }
 
     /**
