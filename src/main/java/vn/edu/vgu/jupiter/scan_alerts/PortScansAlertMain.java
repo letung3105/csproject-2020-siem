@@ -62,9 +62,19 @@ public class PortScansAlertMain implements Runnable {
                     PcapNetworkInterface.PromiscuousMode.PROMISCUOUS,
                     READ_TIMEOUT);
             handle.setFilter(FILTER, BpfProgram.BpfCompileMode.OPTIMIZE);
+
+            Thread portScansAlertMainThread = Thread.currentThread();
             try {
                 // capturing packet and send the Esper engine
                 handle.loop(COUNT, (PacketListener) packet -> {
+                    if (portScansAlertMainThread.isInterrupted()) {
+                        try {
+                            handle.breakLoop();
+                        } catch (NotOpenException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     if (packet.contains(IpV4Packet.class)) {
                         IpV4Packet ipV4Packet = packet.get(IpV4Packet.class);
                         if (ipV4Packet.contains(org.pcap4j.packet.TcpPacket.class)) {

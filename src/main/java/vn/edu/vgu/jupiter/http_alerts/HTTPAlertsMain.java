@@ -78,7 +78,7 @@ public class HTTPAlertsMain implements Runnable {
      */
     public void run() {
         int recordedNumberOfLogEntries = 0;
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             ArrayList<HTTPLog> httpLogs = null;
             try {
                 httpLogs = getEventsFromApacheHTTPDLogs();
