@@ -1,24 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <TabPane side="RIGHT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1"
          xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.edu.vgu.jupiter.dashboard.MetricsPanel">
     <tabs>
         <Tab closable="false" text="PortScanAlerts">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                            prefWidth="200.0">
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0"
+                              AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
+                            <children>
+                                <Label text="TCPPacket">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfTCPPacketEventsLabel" text="#events: 0">
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="TCPPacketWithClosedPort">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfTCPPacketWithClosedPortEventsLabel" text="#events: 0">
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="VerticalPortScanAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfVerticalPortScanAlertsLabel" text="#events: 0">
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="HorizontalPortScanAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfHorizontalPortScanAlertsLabel" text="#events: 0">
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="BlockPortScanAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfBlockPortScanAlertsLabel" text="#events: 0">
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
             </content>
         </Tab>
         <Tab closable="false" text="HTTPAlerts">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0"
+                              AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
+                            <children>
+                                <Label text="HTTPFailedLogin">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfHTTPFailedLoginEventsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ConsecutiveFailedLoginsAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfConsecutiveFailedLoginsAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ConsecutiveFailedLoginsFromSameIPAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfConsecutiveFailedLoginsFromSameIPAlerts" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ConsecutiveFailedLoginsSameUserIDAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfConsecutiveFailedLoginsSameUserIDAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
             </content>
         </Tab>
         <Tab closable="false" text="ARPAlerts">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <Label text="NO METRIC" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="8.0">
+                            <VBox.margin>
+                                <Insets top="8.0"/>
+                            </VBox.margin>
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
             </content>
         </Tab>
     </tabs>

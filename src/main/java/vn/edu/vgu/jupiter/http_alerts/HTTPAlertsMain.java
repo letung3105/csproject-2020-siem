@@ -15,10 +15,10 @@ public class HTTPAlertsMain implements Runnable {
 
     private EPRuntime runtime;
     private EPStatement epStatementMetric;
-    private HTTPFailedLoginEventStatement httpFailedLoginEventStmt;
-    private FailedLoginAlertStatement failedLoginAlertStmt;
-    private FailedLoginFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
-    private FailedLoginSameUserIDAlertStatement failedLoginSameUserIDAlertStmt;
+    private HTTPFailedLoginStatement httpFailedLoginEventStmt;
+    private ConsecutiveFailedLoginsAlertStatement failedLoginAlertStmt;
+    private ConsecutiveFailedLoginsFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
+    private ConsecutiveFailedLoginsSameUserIDAlertStatement failedLoginSameUserIDAlertStmt;
     private String logPath;
 
     public HTTPAlertsMain(String logPath) {
@@ -104,19 +104,19 @@ public class HTTPAlertsMain implements Runnable {
      * @author Vo Le Tung
      */
     public void deploy(HTTPAlertsConfigurations configs) {
-        httpFailedLoginEventStmt = new HTTPFailedLoginEventStatement(runtime);
-        failedLoginAlertStmt = new FailedLoginAlertStatement(
+        httpFailedLoginEventStmt = new HTTPFailedLoginStatement(runtime);
+        failedLoginAlertStmt = new ConsecutiveFailedLoginsAlertStatement(
                 runtime,
                 configs.getFailedLogin().getConsecutiveAttemptsThreshold(),
                 configs.getFailedLogin().getTimeWindow(),
                 configs.getFailedLogin().getAlertInterval(),
                 configs.getFailedLogin().getHighPriorityThreshold());
-        failedLoginFromSameIPAlertStmt = new FailedLoginFromSameIPAlertStatement(runtime,
+        failedLoginFromSameIPAlertStmt = new ConsecutiveFailedLoginsFromSameIPAlertStatement(runtime,
                 configs.getFailedLoginFromSameIP().getConsecutiveAttemptsThreshold(),
                 configs.getFailedLoginFromSameIP().getTimeWindow(),
                 configs.getFailedLoginFromSameIP().getAlertInterval(),
                 configs.getFailedLoginFromSameIP().getHighPriorityThreshold());
-        failedLoginSameUserIDAlertStmt = new FailedLoginSameUserIDAlertStatement(runtime,
+        failedLoginSameUserIDAlertStmt = new ConsecutiveFailedLoginsSameUserIDAlertStatement(runtime,
                 configs.getFailedLoginSameUserID().getConsecutiveAttemptsThreshold(),
                 configs.getFailedLoginSameUserID().getTimeWindow(),
                 configs.getFailedLoginSameUserID().getAlertInterval(),

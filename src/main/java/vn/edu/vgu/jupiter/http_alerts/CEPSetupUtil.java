@@ -61,9 +61,9 @@ public class CEPSetupUtil {
         Configuration configuration = new Configuration();
         configuration.getCommon().addEventType(HTTPLog.class);
         configuration.getCommon().addEventType(HTTPFailedLogin.class);
-        configuration.getCommon().addEventType(FailedLoginFromSameIPAlert.class);
-        configuration.getCommon().addEventType(FailedLoginAlert.class);
-        configuration.getCommon().addEventType(FailedLoginSameUserIDAlert.class);
+        configuration.getCommon().addEventType(ConsecutiveFailedLoginsFromSameIPAlert.class);
+        configuration.getCommon().addEventType(ConsecutiveFailedLoginsAlert.class);
+        configuration.getCommon().addEventType(ConsecutiveFailedLoginsSameUserIDAlert.class);
         configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
         return configuration;
     }

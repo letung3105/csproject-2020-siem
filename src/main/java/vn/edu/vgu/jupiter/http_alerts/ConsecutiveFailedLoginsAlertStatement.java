@@ -11,21 +11,21 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  *
  * @author Bui Xuan Phuoc
  */
-public class FailedLoginAlertStatement {
+public class ConsecutiveFailedLoginsAlertStatement {
     private String statementEPL =
-            "@Name('FailedLoginAlert')\n" +
-                    "insert into FailedLoginAlert\n " +
+            "@Name('ConsecutiveFailedLoginsAlert')\n" +
+                    "insert into ConsecutiveFailedLoginsAlert\n " +
                     "select timeZone, time, count(*)\n " +
                     "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
-    private String listenEPL = "select * from FailedLoginAlert";
+    private String listenEPL = "select * from ConsecutiveFailedLoginsAlert";
 
     private EPRuntime runtime;
     private EPStatement statement;
     private EPStatement listenStatement;
 
-    public FailedLoginAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
+    public ConsecutiveFailedLoginsAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         this.runtime = runtime;
 
         DeploymentOptions options = new DeploymentOptions();
@@ -37,7 +37,7 @@ public class FailedLoginAlertStatement {
 
         statement = CEPSetupUtil.compileDeploy(statementEPL, runtime, options);
         listenStatement = CEPSetupUtil.compileDeploy(listenEPL, runtime);
-        listenStatement.addListener(new FailedLoginAlertListener(highPriorityThreshold));
+        listenStatement.addListener(new ConsecutiveFailedLoginsAlertListener(highPriorityThreshold));
     }
 
     public void undeploy() throws EPUndeployException {

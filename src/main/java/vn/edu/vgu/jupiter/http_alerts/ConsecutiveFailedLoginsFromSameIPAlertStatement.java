@@ -11,22 +11,22 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  *
  * @author Bui Xuan Phuoc
  */
-public class FailedLoginFromSameIPAlertStatement {
+public class ConsecutiveFailedLoginsFromSameIPAlertStatement {
     private String statementEPL =
-            "@Name('FailedLoginFromSameIPAlert')\n" +
-                    "insert into FailedLoginFromSameIPAlert\n " +
+            "@Name('ConsecutiveFailedLoginsFromSameIPAlert')\n" +
+                    "insert into ConsecutuveFailedLoginsFromSameIPAlert\n " +
                     "select IPAddress, time, userID, count(*)\n " +
                     "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "group by IPAddress\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
-    private String listenEPL = "select * from FailedLoginFromSameIPAlert";
+    private String listenEPL = "select * from ConsecutiveFailedLoginsFromSameIPAlert";
 
     private EPRuntime runtime;
     private EPStatement statement;
     private EPStatement listenStatement;
 
-    public FailedLoginFromSameIPAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
+    public ConsecutiveFailedLoginsFromSameIPAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         this.runtime = runtime;
 
         DeploymentOptions options = new DeploymentOptions();
@@ -38,7 +38,7 @@ public class FailedLoginFromSameIPAlertStatement {
 
         statement = CEPSetupUtil.compileDeploy(statementEPL, runtime, options);
         listenStatement = CEPSetupUtil.compileDeploy(listenEPL, runtime);
-        listenStatement.addListener(new FailedLoginFromSameIPAlertListener(highPriorityThreshold));
+        listenStatement.addListener(new ConsecutiveFailedLoginsFromSameIPAlertListener(highPriorityThreshold));
     }
 
 

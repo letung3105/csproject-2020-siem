@@ -17,16 +17,12 @@
                 <ThresholdFilter level="info"/>
             </Filters>
         </File>
-        <TextAreaAppender name="JavaFXLogger">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%level]: %msg%n"/>
-        </TextAreaAppender>
     </Appenders>
 
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="AllLog"/>
-            <AppenderRef ref="JavaFXLogger"/>
         </Root>
     </Loggers>
 </Configuration>

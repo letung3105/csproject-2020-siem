@@ -1,11 +1,11 @@
 package vn.edu.vgu.jupiter.eventbean_http;
 
-public class FailedLoginAlert {
+public class ConsecutiveFailedLoginsAlert {
     String time;
     String timeZone;
     long failuresCount;
 
-    public FailedLoginAlert(String time, String timeZone, long failuresCount) {
+    public ConsecutiveFailedLoginsAlert(String time, String timeZone, long failuresCount) {
         this.time = time;
         this.timeZone = timeZone;
         this.failuresCount = failuresCount;

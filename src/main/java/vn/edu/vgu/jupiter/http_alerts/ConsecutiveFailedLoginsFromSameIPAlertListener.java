@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
  * @author Bui Xuan Phuoc
  */
 
-public class FailedLoginFromSameIPAlertListener implements UpdateListener {
-    private static final Logger log = LoggerFactory.getLogger(FailedLoginFromSameIPAlertListener.class);
+public class ConsecutiveFailedLoginsFromSameIPAlertListener implements UpdateListener {
+    private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedLoginsFromSameIPAlertListener.class);
 
     private long highPriorityThreshold;
 
-    public FailedLoginFromSameIPAlertListener(long highPriorityThreshold) {
+    public ConsecutiveFailedLoginsFromSameIPAlertListener(long highPriorityThreshold) {
         this.highPriorityThreshold = highPriorityThreshold;
     }
 

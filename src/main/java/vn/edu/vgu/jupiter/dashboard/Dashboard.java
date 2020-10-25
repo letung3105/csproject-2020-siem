@@ -13,6 +13,13 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.filter.ThresholdFilter;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin;
 import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin;
 
@@ -81,6 +88,14 @@ public class Dashboard extends Application implements Initializable {
     }
 
     public static void main(String[] args) {
+        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+        PatternLayout.Builder patternBuilder = PatternLayout.newBuilder();
+        patternBuilder.withPattern("%d{HH:mm:ss.SSS} [%level]: %msg%n");
+        Filter filter = ThresholdFilter.createFilter(Level.INFO, Filter.Result.ACCEPT, Filter.Result.NEUTRAL);
+        Appender textAreaAppender = TextAreaAppender.createAppender("TextAreaAppender", patternBuilder.build(), filter);
+        ctx.getRootLogger().addAppender(textAreaAppender);
+        ctx.updateLoggers();
+
         launch(args);
     }
 

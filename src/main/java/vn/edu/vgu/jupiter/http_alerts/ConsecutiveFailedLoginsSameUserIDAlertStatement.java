@@ -11,22 +11,22 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  *
  * @author Dang Chi Cong
  */
-public class FailedLoginSameUserIDAlertStatement {
+public class ConsecutiveFailedLoginsSameUserIDAlertStatement {
     private String statementEPL =
-            "@Name('FailedLoginSameUserIDAlert')\n" +
-                    "insert into FailedLoginSameUserIDAlert\n " +
+            "@Name('ConsecutiveFailedLoginsSameUserIDAlert')\n" +
+                    "insert into ConsecutiveFailedLoginsSameUserIDAlert\n " +
                     "select IPAddress, userID, time, timeZone, count(*)\n " +
                     "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "group by userID\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
-    private String listenStatementEPL = "select * from FailedLoginSameUserIDAlert";
+    private String listenStatementEPL = "select * from ConsecutiveFailedLoginsSameUserIDAlert";
 
     private EPRuntime runtime;
     private EPStatement statement;
     private EPStatement listenStatement;
 
-    public FailedLoginSameUserIDAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
+    public ConsecutiveFailedLoginsSameUserIDAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         this.runtime = runtime;
 
         DeploymentOptions options = new DeploymentOptions();
@@ -38,7 +38,7 @@ public class FailedLoginSameUserIDAlertStatement {
 
         statement = CEPSetupUtil.compileDeploy(statementEPL, runtime, options);
         listenStatement = CEPSetupUtil.compileDeploy(listenStatementEPL, runtime);
-        listenStatement.addListener(new FailedLoginSameUserIDAlertListener(highPriorityThreshold));
+        listenStatement.addListener(new ConsecutiveFailedLoginsSameUserIDAlertListener(highPriorityThreshold));
     }
 
     public void undeploy() throws EPUndeployException {

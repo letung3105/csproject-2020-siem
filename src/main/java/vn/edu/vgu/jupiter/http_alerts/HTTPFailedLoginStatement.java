@@ -10,7 +10,7 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  *
  * @author Bui Xuan Phuoc
  */
-public class HTTPFailedLoginEventStatement {
+public class HTTPFailedLoginStatement {
     private static final String statementEPL =
             "@Name('HTTPFailedLogin')\n" +
                     "insert into HTTPFailedLogin\n " +
@@ -20,7 +20,7 @@ public class HTTPFailedLoginEventStatement {
     private EPRuntime runtime;
     private EPStatement statement;
 
-    public HTTPFailedLoginEventStatement(EPRuntime runtime) {
+    public HTTPFailedLoginStatement(EPRuntime runtime) {
         this.runtime = runtime;
         statement = CEPSetupUtil.compileDeploy(statementEPL, runtime);
     }
