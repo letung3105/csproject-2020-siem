@@ -12,7 +12,7 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  * @author Dang Chi Cong
  */
 public class ConsecutiveFailedLoginsSameUserIDAlertStatement {
-    private String statementEPL =
+    private static final String statementEPL =
             "@Name('ConsecutiveFailedLoginsSameUserIDAlert')\n" +
                     "insert into ConsecutiveFailedLoginsSameUserIDAlert\n " +
                     "select IPAddress, userID, time, timeZone, count(*)\n " +
@@ -20,7 +20,7 @@ public class ConsecutiveFailedLoginsSameUserIDAlertStatement {
                     "group by userID\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
-    private String listenStatementEPL = "select * from ConsecutiveFailedLoginsSameUserIDAlert";
+    private static final String listenStatementEPL = "select * from ConsecutiveFailedLoginsSameUserIDAlert";
 
     private EPRuntime runtime;
     private EPStatement statement;

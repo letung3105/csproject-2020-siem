@@ -12,14 +12,14 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  * @author Bui Xuan Phuoc
  */
 public class ConsecutiveFailedLoginsAlertStatement {
-    private String statementEPL =
+    private static final String statementEPL =
             "@Name('ConsecutiveFailedLoginsAlert')\n" +
                     "insert into ConsecutiveFailedLoginsAlert\n " +
                     "select timeZone, time, count(*)\n " +
                     "from HTTPFailedLogin#time(?:alertTimeWindow:integer second)\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
                     "output last every ?:alertInterval:integer second";
-    private String listenEPL = "select * from ConsecutiveFailedLoginsAlert";
+    private static final String listenEPL = "select * from ConsecutiveFailedLoginsAlert";
 
     private EPRuntime runtime;
     private EPStatement statement;
