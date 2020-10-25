@@ -1,5 +1,6 @@
 package vn.edu.vgu.jupiter.dashboard;
 
+import com.espertech.esper.runtime.client.EPRuntime;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,15 +37,19 @@ public class StartupConfig extends Application implements Initializable{
     Enumeration<NetworkInterface> nets;
     ObservableList<String> netNameList;
 
+    private boolean isNetDeviceCorrect = false;
+    private boolean isApacheLogExist = false;
+
+    private Dashboard dashboardController;
+    private EPRuntime runtime;
+
     public StartupConfig(){
-        //Set the values for net device
-        //Check why port scan main have null pointer exception, though it run normally
         try {
+            netDeviceComboBox = new ComboBox<>();
             nets = NetworkInterface.getNetworkInterfaces();
         } catch (SocketException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void main(String[] args){
@@ -63,25 +68,24 @@ public class StartupConfig extends Application implements Initializable{
 
     @FXML
     private void applyVariables() throws IOException {
-        //For now, let it move onto the next panel
-        var dashboardRoot = (Parent) FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
-        scene.setRoot(dashboardRoot);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+        dashboardController = loader.getController();
+        scene.setRoot(loader.load());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ArrayList<String> tempList = new ArrayList<>();
         for(NetworkInterface networkInterface: Collections.list(nets)){
-            String netName = networkInterface.getName(); //need to check why it only output option1 and option2
+            String netName = networkInterface.getDisplayName();
             tempList.add(netName);
         }
         netNameList = FXCollections.observableList(tempList);
-        netDeviceComboBox = new ComboBox<>(netNameList);
+        netDeviceComboBox.setItems(netNameList);
     }
 
     @Override
     public void stop() throws Exception {
-        //should share runtime to dashboard from here, then destroy the runtime
         super.stop();
     }
 }
