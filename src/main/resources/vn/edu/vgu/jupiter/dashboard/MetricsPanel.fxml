@@ -15,19 +15,6 @@
                         <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0"
                               AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
                             <children>
-                                <Label text="TCPPacket">
-                                    <font>
-                                        <Font size="14.0"/>
-                                    </font>
-                                </Label>
-                                <Label fx:id="numberOfTCPPacketEventsLabel" text="#events: 0">
-                                    <VBox.margin>
-                                        <Insets left="8.0"/>
-                                    </VBox.margin>
-                                    <font>
-                                        <Font size="14.0"/>
-                                    </font>
-                                </Label>
                                 <Label text="TCPPacketWithClosedPort">
                                     <VBox.margin>
                                         <Insets top="8.0"/>
@@ -142,7 +129,7 @@
                                         <Font size="14.0"/>
                                     </font>
                                 </Label>
-                                <Label fx:id="numberOfConsecutiveFailedLoginsFromSameIPAlerts" text="#events: 0">
+                                <Label fx:id="numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel" text="#events: 0">
                                     <font>
                                         <Font size="14.0"/>
                                     </font>

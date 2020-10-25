@@ -1,30 +1,37 @@
 package vn.edu.vgu.jupiter.dashboard;
 
-import com.espertech.esper.common.client.EventBean;
-import com.espertech.esper.common.client.metric.StatementMetric;
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.espertech.esper.runtime.client.EPStatement;
-import com.espertech.esper.runtime.client.UpdateListener;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class MetricsPanel implements UpdateListener, Initializable {
-    public Label numberOfTCPPacketEventsLabel;
+/**
+ * A controller
+ */
+public class MetricsPanel implements PropertyChangeListener, Initializable {
+    @FXML
     public Label numberOfTCPPacketWithClosedPortEventsLabel;
-
+    @FXML
     public Label numberOfVerticalPortScanAlertsLabel;
+    @FXML
     public Label numberOfHorizontalPortScanAlertsLabel;
+    @FXML
     public Label numberOfBlockPortScanAlertsLabel;
 
+    @FXML
     public Label numberOfHTTPFailedLoginEventsLabel;
+    @FXML
     public Label numberOfConsecutiveFailedLoginsAlertsLabel;
+    @FXML
     public Label numberOfConsecutiveFailedLoginsSameUserIDAlertsLabel;
+    @FXML
     public Label numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel;
 
     private boolean isControllerInitialized = false;
@@ -32,45 +39,31 @@ public class MetricsPanel implements UpdateListener, Initializable {
     private Map<String, Long> statementNamesToEventsCount = new HashMap<>();
 
     @Override
-    public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
-        if (newEvents == null) {
-            return; // ignore old events for events leaving the window
-        }
-
-        if (isControllerInitialized) {
-            StatementMetric metric = (StatementMetric) newEvents[0].getUnderlying();
-            if (enabledMetricLogStatementNamesToLabel.containsKey(metric.getStatementName())) {
-                Platform.runLater(() -> {
-                    Label label = enabledMetricLogStatementNamesToLabel.get(metric.getStatementName());
-                    Long prevCount = statementNamesToEventsCount.get(metric.getStatementName());
-                    Long newCount = prevCount + metric.getNumOutputIStream();
-                    statementNamesToEventsCount.put(metric.getStatementName(), newCount);
-                    label.setText("#events: " + newCount);
-                });
-            }
-        }
-    }
-
-    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mapStatementNameToLabelAndCount("TCPPacket", numberOfTCPPacketEventsLabel);
-        mapStatementNameToLabelAndCount("TcpPacketWithClosedPort", numberOfTCPPacketWithClosedPortEventsLabel);
-        mapStatementNameToLabelAndCount("VerticalPortScanAlert", numberOfVerticalPortScanAlertsLabel);
-        mapStatementNameToLabelAndCount("HorizontalPortScanAlert", numberOfHorizontalPortScanAlertsLabel);
-        mapStatementNameToLabelAndCount("BlockPortScanAlert", numberOfBlockPortScanAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("TcpPacketWithClosedPort", numberOfTCPPacketWithClosedPortEventsLabel);
+        enabledMetricLogStatementNamesToLabel.put("VerticalPortScanAlert", numberOfVerticalPortScanAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("HorizontalPortScanAlert", numberOfHorizontalPortScanAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("BlockPortScanAlert", numberOfBlockPortScanAlertsLabel);
 
-        mapStatementNameToLabelAndCount("HTTPFailedLogin", numberOfHTTPFailedLoginEventsLabel);
-        mapStatementNameToLabelAndCount("ConsecutiveFailedLoginsAlert", numberOfConsecutiveFailedLoginsAlertsLabel);
-        mapStatementNameToLabelAndCount("ConsecutiveFailedLoginsFromSameIPAlert", numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel);
-        mapStatementNameToLabelAndCount("ConsecutiveFailedLoginsSameUserIDAlert", numberOfConsecutiveFailedLoginsSameUserIDAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("HTTPFailedLogin", numberOfHTTPFailedLoginEventsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsAlert", numberOfConsecutiveFailedLoginsAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsFromSameIPAlert", numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsSameUserIDAlert", numberOfConsecutiveFailedLoginsSameUserIDAlertsLabel);
 
         this.isControllerInitialized = true;
     }
 
-
-
-    private void mapStatementNameToLabelAndCount(String statementName, Label label) {
-        enabledMetricLogStatementNamesToLabel.put(statementName, label);
-        statementNamesToEventsCount.put(statementName, 0L);
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (isControllerInitialized) {
+            Platform.runLater(() -> {
+                String propertyName = evt.getPropertyName();
+                if (enabledMetricLogStatementNamesToLabel.containsKey(propertyName)) {
+                    Label label = enabledMetricLogStatementNamesToLabel.get(propertyName);
+                    Long count = (Long) evt.getNewValue();
+                    label.setText("#events: " + count);
+                }
+            });
+        }
     }
 }

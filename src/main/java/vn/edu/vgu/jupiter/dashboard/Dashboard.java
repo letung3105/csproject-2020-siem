@@ -24,6 +24,8 @@ import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin;
 import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin;
 
 import javax.naming.NamingException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -41,7 +43,7 @@ import java.util.ResourceBundle;
  * @author Vo Le Tung
  * @author Pham Nguyen Than hAn
  */
-public class Dashboard extends Application implements Initializable {
+public class Dashboard extends Application implements PropertyChangeListener, Initializable {
 
     public static final double WIDTH = 960;
     public static final double HEIGHT = 640;
@@ -132,6 +134,11 @@ public class Dashboard extends Application implements Initializable {
         } catch (NamingException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 }
 

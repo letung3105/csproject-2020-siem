@@ -1,20 +1,57 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
+import com.espertech.esper.common.client.EventBean;
+import com.espertech.esper.common.client.metric.StatementMetric;
 import com.espertech.esper.runtime.client.*;
 import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HTTPAlertsMain implements Runnable {
+    private static class MetricListener implements UpdateListener {
+        private Map<String, Long> eventsCummulativeCount;
+        private Set<PropertyChangeListener> propertyChangeListenerSet;
+
+        public MetricListener() {
+            this.propertyChangeListenerSet = new HashSet<>();
+            this.eventsCummulativeCount = new HashMap<>();
+            this.eventsCummulativeCount.put("HTTPFailedLogin", 0L);
+            this.eventsCummulativeCount.put("ConsecutiveFailedLoginsAlert", 0L);
+            this.eventsCummulativeCount.put("ConsecutiveFailedLoginsFromSameIPAlert", 0L);
+            this.eventsCummulativeCount.put("ConsecutiveFailedLoginsSameUserIDAlert", 0L);
+        }
+
+        public void addPropertyChangeListener(PropertyChangeListener listener) {
+            propertyChangeListenerSet.add(listener);
+        }
+
+        @Override
+        public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
+            if (newEvents == null) {
+                return; // ignore old events for events leaving the window
+            }
+
+            StatementMetric metric = (StatementMetric) newEvents[0].getUnderlying();
+            if (eventsCummulativeCount.containsKey(metric.getStatementName())) {
+                Long oldCount = eventsCummulativeCount.get(metric.getStatementName());
+                Long newCount = oldCount + metric.getNumOutputIStream();
+                eventsCummulativeCount.put(metric.getStatementName(), newCount);
+                for (PropertyChangeListener l : propertyChangeListenerSet) {
+                    l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
+                }
+            }
+        }
+    }
 
     private EPRuntime runtime;
-    private EPStatement epStatementMetric;
+    private MetricListener metricListener;
     private HTTPFailedLoginStatement httpFailedLoginEventStmt;
     private ConsecutiveFailedLoginsAlertStatement failedLoginAlertStmt;
     private ConsecutiveFailedLoginsFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
@@ -23,9 +60,13 @@ public class HTTPAlertsMain implements Runnable {
 
     public HTTPAlertsMain(String logPath) {
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), CEPSetupUtil.getConfiguration());
-        this.epStatementMetric = CEPSetupUtil.compileDeploy(
-                "select * from com.espertech.esper.common.client.metric.StatementMetric",
-                runtime);
+        this.metricListener = new MetricListener();
+        CEPSetupUtil
+                .compileDeploy(
+                        "select * from com.espertech.esper.common.client.metric.StatementMetric",
+                        runtime
+                )
+                .addListener(metricListener);
         this.logPath = logPath;
     }
 
@@ -147,7 +188,7 @@ public class HTTPAlertsMain implements Runnable {
         }
     }
 
-    public void addStatementMetricListener(UpdateListener listener) {
-        epStatementMetric.addListener(listener);
+    public void addStatementMetricListener(PropertyChangeListener listener) {
+        this.metricListener.addPropertyChangeListener(listener);
     }
 }

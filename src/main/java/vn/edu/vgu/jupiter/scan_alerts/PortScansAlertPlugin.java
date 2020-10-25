@@ -2,11 +2,12 @@ package vn.edu.vgu.jupiter.scan_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
-import com.espertech.esper.runtime.client.UpdateListener;
 import com.espertech.esper.runtime.client.plugin.PluginLoader;
 import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.beans.PropertyChangeListener;
 
 /**
  * PluginLoader for added this example as part of an Esper configuration file and therefore execute it during startup.
@@ -37,7 +38,7 @@ public class PortScansAlertPlugin implements PluginLoader {
         }
     }
 
-    public void addStatementMetricListener(UpdateListener listener) {
+    public void addStatementMetricListener(PropertyChangeListener listener) {
         if (main != null) {
             main.addStatementMetricListener(listener);
         }

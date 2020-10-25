@@ -2,11 +2,12 @@ package vn.edu.vgu.jupiter.http_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
-import com.espertech.esper.runtime.client.UpdateListener;
 import com.espertech.esper.runtime.client.plugin.PluginLoader;
 import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.beans.PropertyChangeListener;
 
 /**
  * Implements PluginLoader for adding the Esper's runtime that handles events for raising alerts relating to a HTTP service into a
@@ -63,7 +64,7 @@ public class HTTPAlertsPlugin implements PluginLoader {
         }
     }
 
-    public void addStatementMetricListener(UpdateListener listener) {
+    public void addStatementMetricListener(PropertyChangeListener listener) {
         if (main != null) {
             main.addStatementMetricListener(listener);
         }
