@@ -145,7 +145,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.5</version>
                 <configuration>
-                    <mainClass>vn.edu.vgu.jupiter.dashboard.Dashboard</mainClass>
+                    <mainClass>vn.edu.vgu.jupiter.dashboard.StartupConfig</mainClass>
                 </configuration>
             </plugin>
         </plugins>
