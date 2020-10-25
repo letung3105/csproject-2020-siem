@@ -50,28 +50,11 @@ public class Dashboard extends Application implements Initializable {
     @FXML
     public TextArea logArea;
 
+    private String logFileLocation;
+    private String netDeviceName;
+
     public Dashboard() {
-        Configuration config = new Configuration();
 
-        // configure HTTPAlertPlugin
-        Properties httpAlertsProps = new Properties();
-        httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "SIEM");
-        httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, "/var/log/apache2/access.log");
-        config.getRuntime().addPluginLoader(
-                "HTTPAlertsPlugin",
-                "vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin",
-                httpAlertsProps);
-
-        // configure PortScanPlugin
-        Properties portScansAlertProps = new Properties();
-        portScansAlertProps.put(PortScansAlertPlugin.RUNTIME_URI_KEY, "PortScansAlertPlugin");
-        portScansAlertProps.put(PortScansAlertPlugin.NETDEV_KEY, "lo0");
-        config.getRuntime().addPluginLoader(
-                "PortScansAlertPlugin",
-                "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
-                portScansAlertProps);
-
-        runtime = EPRuntimeProvider.getRuntime("SIEM", config);
     }
 
     public static void main(String[] args) {
@@ -95,6 +78,41 @@ public class Dashboard extends Application implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void setLogFileLocation(String logFileLocation) {
+        this.logFileLocation = logFileLocation;
+    }
+
+    public void setNetDeviceName(String netDeviceName) {
+        this.netDeviceName = netDeviceName;
+    }
+
+    public void setPlugin(){
+        Configuration config = new Configuration();
+
+        // configure HTTPAlertPlugin
+        // log location is /var/log/apache2/access.log
+        Properties httpAlertsProps = new Properties();
+        httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "SIEM");
+        httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, logFileLocation);
+        config.getRuntime().addPluginLoader(
+                "HTTPAlertsPlugin",
+                "vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin",
+                httpAlertsProps);
+
+        // configure PortScanPlugin
+        Properties portScansAlertProps = new Properties();
+        portScansAlertProps.put(PortScansAlertPlugin.RUNTIME_URI_KEY, "PortScansAlertPlugin");
+        portScansAlertProps.put(PortScansAlertPlugin.NETDEV_KEY, netDeviceName);
+        config.getRuntime().addPluginLoader(
+                "PortScansAlertPlugin",
+                "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
+                portScansAlertProps);
+
+        runtime = EPRuntimeProvider.getRuntime("SIEM", config);
+
         // shared the runtime with the controllers
         this.httpAlertControlPanelController.setRuntime(runtime);
         this.portScansAlertControlPanelController.setRuntime(runtime);
