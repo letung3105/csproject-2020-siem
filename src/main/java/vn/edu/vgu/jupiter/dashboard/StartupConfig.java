@@ -69,6 +69,11 @@ public class StartupConfig extends Application implements Initializable{
         stage.show();
     }
 
+    /**
+     * Get controller from Dashboard and uses it to set variables and plugin, thus start to run
+     *
+     * @throws IOException
+     */
     @FXML
     private void applyVariables() throws IOException {
         //Checking log location
@@ -95,6 +100,12 @@ public class StartupConfig extends Application implements Initializable{
         }
     }
 
+    /**
+     * Get network interfaces and set them
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ArrayList<String> tempList = new ArrayList<>();
@@ -107,6 +118,9 @@ public class StartupConfig extends Application implements Initializable{
         netDeviceComboBox.getSelectionModel().selectFirst();
     }
 
+    /**
+     * A simple log checking location without checking if the log file is in correct format
+     */
     private void checkLogLocation(){
         chosenLogLocation = apacheLogLocationField.getText();
         //checking for location

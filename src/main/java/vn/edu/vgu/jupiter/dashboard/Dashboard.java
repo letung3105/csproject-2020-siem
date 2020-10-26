@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
  * @author Vo Le Tung
  * @author Pham Nguyen Than hAn
  */
-public class Dashboard extends Application implements Initializable {
+public class Dashboard {
 
     public static final double HEIGHT = 600;
     public static final double WIDTH = 400;
@@ -54,30 +54,6 @@ public class Dashboard extends Application implements Initializable {
     private String netDeviceName;
 
     public Dashboard() {
-
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void stop() throws Exception {
-        runtime.destroy();
-        super.stop();
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        // set scene
-        var root = (Parent) FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
-        primaryStage.setTitle("SIEM Dashboard");
-        primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
-        primaryStage.show();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
