@@ -33,7 +33,7 @@
                 </TabPane>
             </children>
         </AnchorPane>
-        <TextArea fx:id="logArea" editable="false" prefHeight="600.0" prefWidth="500.0" wrapText="true"
+        <TextArea fx:id="logArea" editable="false" minWidth="80.0" prefHeight="600.0" prefWidth="500.0" wrapText="true"
                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0"
                   AnchorPane.topAnchor="0.0">
             <padding>
