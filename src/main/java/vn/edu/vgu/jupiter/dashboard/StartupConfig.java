@@ -82,7 +82,6 @@ public class StartupConfig extends Application implements Initializable{
         if(isApacheLogExist){
             //Load
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
-            //TODO: How to set the variables before the plugin get them
             var root = (Parent) loader.load();
             dashboardController = loader.getController();
             dashboardController.setNetDeviceName(netDeviceComboBox.getValue());
