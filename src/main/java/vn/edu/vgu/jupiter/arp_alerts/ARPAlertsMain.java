@@ -26,8 +26,8 @@ public class ARPAlertsMain implements Runnable {
     public static void main(String[] args) throws SocketException {
         ARPAlertsConfigurations arpAlertsConfigurations = new ARPAlertsConfigurations(
                 new ARPAlertsConfigurations.ARPDuplicateIP(),
-                new ARPAlertsConfigurations.ARPCacheFlood(10, 120),
-                new ARPAlertsConfigurations.ARPGratuitousAnnouncement(6, 10, 10, 5)
+                new ARPAlertsConfigurations.ARPCacheFlood(10, 20),
+                new ARPAlertsConfigurations.ARPGratuitousAnnouncement(4, 10, 10, 3)
         );
         ARPAlertsMain arpAlertsMain= new ARPAlertsMain();
         arpAlertsMain.deploy(arpAlertsConfigurations);
@@ -121,6 +121,7 @@ public class ARPAlertsMain implements Runnable {
         } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
+        System.out.println(ip);
         return ip;
     }
 

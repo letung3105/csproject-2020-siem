@@ -14,7 +14,7 @@ import com.espertech.esper.runtime.client.EPUndeployException;
 public class ARPCacheFloodAlertStatement {
     private String statementEPL = "insert into ARPCacheFloodAlertEvent\n " +
             "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
-            "having count(distinct IP) >= 240\n " +
+            "having count(distinct IP) >= 30\n " +
             "output last every ?:alertInterval:integer second";
     private String listenStatementEPL = "select * from ARPCacheFloodAlertEvent";
 
