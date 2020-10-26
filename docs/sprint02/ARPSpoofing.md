@@ -3,11 +3,11 @@
 The document describes the event hierarchy of the ARP spoofing detection module 
 ```
 ARPPacketEvent--|->ARPReplyEvent---------|                  |->ARPDuplicateIPAlert
-                |                        |-->ARPCacheUpdate-|
-                |->ARPAnnouncementEvent--|                  |->ARPCacheFloodAlert
-                           |
-                           v
-          ARPMultipleUnaskedForAnnouncementAlert
+       |         |                        |-->ARPCacheUpdate-|
+       |         |->ARPAnnouncementEvent--|                  |->ARPCacheFloodAlert
+       |                    |
+       v                    v
+         ARPMultipleUnaskedForAnnouncementAlert
 ```
 * ARPPacketEvent is raised whenever the interface received an ARP packet.
 * ARPReplyEvent is raised whenever the machine broadcast a request to know the hardware address of an IP and got a reply.

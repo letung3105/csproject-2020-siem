@@ -61,6 +61,7 @@ public class ARPAlertUtils {
         Configuration configuration = new Configuration();
         configuration.getCommon().addEventType(ARPPacketEvent.class);
         configuration.getCommon().addEventType(ARPReplyEvent.class);
+        configuration.getCommon().addEventType(ARPBroadcastEvent.class);
         configuration.getCommon().addEventType(ARPDuplicateIPAlertEvent.class);
         configuration.getCommon().addEventType(ARPCacheFloodAlertEvent.class);
         configuration.getCommon().addEventType(ARPAnnouncementEvent.class);

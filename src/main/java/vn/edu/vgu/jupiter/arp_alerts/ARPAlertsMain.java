@@ -18,6 +18,7 @@ public class ARPAlertsMain implements Runnable {
     private ARPDuplicateIPAlertStatement arpDuplicateIPAlertStatement;
     private ARPCacheUpdateStatement arpCacheUpdateStatement;
     private ARPMultipleUnaskedForAnnouncementAlertStatement arpMultipleUnaskedForAnnouncementAlertStatement;
+    private ARPBroadcastStatement arpBroadcastStatement;
 
     public ARPAlertsMain() {
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), ARPAlertUtils.getConfiguration());
@@ -26,7 +27,7 @@ public class ARPAlertsMain implements Runnable {
     public static void main(String[] args) throws SocketException {
         ARPAlertsConfigurations arpAlertsConfigurations = new ARPAlertsConfigurations(
                 new ARPAlertsConfigurations.ARPDuplicateIP(),
-                new ARPAlertsConfigurations.ARPCacheFlood(10, 20),
+                new ARPAlertsConfigurations.ARPCacheFlood(40, 3, 10,30),
                 new ARPAlertsConfigurations.ARPGratuitousAnnouncement(4, 10, 10, 3)
         );
         ARPAlertsMain arpAlertsMain= new ARPAlertsMain();
@@ -35,9 +36,12 @@ public class ARPAlertsMain implements Runnable {
     }
 
     private void deploy(ARPAlertsConfigurations arpAlertsConfigurations) {
+        arpBroadcastStatement = new ARPBroadcastStatement(runtime);
         arpAnnouncementStatement = new ARPAnnouncementStatement(runtime);
         arpReplyStatement = new ARPReplyStatement(runtime);
         arpCacheFloodAlertStatement =  new ARPCacheFloodAlertStatement(runtime,
+                arpAlertsConfigurations.arpCacheFlood.consecutiveAttemptsThreshold,
+                arpAlertsConfigurations.arpCacheFlood.timeWindowSeconds,
                 arpAlertsConfigurations.arpCacheFlood.alertIntervalSeconds,
                 arpAlertsConfigurations.arpCacheFlood.highPriorityThreshold);
         arpDuplicateIPAlertStatement = new ARPDuplicateIPAlertStatement(runtime);
@@ -99,6 +103,8 @@ public class ARPAlertsMain implements Runnable {
                 e.printStackTrace();
             } catch (NotOpenException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e) {
+                System.out.println("Not connected to the internet");
             }
             handle.close();
         } catch (PcapNativeException e) {

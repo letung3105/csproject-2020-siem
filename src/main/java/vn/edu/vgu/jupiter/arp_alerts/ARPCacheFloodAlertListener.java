@@ -21,7 +21,7 @@ public class ARPCacheFloodAlertListener implements UpdateListener {
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        Long count = (Long) newEvents[0].get("count");
+        Long count = Long.parseLong(newEvents[0].get("count").toString());
         if (count < highPriorityThreshold) {
             logger.info("LOW PRIORITY: Large number of entries in the ARP cache " + newEvents[0].get("count"));
         } else {

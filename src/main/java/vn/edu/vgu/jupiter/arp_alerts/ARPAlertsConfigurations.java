@@ -14,8 +14,18 @@ public class ARPAlertsConfigurations {
 
     }
     public static class ARPCacheFlood {
+        int consecutiveAttemptsThreshold;
+        int timeWindowSeconds;
         int alertIntervalSeconds;
         long highPriorityThreshold;
+
+        public int getConsecutiveAttemptsThreshold() {
+            return consecutiveAttemptsThreshold;
+        }
+
+        public int getTimeWindowSeconds() {
+            return timeWindowSeconds;
+        }
 
         public int getAlertIntervalSeconds() {
             return alertIntervalSeconds;
@@ -25,7 +35,9 @@ public class ARPAlertsConfigurations {
             return highPriorityThreshold;
         }
 
-        public ARPCacheFlood(int alertIntervalSeconds, long highPriorityThreshold) {
+        public ARPCacheFlood(int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
+            this.consecutiveAttemptsThreshold = consecutiveAttemptsThreshold;
+            this.timeWindowSeconds = timeWindowSeconds;
             this.alertIntervalSeconds = alertIntervalSeconds;
             this.highPriorityThreshold = highPriorityThreshold;
         }

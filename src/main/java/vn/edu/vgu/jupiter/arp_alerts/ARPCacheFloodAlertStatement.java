@@ -13,9 +13,24 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class ARPCacheFloodAlertStatement {
     private String statementEPL = "insert into ARPCacheFloodAlertEvent\n " +
+            "select cast(count(distinct destIP) as int) from ARPBroadcastEvent#time(?:alertTimeWindow:integer second)\n " +
+            "having count(distinct destIP) >= ?:consecutiveAttemptThreshold:integer\n " +
+            "output last every ?:alertInterval:integer second;\n " +
+
+            "insert into ARPCacheFloodAlertEvent\n " +
             "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
-            "having count(distinct IP) >= 30\n " +
-            "output last every ?:alertInterval:integer second";
+            "having count(distinct IP) >= ?:consecutiveAttemptThreshold:integer and ?:alertTimeWindow = ?:alertTimeWindow\n " +
+            "output last every ?:alertInterval:integer second;";
+
+//    "insert into ARPCacheFloodAlertEvent\n " +
+//            "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
+//            "having count(distinct IP) >= ?:consecutiveAttemptThreshold:integer\n " +
+//            "output last every ?:alertInterval:integer second;" +
+//            "" +
+//            "insert into ARPCacheFloodAlertEvent\n " +
+//            "select cast(count(distinct destIP) as int) from ARPBroadcastEvent#time(?:alertTimeWindow:integer second)\n " +
+//            "having count(distinct destIP) >= ?:consecutiveAttemptThreshold:integer\n " +
+//            "output last every ?:alertInterval:integer second";
     private String listenStatementEPL = "select * from ARPCacheFloodAlertEvent";
 
     private EPStatement statement;
@@ -23,11 +38,13 @@ public class ARPCacheFloodAlertStatement {
 
     private EPRuntime runtime;
 
-    public ARPCacheFloodAlertStatement(EPRuntime runtime, int alertIntervalSeconds, long highPriorityThreshold) {
+    public ARPCacheFloodAlertStatement(EPRuntime runtime, int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
         this.runtime = runtime;
 
         DeploymentOptions options = new DeploymentOptions();
         options.setStatementSubstitutionParameter(prepared -> {
+            prepared.setObject("consecutiveAttemptThreshold", consecutiveAttemptsThreshold);
+            prepared.setObject("alertTimeWindow", timeWindowSeconds);
             prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 

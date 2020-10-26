@@ -23,6 +23,7 @@ public class ARPPacketEvent {
         this.time = LocalDateTime.now().toString();
     }
     public ARPPacketEvent(String srcIP, String destIP, String srcMAC, String destMAC, boolean isReply, boolean isAnnouncement) {
+        System.out.println(destMAC);
         this.srcIP = srcIP;
         this.destIP = destIP;
         this.srcMAC = srcMAC;
