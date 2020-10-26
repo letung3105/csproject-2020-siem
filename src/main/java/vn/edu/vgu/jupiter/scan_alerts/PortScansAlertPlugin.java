@@ -17,8 +17,24 @@ import java.beans.PropertyChangeListener;
  */
 public class PortScansAlertPlugin implements PluginLoader {
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertPlugin.class);
-    private static final String NETDEV_KEY = "netdev";
-    private static final String RUNTIME_URI_KEY = "runtimeURI";
+    public static final String NETDEV_KEY = "netdev";
+    public static final String RUNTIME_URI_KEY = "runtimeURI";
+
+    public static final String VERTICAL_TIME_WINDOW_KEY = "verticalTimeWindow";
+    public static final String VERTICAL_ALERT_INTERVAL_KEY = "verticalAlertInterval";
+    public static final String VERTICAL_HIGH_PRIORITY_THRESHOLD_KEY = "verticalHighPriorityThreshold";
+    public static final String VERTICAL_CONNECTION_COUNT_THRESHOLD_KEY = "verticalConnectionCountThreshold";
+
+    public static final String HORIZONTAL_TIME_WINDOW_KEY = "horizontalTimeWindow";
+    public static final String HORIZONTAL_ALERT_INTERVAL_KEY = "horizontalAlertInterval";
+    public static final String HORIZONTAL_HIGH_PRIORITY_THRESHOLD_KEY = "horizontalHighPriorityThreshold";
+    public static final String HORIZONTAL_CONNECTION_COUNT_THRESHOLD_KEY = "horizontalConnectionCountThreshold";
+
+    public static final String BLOCK_TIME_WINDOW_KEY = "blockTimeWindow";
+    public static final String BLOCK_ALERT_INTERVAL_KEY = "blockAlertInterval";
+    public static final String BLOCK_HIGH_PRIORITY_THRESHOLD_KEY = "blockHighPriorityThreshold";
+    public static final String BLOCK_PORTS_COUNT_THRESHOLD_KEY = "blockPortsCountThreshold";
+    public static final String BLOCK_ADDRESSES_COUNT_THRESHOLD_KEY = "blockAddressesCountThreshold";
 
     private String netdev;
     private String runtimeURI;
@@ -26,6 +42,13 @@ public class PortScansAlertPlugin implements PluginLoader {
     private Thread portScansAlertThread;
     private PortScansAlertConfigurations configs;
 
+    /**
+     * Set the default configurations that is used when the runtime first started.
+     * <p>
+     * This function is called by Esper's engine.
+     *
+     * @param context The context given by Esper
+     */
     public void deploy(PortScansAlertConfigurations configs) {
         if (main != null) {
             main.deploy(configs);
@@ -59,11 +82,33 @@ public class PortScansAlertPlugin implements PluginLoader {
         }
 
         configs = new PortScansAlertConfigurations(
-                new PortScansAlertConfigurations.VerticalScan(60, 10, 100, 60),
-                new PortScansAlertConfigurations.HorizontalScan(60, 10, 100, 60),
-                new PortScansAlertConfigurations.BlockScan(60, 10, 5, 50, 2));
+                new PortScansAlertConfigurations.VerticalScan(
+                        Integer.parseInt(context.getProperties().getProperty(VERTICAL_TIME_WINDOW_KEY, "60")),
+                        Integer.parseInt(context.getProperties().getProperty(VERTICAL_ALERT_INTERVAL_KEY, "10")),
+                        Integer.parseInt(context.getProperties().getProperty(VERTICAL_HIGH_PRIORITY_THRESHOLD_KEY, "100")),
+                        Integer.parseInt(context.getProperties().getProperty(VERTICAL_CONNECTION_COUNT_THRESHOLD_KEY, "60"))
+                ),
+                new PortScansAlertConfigurations.HorizontalScan(
+                        Integer.parseInt(context.getProperties().getProperty(HORIZONTAL_TIME_WINDOW_KEY, "60")),
+                        Integer.parseInt(context.getProperties().getProperty(HORIZONTAL_ALERT_INTERVAL_KEY, "10")),
+                        Integer.parseInt(context.getProperties().getProperty(HORIZONTAL_HIGH_PRIORITY_THRESHOLD_KEY, "100")),
+                        Integer.parseInt(context.getProperties().getProperty(HORIZONTAL_CONNECTION_COUNT_THRESHOLD_KEY, "60"))
+                ),
+                new PortScansAlertConfigurations.BlockScan(
+                        Integer.parseInt(context.getProperties().getProperty(BLOCK_TIME_WINDOW_KEY, "60")),
+                        Integer.parseInt(context.getProperties().getProperty(BLOCK_ALERT_INTERVAL_KEY, "10")),
+                        Integer.parseInt(context.getProperties().getProperty(BLOCK_HIGH_PRIORITY_THRESHOLD_KEY, "5")),
+                        Integer.parseInt(context.getProperties().getProperty(BLOCK_PORTS_COUNT_THRESHOLD_KEY, "50")),
+                        Integer.parseInt(context.getProperties().getProperty(BLOCK_ADDRESSES_COUNT_THRESHOLD_KEY, "2"))
+                )
+        );
     }
 
+    /**
+     * Start the daemon thread that continuously receives raw events and sends it to the system.
+     * <p>
+     * This function is called by Esper's engine.
+     */
     public void postInitialize() {
         log.info("Starting PortScansAlert for runtime URI '" + runtimeURI + "'.");
 
@@ -80,6 +125,29 @@ public class PortScansAlertPlugin implements PluginLoader {
         log.info("PortScansAlert started.");
     }
 
+    /**
+     * Deploy the EPL statements that are managed by the runtime that is associated with this plugin
+     * using the given configurations.
+     *
+     * @param configs
+     */
+    public void deploy(PortScansAlertConfigurations configs) {
+        main.deploy(configs);
+    }
+
+    /**
+     * Undeploy the EPL statements that are managed by the runtime that is associated with this plugin
+     * using the given configurations
+     */
+    public void undeploy() throws EPUndeployException {
+        if (main != null) {
+            main.undeploy();
+        }
+    }
+
+    /**
+     * Undeploy all statements and stop the daemon.
+     */
     public void destroy() {
         if (main != null) {
             try {

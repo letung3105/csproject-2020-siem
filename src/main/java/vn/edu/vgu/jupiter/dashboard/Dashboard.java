@@ -65,13 +65,29 @@ public class Dashboard extends Application implements PropertyChangeListener, In
     @FXML
     public TextArea logArea;
 
+    private String logFileLocation;
+    private String netDeviceName;
+
     public Dashboard() {
+
+    }
+
+    public void setLogFileLocation(String logFileLocation) {
+        this.logFileLocation = logFileLocation;
+    }
+
+    public void setNetDeviceName(String netDeviceName) {
+        this.netDeviceName = netDeviceName;
+    }
+
+    public void setPlugin(){
         Configuration config = new Configuration();
 
         // configure HTTPAlertPlugin
+        // log location is /var/log/apache2/access.log
         Properties httpAlertsProps = new Properties();
         httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "SIEM");
-        httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, "/var/log/apache2/access.log");
+        httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, logFileLocation);
         config.getRuntime().addPluginLoader(
                 "HTTPAlertsPlugin",
                 "vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin",
@@ -79,8 +95,8 @@ public class Dashboard extends Application implements PropertyChangeListener, In
 
         // configure PortScanPlugin
         Properties portScansAlertProps = new Properties();
-        portScansAlertProps.put("runtimeURI", "SIEM");
-        portScansAlertProps.put("netdev", "lo0");
+        portScansAlertProps.put(PortScansAlertPlugin.RUNTIME_URI_KEY, "PortScansAlertPlugin");
+        portScansAlertProps.put(PortScansAlertPlugin.NETDEV_KEY, netDeviceName);
         config.getRuntime().addPluginLoader(
                 "PortScansAlertPlugin",
                 "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
@@ -116,8 +132,6 @@ public class Dashboard extends Application implements PropertyChangeListener, In
         primaryStage.show();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
         // shared the runtime with the controllers
         this.httpAlertControlPanelController.setRuntime(runtime);
         this.portScansAlertControlPanelController.setRuntime(runtime);
