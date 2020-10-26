@@ -16,16 +16,16 @@ import java.util.regex.Pattern;
 
 public class HTTPAlertsMain implements Runnable {
     private static class MetricListener implements UpdateListener {
-        private Map<String, Long> eventsCummulativeCount;
+        private Map<String, Long> eventsCumulativeCount;
         private Set<PropertyChangeListener> propertyChangeListenerSet;
 
         public MetricListener() {
             this.propertyChangeListenerSet = new HashSet<>();
-            this.eventsCummulativeCount = new HashMap<>();
-            this.eventsCummulativeCount.put("HTTPFailedLogin", 0L);
-            this.eventsCummulativeCount.put("ConsecutiveFailedLoginsAlert", 0L);
-            this.eventsCummulativeCount.put("ConsecutiveFailedLoginsFromSameIPAlert", 0L);
-            this.eventsCummulativeCount.put("ConsecutiveFailedLoginsSameUserIDAlert", 0L);
+            this.eventsCumulativeCount = new HashMap<>();
+            this.eventsCumulativeCount.put("HTTPFailedLogin", 0L);
+            this.eventsCumulativeCount.put("ConsecutiveFailedLoginsAlert", 0L);
+            this.eventsCumulativeCount.put("ConsecutiveFailedLoginsFromSameIPAlert", 0L);
+            this.eventsCumulativeCount.put("ConsecutiveFailedLoginsSameUserIDAlert", 0L);
         }
 
         public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -39,11 +39,11 @@ public class HTTPAlertsMain implements Runnable {
             }
 
             StatementMetric metric = (StatementMetric) newEvents[0].getUnderlying();
-            if (eventsCummulativeCount.containsKey(metric.getStatementName())) {
-                Long oldCount = eventsCummulativeCount.get(metric.getStatementName());
+            if (eventsCumulativeCount.containsKey(metric.getStatementName())) {
+                Long oldCount = eventsCumulativeCount.get(metric.getStatementName());
                 Long newCount = oldCount + metric.getNumOutputIStream();
                 if (!newCount.equals(oldCount)) {
-                    eventsCummulativeCount.put(metric.getStatementName(), newCount);
+                    eventsCumulativeCount.put(metric.getStatementName(), newCount);
                     for (PropertyChangeListener l : propertyChangeListenerSet) {
                         l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
                     }

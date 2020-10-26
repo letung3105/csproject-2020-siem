@@ -8,9 +8,9 @@ import javafx.scene.control.Label;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A controller
@@ -34,9 +34,8 @@ public class MetricsPanel implements PropertyChangeListener, Initializable {
     @FXML
     public Label numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel;
 
-    private boolean isControllerInitialized = false;
-    private Map<String, Label> enabledMetricLogStatementNamesToLabel = new HashMap<>();
-    private Map<String, Long> statementNamesToEventsCount = new HashMap<>();
+    private Map<String, Label> enabledMetricLogStatementNamesToLabel = new ConcurrentHashMap<>();
+    private Map<String, Long> statementNamesToEventsCount = new ConcurrentHashMap<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,21 +48,19 @@ public class MetricsPanel implements PropertyChangeListener, Initializable {
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsAlert", numberOfConsecutiveFailedLoginsAlertsLabel);
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsFromSameIPAlert", numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel);
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsSameUserIDAlert", numberOfConsecutiveFailedLoginsSameUserIDAlertsLabel);
-
-        this.isControllerInitialized = true;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (isControllerInitialized) {
-            Platform.runLater(() -> {
-                String propertyName = evt.getPropertyName();
-                if (enabledMetricLogStatementNamesToLabel.containsKey(propertyName)) {
-                    Label label = enabledMetricLogStatementNamesToLabel.get(propertyName);
-                    Long count = (Long) evt.getNewValue();
-                    label.setText("#events: " + count);
-                }
-            });
-        }
+        Platform.runLater(() -> {
+            String propertyName = evt.getPropertyName();
+            Label label = enabledMetricLogStatementNamesToLabel.get(propertyName);
+            boolean canUpdate =
+                    label != null && enabledMetricLogStatementNamesToLabel.containsKey(propertyName);
+            if (canUpdate) {
+                Long count = (Long) evt.getNewValue();
+                label.setText("#events: " + count);
+            }
+        });
     }
 }
