@@ -42,9 +42,11 @@ public class HTTPAlertsMain implements Runnable {
             if (eventsCummulativeCount.containsKey(metric.getStatementName())) {
                 Long oldCount = eventsCummulativeCount.get(metric.getStatementName());
                 Long newCount = oldCount + metric.getNumOutputIStream();
-                eventsCummulativeCount.put(metric.getStatementName(), newCount);
-                for (PropertyChangeListener l : propertyChangeListenerSet) {
-                    l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
+                if (!newCount.equals(oldCount)) {
+                    eventsCummulativeCount.put(metric.getStatementName(), newCount);
+                    for (PropertyChangeListener l : propertyChangeListenerSet) {
+                        l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
+                    }
                 }
             }
         }

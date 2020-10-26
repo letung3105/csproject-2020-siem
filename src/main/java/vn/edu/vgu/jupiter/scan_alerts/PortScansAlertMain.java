@@ -51,8 +51,10 @@ public class PortScansAlertMain implements Runnable {
                 Long oldCount = eventsCummulativeCount.get(metric.getStatementName());
                 Long newCount = oldCount + metric.getNumOutputIStream();
                 eventsCummulativeCount.put(metric.getStatementName(), newCount);
-                for (PropertyChangeListener l : propertyChangeListenerSet) {
-                    l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
+                if (!newCount.equals(oldCount)) {
+                    for (PropertyChangeListener l : propertyChangeListenerSet) {
+                        l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
+                    }
                 }
             }
         }
