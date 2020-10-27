@@ -5,7 +5,6 @@ import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.ArpPacket;
-import org.pcap4j.packet.Packet;
 import vn.edu.vgu.jupiter.eventbean_arp.ARPPacketEvent;
 
 import java.net.DatagramSocket;
@@ -27,7 +26,7 @@ public class ARPAlertsMain implements Runnable {
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), ARPAlertUtils.getConfiguration());
     }
 
-    public static void main(String[] args) throws SocketException {
+    public static void main(String[] args) {
         ARPAlertsConfigurations arpAlertsConfigurations = new ARPAlertsConfigurations(
                 new ARPAlertsConfigurations.ARPDuplicateIP(),
                 new ARPAlertsConfigurations.ARPCacheFlood(40, 3, 10, 30),
@@ -57,28 +56,23 @@ public class ARPAlertsMain implements Runnable {
     }
 
     public void run() {
-//        Configuration configuration = ARPAlertUtils.getConfiguration();
-//        EPRuntime runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), configuration);
-//        new ARPAnnouncementStatement(runtime);
-//        new ARPReplyStatement(runtime);
-//        new ARPCacheFloodAlertStatement(runtime, 10, 120);
-//        new ARPDuplicateIPAlertStatement(runtime);
-//        new ARPCacheUpdateStatement(runtime);
-//        new ARPMultipleUnaskedForAnnouncementAlertStatement(runtime, 6, 10, 10, 4);
         String ip = getPreferredOutboundIP();
 
-        InetAddress inetAddress = null;
+        InetAddress inetAddress;
         try {
             //Change the InetAddress to your desire interface's address
             inetAddress = InetAddress.getByName(ip);
         } catch (UnknownHostException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        PcapNetworkInterface networkInterface = null;
+
+        PcapNetworkInterface networkInterface;
         try {
             networkInterface = Pcaps.getDevByAddress(inetAddress);
         } catch (PcapNativeException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         //OPEN PCAP HANDLE FROM NETWORK INTERFACE
@@ -87,24 +81,17 @@ public class ARPAlertsMain implements Runnable {
         int timeout = 10; //milliseconds
         try {
             PcapHandle handle = networkInterface.openLive(snapLen, mode, timeout);
-            PacketListener listener = new PacketListener() {
-                @Override
-                public void gotPacket(Packet packet) {
-                    if (packet.contains(ArpPacket.class)) {
-                        ArpPacket arp = packet.get(ArpPacket.class);
-                        ARPPacketEvent arpPacketEvent = new ARPPacketEvent(arp.getHeader());
-                        runtime.getEventService().sendEventBean(arpPacketEvent, "ARPPacketEvent");
-                    }
+            PacketListener listener = packet -> {
+                if (packet.contains(ArpPacket.class)) {
+                    ArpPacket arp = packet.get(ArpPacket.class);
+                    ARPPacketEvent arpPacketEvent = new ARPPacketEvent(arp.getHeader());
+                    runtime.getEventService().sendEventBean(arpPacketEvent, "ARPPacketEvent");
                 }
             };
 
             try {
                 handle.loop(-1, listener);
-            } catch (PcapNativeException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (NotOpenException e) {
+            } catch (PcapNativeException | InterruptedException | NotOpenException e) {
                 e.printStackTrace();
             } catch (NullPointerException e) {
                 System.out.println("Not connected to the internet");
@@ -135,23 +122,33 @@ public class ARPAlertsMain implements Runnable {
     }
 
     public void undeploy() throws EPUndeployException {
+        if (arpBroadcastStatement != null) {
+            arpBroadcastStatement.undeploy();
+            arpBroadcastStatement = null;
+        }
         if (arpAnnouncementStatement != null) {
             arpAnnouncementStatement.undeploy();
+            arpAnnouncementStatement = null;
         }
         if (arpReplyStatement != null) {
             arpReplyStatement.undeploy();
+            arpReplyStatement = null;
         }
         if (arpCacheFloodAlertStatement != null) {
             arpCacheFloodAlertStatement.undeploy();
+            arpCacheFloodAlertStatement = null;
         }
         if (arpDuplicateIPAlertStatement != null) {
             arpDuplicateIPAlertStatement.undeploy();
+            arpDuplicateIPAlertStatement = null;
         }
         if (arpMultipleUnaskedForAnnouncementAlertStatement != null) {
             arpMultipleUnaskedForAnnouncementAlertStatement.undeploy();
+            arpMultipleUnaskedForAnnouncementAlertStatement = null;
         }
         if (arpCacheUpdateStatement != null) {
             arpCacheUpdateStatement.undeploy();
+            arpCacheUpdateStatement = null;
         }
     }
 }
