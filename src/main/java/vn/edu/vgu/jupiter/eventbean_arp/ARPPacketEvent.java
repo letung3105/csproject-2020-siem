@@ -18,10 +18,11 @@ public class ARPPacketEvent {
         this.destIP = header.getDstProtocolAddr().toString();
         this.srcMAC = header.getSrcHardwareAddr().toString();
         this.destMAC = header.getDstHardwareAddr().toString();
-        this.isReply = (header.getOperation().toString().equals("2 (REPLY)")) ? true:false;
-        this.isAnnouncement = (header.getOperation().toString().equals("1 (REQUEST)") && srcIP.equals(destIP)) ? true:false;
+        this.isReply = header.getOperation().toString().equals("2 (REPLY)");
+        this.isAnnouncement = header.getOperation().toString().equals("1 (REQUEST)") && srcIP.equals(destIP);
         this.time = LocalDateTime.now().toString();
     }
+
     public ARPPacketEvent(String srcIP, String destIP, String srcMAC, String destMAC, boolean isReply, boolean isAnnouncement) {
         System.out.println(destMAC);
         this.srcIP = srcIP;

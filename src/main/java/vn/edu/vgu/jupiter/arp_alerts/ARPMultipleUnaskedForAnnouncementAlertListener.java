@@ -15,6 +15,7 @@ public class ARPMultipleUnaskedForAnnouncementAlertListener implements UpdateLis
     public ARPMultipleUnaskedForAnnouncementAlertListener(long highPriorityThreshold) {
         this.highPriorityThreshold = highPriorityThreshold;
     }
+
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement epStatement, EPRuntime epRuntime) {
         if (newEvents == null) {

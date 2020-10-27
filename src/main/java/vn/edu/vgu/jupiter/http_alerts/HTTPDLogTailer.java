@@ -4,7 +4,6 @@ import com.espertech.esper.runtime.client.EPRuntime;
 import org.apache.commons.io.input.TailerListenerAdapter;
 import vn.edu.vgu.jupiter.eventbean_http.httpLogEvent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -22,6 +21,7 @@ public class HTTPDLogTailer extends TailerListenerAdapter {
     public HTTPDLogTailer(EPRuntime runtime) {
         this.runtime = runtime;
     }
+
     public void handle(String line) {
         Pattern p = Pattern.compile("\"([^\"]*)\"");
         Matcher m = p.matcher(line);

@@ -14,26 +14,22 @@ import org.slf4j.LoggerFactory;
  * @author Pham Nguyen Thanh An
  */
 public class PortScansAlertPlugin implements PluginLoader {
-    private static final Logger log = LoggerFactory.getLogger(PortScansAlertPlugin.class);
     public static final String NETDEV_KEY = "netdev";
     public static final String RUNTIME_URI_KEY = "runtimeURI";
-
     public static final String VERTICAL_TIME_WINDOW_KEY = "verticalTimeWindow";
     public static final String VERTICAL_ALERT_INTERVAL_KEY = "verticalAlertInterval";
     public static final String VERTICAL_HIGH_PRIORITY_THRESHOLD_KEY = "verticalHighPriorityThreshold";
     public static final String VERTICAL_CONNECTION_COUNT_THRESHOLD_KEY = "verticalConnectionCountThreshold";
-
     public static final String HORIZONTAL_TIME_WINDOW_KEY = "horizontalTimeWindow";
     public static final String HORIZONTAL_ALERT_INTERVAL_KEY = "horizontalAlertInterval";
     public static final String HORIZONTAL_HIGH_PRIORITY_THRESHOLD_KEY = "horizontalHighPriorityThreshold";
     public static final String HORIZONTAL_CONNECTION_COUNT_THRESHOLD_KEY = "horizontalConnectionCountThreshold";
-
     public static final String BLOCK_TIME_WINDOW_KEY = "blockTimeWindow";
     public static final String BLOCK_ALERT_INTERVAL_KEY = "blockAlertInterval";
     public static final String BLOCK_HIGH_PRIORITY_THRESHOLD_KEY = "blockHighPriorityThreshold";
     public static final String BLOCK_PORTS_COUNT_THRESHOLD_KEY = "blockPortsCountThreshold";
     public static final String BLOCK_ADDRESSES_COUNT_THRESHOLD_KEY = "blockAddressesCountThreshold";
-
+    private static final Logger log = LoggerFactory.getLogger(PortScansAlertPlugin.class);
     private String netdev;
     private String runtimeURI;
     private PortScansAlertMain main;

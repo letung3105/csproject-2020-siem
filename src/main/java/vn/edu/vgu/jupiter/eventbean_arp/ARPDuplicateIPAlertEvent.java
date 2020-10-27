@@ -1,7 +1,5 @@
 package vn.edu.vgu.jupiter.eventbean_arp;
 
-import java.util.ArrayList;
-
 public class ARPDuplicateIPAlertEvent {
     String IP;
     String time;

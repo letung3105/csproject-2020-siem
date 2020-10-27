@@ -10,7 +10,7 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  * @author Bui Xuan Phuoc
  */
 public class ARPDuplicateIPAlertStatement {
-    String statementEPL =     "insert into ARPDuplicateIPAlertEvent\n " +
+    String statementEPL = "insert into ARPDuplicateIPAlertEvent\n " +
             "select IP, time\n " +
             "from ARPCacheUpdateEvent\n " +
             "group by IP\n " +
@@ -29,6 +29,7 @@ public class ARPDuplicateIPAlertStatement {
         listenStatement = ARPAlertUtils.compileDeploy(listenStatementEPL, runtime);
         listenStatement.addListener(new ARPDuplicateIPAlertListener());
     }
+
     public void undeploy() throws EPUndeployException {
         runtime.getDeploymentService().undeploy(statement.getDeploymentId());
         runtime.getDeploymentService().undeploy(listenStatement.getDeploymentId());

@@ -6,8 +6,8 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.edu.vgu.jupiter.dashboard.Dashboard">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="500.0" prefWidth="700.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="vn.edu.vgu.jupiter.dashboard.Dashboard">
     <children>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                     prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

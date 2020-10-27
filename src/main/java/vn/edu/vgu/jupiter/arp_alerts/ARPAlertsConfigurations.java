@@ -10,14 +10,23 @@ public class ARPAlertsConfigurations {
         this.arpDuplicateIP = arpDuplicateIP;
         this.arpGratuitousAnnouncement = arpGratuitousAnnouncement;
     }
+
     public static class ARPDuplicateIP {
 
     }
+
     public static class ARPCacheFlood {
         int consecutiveAttemptsThreshold;
         int timeWindowSeconds;
         int alertIntervalSeconds;
         long highPriorityThreshold;
+
+        public ARPCacheFlood(int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
+            this.consecutiveAttemptsThreshold = consecutiveAttemptsThreshold;
+            this.timeWindowSeconds = timeWindowSeconds;
+            this.alertIntervalSeconds = alertIntervalSeconds;
+            this.highPriorityThreshold = highPriorityThreshold;
+        }
 
         public int getConsecutiveAttemptsThreshold() {
             return consecutiveAttemptsThreshold;
@@ -34,14 +43,8 @@ public class ARPAlertsConfigurations {
         public long getHighPriorityThreshold() {
             return highPriorityThreshold;
         }
-
-        public ARPCacheFlood(int consecutiveAttemptsThreshold, int timeWindowSeconds, int alertIntervalSeconds, long highPriorityThreshold) {
-            this.consecutiveAttemptsThreshold = consecutiveAttemptsThreshold;
-            this.timeWindowSeconds = timeWindowSeconds;
-            this.alertIntervalSeconds = alertIntervalSeconds;
-            this.highPriorityThreshold = highPriorityThreshold;
-        }
     }
+
     public static class ARPGratuitousAnnouncement {
         int consecutiveAttemptsThreshold;
         int timeWindowSeconds;

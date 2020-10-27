@@ -8,7 +8,10 @@ import org.pcap4j.packet.ArpPacket;
 import org.pcap4j.packet.Packet;
 import vn.edu.vgu.jupiter.eventbean_arp.ARPPacketEvent;
 
-import java.net.*;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 public class ARPAlertsMain implements Runnable {
     private EPRuntime runtime;
@@ -27,10 +30,10 @@ public class ARPAlertsMain implements Runnable {
     public static void main(String[] args) throws SocketException {
         ARPAlertsConfigurations arpAlertsConfigurations = new ARPAlertsConfigurations(
                 new ARPAlertsConfigurations.ARPDuplicateIP(),
-                new ARPAlertsConfigurations.ARPCacheFlood(40, 3, 10,30),
+                new ARPAlertsConfigurations.ARPCacheFlood(40, 3, 10, 30),
                 new ARPAlertsConfigurations.ARPGratuitousAnnouncement(4, 10, 10, 3)
         );
-        ARPAlertsMain arpAlertsMain= new ARPAlertsMain();
+        ARPAlertsMain arpAlertsMain = new ARPAlertsMain();
         arpAlertsMain.deploy(arpAlertsConfigurations);
         arpAlertsMain.run();
     }
@@ -39,7 +42,7 @@ public class ARPAlertsMain implements Runnable {
         arpBroadcastStatement = new ARPBroadcastStatement(runtime);
         arpAnnouncementStatement = new ARPAnnouncementStatement(runtime);
         arpReplyStatement = new ARPReplyStatement(runtime);
-        arpCacheFloodAlertStatement =  new ARPCacheFloodAlertStatement(runtime,
+        arpCacheFloodAlertStatement = new ARPCacheFloodAlertStatement(runtime,
                 arpAlertsConfigurations.arpCacheFlood.consecutiveAttemptsThreshold,
                 arpAlertsConfigurations.arpCacheFlood.timeWindowSeconds,
                 arpAlertsConfigurations.arpCacheFlood.alertIntervalSeconds,
@@ -95,7 +98,7 @@ public class ARPAlertsMain implements Runnable {
                 }
             };
 
-            try{
+            try {
                 handle.loop(-1, listener);
             } catch (PcapNativeException e) {
                 e.printStackTrace();
@@ -115,13 +118,13 @@ public class ARPAlertsMain implements Runnable {
     /**
      * Method to get the preferred outbound IP of the machine's network interfaces
      *
-     * @author Bui Xuan Phuoc
      * @return preferred outbound IP of the machine
+     * @author Bui Xuan Phuoc
      */
     public String getPreferredOutboundIP() {
         String ip = null;
         //ip always takes the value of the preferred outbound ip
-        try(final DatagramSocket socket = new DatagramSocket()){
+        try (final DatagramSocket socket = new DatagramSocket()) {
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
             ip = socket.getLocalAddress().getHostAddress();
         } catch (UnknownHostException | SocketException e) {

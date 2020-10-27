@@ -32,6 +32,7 @@ public class ARPCacheUpdateStatement {
         this.runtime = runtime;
         statement = ARPAlertUtils.compileDeploy(statementEPL, runtime);
     }
+
     public void undeploy() throws EPUndeployException {
         runtime.getDeploymentService().undeploy(statement.getDeploymentId());
     }

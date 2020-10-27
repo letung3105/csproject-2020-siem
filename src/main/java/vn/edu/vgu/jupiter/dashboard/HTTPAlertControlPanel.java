@@ -27,22 +27,19 @@ import java.util.ResourceBundle;
  */
 public class HTTPAlertControlPanel implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(HTTPAlertControlPanel.class);
-    private EPRuntime runtime;
-
     public TextField failedLoginAttemptsThreshold;
     public TextField failedLoginTimeWindow;
     public TextField failedLoginAlertInterval;
     public TextField failedLoginHighPriorityThreshold;
-
     public TextField sameIpFailedLoginAttemptsThreshold;
     public TextField sameIpFailedLoginTimeWindow;
     public TextField sameIpFailedLoginAlertInterval;
     public TextField sameIpFailedLoginHighPriorityThreshold;
-
     public TextField sameUserFailedLoginAttemptsThreshold;
     public TextField sameUserFailedLoginTimeWindow;
     public TextField sameUserFailedLoginAlertInterval;
     public TextField sameUserFailedLoginHighPriorityThreshold;
+    private EPRuntime runtime;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

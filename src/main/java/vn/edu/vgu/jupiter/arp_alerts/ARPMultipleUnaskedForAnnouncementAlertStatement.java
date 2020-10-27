@@ -8,7 +8,7 @@ import com.espertech.esper.runtime.client.EPUndeployException;
 
 
 public class ARPMultipleUnaskedForAnnouncementAlertStatement {
-    String statementEPL =     "insert into ARPMultipleUnaskedForAnnouncementAlertEvent\n " +
+    String statementEPL = "insert into ARPMultipleUnaskedForAnnouncementAlertEvent\n " +
             "select cast(count(*) as int), srcIP, srcMAC, time\n " +
             "from ARPAnnouncementEvent#time_batch(?:alertTimeWindow:integer second)\n " +
             "group by srcIP\n " +

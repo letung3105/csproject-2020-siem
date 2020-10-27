@@ -22,7 +22,7 @@ public class ARPCacheFloodAlertStatement {
             "having count(distinct IP) >= ?:consecutiveAttemptThreshold:integer and ?:alertTimeWindow = ?:alertTimeWindow\n " +
             "output last every ?:alertInterval:integer second;";
 
-//    "insert into ARPCacheFloodAlertEvent\n " +
+    //    "insert into ARPCacheFloodAlertEvent\n " +
 //            "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
 //            "having count(distinct IP) >= ?:consecutiveAttemptThreshold:integer\n " +
 //            "output last every ?:alertInterval:integer second;" +
