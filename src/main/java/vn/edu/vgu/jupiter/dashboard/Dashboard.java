@@ -3,22 +3,13 @@ package vn.edu.vgu.jupiter.dashboard;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin;
 import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 /**
  * This contains the implementation for the graphical interface that is used to control the SIEM system, * and display
@@ -34,11 +25,6 @@ import java.util.ResourceBundle;
  */
 public class Dashboard {
 
-    public static final double HEIGHT = 600;
-    public static final double WIDTH = 400;
-
-    private EPRuntime runtime;
-
     @FXML
     public AnchorPane httpAlertControlPanel;
     @FXML
@@ -53,10 +39,6 @@ public class Dashboard {
     private String logFileLocation;
     private String netDeviceName;
 
-    public Dashboard() {
-
-    }
-
     public void setLogFileLocation(String logFileLocation) {
         this.logFileLocation = logFileLocation;
     }
@@ -65,7 +47,7 @@ public class Dashboard {
         this.netDeviceName = netDeviceName;
     }
 
-    public void setPlugin(){
+    public void setPlugin() {
         Configuration config = new Configuration();
 
         // configure HTTPAlertPlugin
@@ -87,7 +69,7 @@ public class Dashboard {
                 "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
                 portScansAlertProps);
 
-        runtime = EPRuntimeProvider.getRuntime("SIEM", config);
+        EPRuntime runtime = EPRuntimeProvider.getRuntime("SIEM", config);
 
         // shared the runtime with the controllers
         this.httpAlertControlPanelController.setRuntime(runtime);

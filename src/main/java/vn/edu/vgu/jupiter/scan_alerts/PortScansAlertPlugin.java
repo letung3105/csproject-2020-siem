@@ -48,19 +48,8 @@ public class PortScansAlertPlugin implements PluginLoader {
      * @param context The context given by Esper
      */
     public void init(PluginLoaderInitContext context) {
-        // TODO: setting initial parameters
-        if (context.getProperties().getProperty(RUNTIME_URI_KEY) != null) {
-            runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY);
-        } else {
-            runtimeURI = context.getRuntime().getURI();
-        }
-
-        if (context.getProperties().getProperty(NETDEV_KEY) != null) {
-            netdev = context.getProperties().getProperty(NETDEV_KEY);
-        } else {
-            netdev = context.getRuntime().getURI();
-        }
-
+        runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY, context.getRuntime().getURI());
+        netdev = context.getProperties().getProperty(NETDEV_KEY, "lo");
         configs = new PortScansAlertConfigurations(
                 new PortScansAlertConfigurations.VerticalScan(
                         Integer.parseInt(context.getProperties().getProperty(VERTICAL_TIME_WINDOW_KEY, "60")),
