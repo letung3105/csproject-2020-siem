@@ -14,6 +14,15 @@ import javax.naming.NamingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This controller can access the runtime to get the plugin to deploy and undeploy deployments for port scans alert
+ * <p>
+ * This controller consists of text fields to get player inputs and a button if pressed, will apply the changes to
+ * the system. Upon clicking the button, by using the plugin gotten from runtime, the system will undeploy all statements
+ * related to port scans, and redeploy with new parameters. If the input is of incorrect format, default values will be used.
+ *
+ * @author Pham Nguyen Thanh An
+ */
 public class PortScansAlertController implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertController.class);
     /**
@@ -50,10 +59,21 @@ public class PortScansAlertController implements Initializable {
 
     private EPRuntime runtime;
 
+    /**
+     * Set the runtime that is used by this controller.
+     *
+     * @param runtime The runtime
+     */
     public void setRuntime(EPRuntime runtime) {
         this.runtime = runtime;
     }
 
+    /**
+     * Get plugin from runtime and undeploy, deploy with new parameters.
+     *
+     * @throws NamingException plugin id not found
+     * @throws EPUndeployException deployments can not be undeploy
+     */
     @FXML
     public void applyVariableChanges() throws NamingException, EPUndeployException {
         PortScansAlertPlugin plugin = (PortScansAlertPlugin) runtime.getContext().getEnvironment()
@@ -102,6 +122,11 @@ public class PortScansAlertController implements Initializable {
         blockWarnAddressCount.setText(String.valueOf(5));
     }
 
+    /**
+     * Update values of text fields based on the configurations.
+     *
+     * @param config Parameters for the CEP engine
+     */
     private void updateFieldsValue(PortScansAlertConfigurations config) {
         verticalMinCount.setText(String.valueOf(config.getVerticalScan().getConnectionsCountThreshold()));
         verticalTime.setText(String.valueOf(config.getVerticalScan().getTimeWindow()));
@@ -120,6 +145,15 @@ public class PortScansAlertController implements Initializable {
         blockWarnAddressCount.setText(String.valueOf(config.getBlockScan().getHighPriorityThreshold()));
     }
 
+    /**
+     * Simple helper for parsing strings as integers.
+     * <p>
+     * If the given string is not an integer, returns the given default value.
+     *
+     * @param text          The string representation of the integer
+     * @param defaultVal The default value that might be returned
+     * @return The parsed integer, if the given string is valid, otherwise the default value
+     */
     private int parseIntoIntOrDefault(String text, int defaultVal) {
         int number;
         try {
