@@ -2,7 +2,7 @@ package vn.edu.vgu.jupiter.http_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntime;
 import org.apache.commons.io.input.TailerListenerAdapter;
-import vn.edu.vgu.jupiter.eventbean_http.httpLogEvent;
+import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +33,6 @@ public class HTTPDLogTailer extends TailerListenerAdapter {
             lineComponents.set(3, lineComponents.get(3) + lineComponents.get(4));
             lineComponents.remove(4);
         }
-        runtime.getEventService().sendEventBean(new httpLogEvent(lineComponents), "httpLogEvent");
+        runtime.getEventService().sendEventBean(new HTTPLog(lineComponents), "HTTPLog");
     }
 }
