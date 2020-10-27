@@ -38,25 +38,6 @@ public class PortScansAlertPlugin implements PluginLoader {
     private Thread portScansAlertThread;
     private PortScansAlertConfigurations configs;
 
-    /**
-     * Set the default configurations that is used when the runtime first started.
-     * <p>
-     * This function is called by Esper's engine.
-     *
-     * @param context The context given by Esper
-     */
-    public void deploy(PortScansAlertConfigurations configs) {
-        if (main != null) {
-            main.deploy(configs);
-        }
-    }
-
-    public void undeploy() throws EPUndeployException {
-        if (main != null) {
-            main.undeploy();
-        }
-    }
-
     public void addStatementMetricListener(PropertyChangeListener listener) {
         if (main != null) {
             main.addStatementMetricListener(listener);
@@ -117,7 +98,9 @@ public class PortScansAlertPlugin implements PluginLoader {
      * @param configs
      */
     public void deploy(PortScansAlertConfigurations configs) {
-        main.deploy(configs);
+        if (main != null) {
+            main.deploy(configs);
+        }
     }
 
     /**

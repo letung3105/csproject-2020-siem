@@ -3,23 +3,16 @@ package vn.edu.vgu.jupiter.http_alerts;
 import com.espertech.esper.common.client.EventBean;
 import com.espertech.esper.common.client.metric.StatementMetric;
 import com.espertech.esper.runtime.client.*;
-import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
-
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import com.espertech.esper.runtime.client.EPUndeployException;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class HTTPAlertsMain implements Runnable {
     private static class MetricListener implements UpdateListener {
@@ -97,7 +90,7 @@ public class HTTPAlertsMain implements Runnable {
     public void run() {
         File apacheAccessLogFile = new File(logPath);
         TailerListener listener = new HTTPDLogTailer(runtime);
-        Tailer tailer = Tailer.create(apacheAccessLogFile, listener, 100);
+        Tailer tailer = Tailer.create(apacheAccessLogFile, listener, 100, true);
         tailer.run();
     }
 
