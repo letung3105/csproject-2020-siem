@@ -3,7 +3,6 @@ package vn.edu.vgu.jupiter.dashboard;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,7 +28,6 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 /**
  * This contains the implementation for the graphical interface that is used to control the SIEM system, * and display
@@ -68,10 +66,6 @@ public class Dashboard extends Application implements PropertyChangeListener, In
     private String logFileLocation;
     private String netDeviceName;
 
-    public Dashboard() {
-
-    }
-
     public void setLogFileLocation(String logFileLocation) {
         this.logFileLocation = logFileLocation;
     }
@@ -80,7 +74,7 @@ public class Dashboard extends Application implements PropertyChangeListener, In
         this.netDeviceName = netDeviceName;
     }
 
-    public void setPlugin(){
+    public void setPlugin() {
         Configuration config = new Configuration();
 
         // configure HTTPAlertPlugin

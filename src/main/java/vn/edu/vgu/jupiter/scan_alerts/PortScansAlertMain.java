@@ -175,10 +175,10 @@ public class PortScansAlertMain implements Runnable {
     }
 
     /**
-    * Undeploy all the modules related to port scan service alerts
-    *
-    *  @throws EPUndeployException
-    */
+     * Undeploy all the modules related to port scan service alerts
+     *
+     * @throws EPUndeployException
+     */
     public void undeploy() throws EPUndeployException {
         if (tcpClosedStatement != null) {
             tcpClosedStatement.undeploy();

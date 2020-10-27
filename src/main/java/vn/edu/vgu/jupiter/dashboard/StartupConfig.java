@@ -1,13 +1,13 @@
 package vn.edu.vgu.jupiter.dashboard;
 
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.sun.nio.sctp.Notification;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,13 +20,16 @@ import java.io.IOException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.ResourceBundle;
 
 /**
  * This controller asks for user inputs in net device for port scans alerts and log location for http alerts
  * Upon receiving the correct values, it will switch to Dashboard
  */
-public class StartupConfig extends Application implements Initializable{
+public class StartupConfig extends Application implements Initializable {
     public static final double HEIGHT = 600;
     public static final double WIDTH = 600;
 
@@ -37,25 +40,7 @@ public class StartupConfig extends Application implements Initializable{
     @FXML
     private TextField apacheLogLocationField;
 
-    Enumeration<NetworkInterface> nets;
-    ObservableList<String> netNameList;
-
-    private boolean isApacheLogExist = false;
-    private String chosenLogLocation;
-
-    private Dashboard dashboardController;
-    private EPRuntime runtime;
-
-    public StartupConfig(){
-        try {
-            netDeviceComboBox = new ComboBox<>();
-            nets = NetworkInterface.getNetworkInterfaces();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch(args);
     }
 
@@ -75,26 +60,26 @@ public class StartupConfig extends Application implements Initializable{
      * @throws IOException
      */
     @FXML
-    private void applyVariables() throws IOException {
-        //Checking log location
-        checkLogLocation();
-
-        if(isApacheLogExist){
-            //Load
+    private void applyVariables(ActionEvent evt) throws IOException {
+        String chosenLogLocation = apacheLogLocationField.getText();
+        if (isFileExist(chosenLogLocation)) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
-            var root = (Parent) loader.load();
-            dashboardController = loader.getController();
+            Parent root = loader.load();
+
+            Dashboard dashboardController = loader.getController();
             dashboardController.setNetDeviceName(netDeviceComboBox.getValue());
             dashboardController.setLogFileLocation(chosenLogLocation);
             dashboardController.setPlugin();
-            scene.setRoot(root);
+
+            Node eventSource = (Node) evt.getSource();
+            Stage stage = (Stage) eventSource.getScene().getWindow();
+            stage.setScene(new Scene(root));
         } else {
             //make an big error message
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Warning");
             alert.setHeaderText(null);
             alert.setContentText("Your apache log file may not exist, or it is not readable.");
-
             alert.showAndWait();
         }
     }
@@ -107,25 +92,31 @@ public class StartupConfig extends Application implements Initializable{
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ArrayList<String> tempList = new ArrayList<>();
-        for(NetworkInterface networkInterface: Collections.list(nets)){
-            String netName = networkInterface.getDisplayName();
-            tempList.add(netName);
+        Enumeration<NetworkInterface> netInterfaces;
+        try {
+            netInterfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            e.printStackTrace();
+            Platform.exit();
+            return;
         }
-        netNameList = FXCollections.observableList(tempList);
-        netDeviceComboBox.setItems(netNameList);
+
+        ArrayList<String> netInterfaceNames = new ArrayList<>();
+        Iterator<NetworkInterface> netInterfacesIt = netInterfaces.asIterator();
+        while (netInterfacesIt.hasNext()) {
+            netInterfaceNames.add(netInterfacesIt.next().getDisplayName());
+        }
+
+        netDeviceComboBox.setItems(FXCollections.observableList(netInterfaceNames));
         netDeviceComboBox.getSelectionModel().selectFirst();
     }
 
     /**
      * A simple log checking location without checking if the log file is in correct format
      */
-    private void checkLogLocation(){
-        chosenLogLocation = apacheLogLocationField.getText();
+    private boolean isFileExist(String pathname) {
         //checking for location
-        File file = new File(chosenLogLocation);
-        if(file.canRead()){
-            isApacheLogExist = true;
-        }
+        File file = new File(pathname);
+        return file.canRead();
     }
 }

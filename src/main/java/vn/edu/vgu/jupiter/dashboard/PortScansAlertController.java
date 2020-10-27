@@ -71,7 +71,7 @@ public class PortScansAlertController implements Initializable {
     /**
      * Get plugin from runtime and undeploy, deploy with new parameters.
      *
-     * @throws NamingException plugin id not found
+     * @throws NamingException     plugin id not found
      * @throws EPUndeployException deployments can not be undeploy
      */
     @FXML
@@ -150,7 +150,7 @@ public class PortScansAlertController implements Initializable {
      * <p>
      * If the given string is not an integer, returns the given default value.
      *
-     * @param text          The string representation of the integer
+     * @param text       The string representation of the integer
      * @param defaultVal The default value that might be returned
      * @return The parsed integer, if the given string is valid, otherwise the default value
      */
