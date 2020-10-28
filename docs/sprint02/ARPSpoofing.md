@@ -2,15 +2,19 @@
 
 The document describes the event hierarchy of the ARP spoofing detection module 
 ```
-ARPPacketEvent--|->ARPReplyEvent---------|                  |->ARPDuplicateIPAlert
+ARPPacketEvent-->|->ARPReplyEvent---------|                  |->ARPDuplicateIPAlert
        |         |                        |-->ARPCacheUpdate-|
        |         |->ARPAnnouncementEvent--|                  |->ARPCacheFloodAlert
-       |                    |
-       v                    v
-         ARPMultipleUnaskedForAnnouncementAlert
+       |                    |                                            ^ 
+       v                    v                                            |
+ARPBroadcastEvent   ARPMultipleUnaskedForAnnouncementAlert               |
+       |                                                                 | 
+       -------------------------------------------------------------------
+
 ```
 * ARPPacketEvent is raised whenever the interface received an ARP packet.
 * ARPReplyEvent is raised whenever the machine broadcast a request to know the hardware address of an IP and got a reply.
+* ARPBroadcastEvent is raised whenever a broadcast with no target ARP packet is detected.
 * ARPAnnouncementEvent is raised whenever a gratuitous ARP announcement is made.
 * ARPMultipleUnaskedForAnnouncementAlert is raised whenever multiple gratuitous ARP announcement is detected in a time frame;
 * ARPCacheUpdate is raised whenever a new mapping entry is created for the ARP Cache.
