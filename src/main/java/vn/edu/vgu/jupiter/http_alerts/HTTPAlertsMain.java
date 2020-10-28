@@ -5,6 +5,7 @@ import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
+import vn.edu.vgu.jupiter.eventbean_http.FileTooLargeSameUserIDAlert;
 
 import java.io.File;
 
@@ -15,6 +16,9 @@ public class HTTPAlertsMain implements Runnable {
     private FailedLoginAlertStatement failedLoginAlertStmt;
     private FailedLoginFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
     private FailedLoginSameUserIDAlertStatement failedLoginSameUserIDAlertStmt;
+    private FileTooLargeAlertStatement fileTooLargeAlertStmt;
+    private FileTooLargeSameUserIDAlertStatement fileTooLargeSameUserIDAlertStmt;
+
     private String logPath;
 
     public HTTPAlertsMain(String logPath) {
@@ -26,7 +30,10 @@ public class HTTPAlertsMain implements Runnable {
         HTTPAlertsConfigurations httpAlertConfig = new HTTPAlertsConfigurations(
                 new HTTPAlertsConfigurations.FailedLogin(15, 6, 3, 20),
                 new HTTPAlertsConfigurations.FailedLoginFromSameIP(12, 2, 1, 15),
-                new HTTPAlertsConfigurations.FailedLoginSameUserID(3, 2, 1, 5));
+                new HTTPAlertsConfigurations.FailedLoginSameUserID(3, 2, 1, 5),
+                new HTTPAlertsConfigurations.FileTooLarge(5, 1, 3, 4),
+                new HTTPAlertsConfigurations.FileTooLargeSameUserID(4, 1, 5, 3)
+        );
 
         HTTPAlertsMain httpAlertsMain = new HTTPAlertsMain("/private/var/log/apache2/access.log");
         httpAlertsMain.deploy(httpAlertConfig);
@@ -68,6 +75,20 @@ public class HTTPAlertsMain implements Runnable {
                 configs.getFailedLoginSameUserID().getTimeWindow(),
                 configs.getFailedLoginSameUserID().getAlertInterval(),
                 configs.getFailedLoginSameUserID().getHighPriorityThreshold());
+
+        fileTooLargeAlertStmt = new FileTooLargeAlertStatement(
+                runtime,
+                configs.getFileTooLarge().getConsecutiveAttemptsThreshold(),
+                configs.getFileTooLarge().getTimeWindow(),
+                configs.getFileTooLarge().getAlertInterval(),
+                configs.getFileTooLarge().getHighPriorityThreshold());
+
+        fileTooLargeSameUserIDAlertStmt = new FileTooLargeSameUserIDAlertStatement(runtime,
+                configs.getFileTooLargeSameUserID().getConsecutiveAttemptsThreshold(),
+                configs.getFailedLoginSameUserID().getTimeWindow(),
+                configs.getFileTooLargeSameUserID().getAlertInterval(),
+                configs.getFileTooLargeSameUserID().getHighPriorityThreshold()
+        );
     }
 
     /**
@@ -87,6 +108,12 @@ public class HTTPAlertsMain implements Runnable {
         }
         if (failedLoginSameUserIDAlertStmt != null) {
             failedLoginSameUserIDAlertStmt.undeploy();
+        }
+        if (fileTooLargeAlertStmt != null) {
+            fileTooLargeAlertStmt.undeploy();
+        }
+        if (fileTooLargeSameUserIDAlertStmt != null) {
+            fileTooLargeSameUserIDAlertStmt.undeploy();
         }
     }
 }

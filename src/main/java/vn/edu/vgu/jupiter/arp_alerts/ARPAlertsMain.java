@@ -5,6 +5,8 @@ import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.ArpPacket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import vn.edu.vgu.jupiter.eventbean_arp.ARPPacketEvent;
 
 import java.net.DatagramSocket;
@@ -13,6 +15,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class ARPAlertsMain implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(ARPAlertsMain.class);
+
     private EPRuntime runtime;
     private ARPAnnouncementStatement arpAnnouncementStatement;
     private ARPReplyStatement arpReplyStatement;
@@ -94,7 +98,7 @@ public class ARPAlertsMain implements Runnable {
             } catch (PcapNativeException | InterruptedException | NotOpenException e) {
                 e.printStackTrace();
             } catch (NullPointerException e) {
-                System.out.println("Not connected to the internet");
+                logger.info("Not connected to the internet");
             }
             handle.close();
         } catch (PcapNativeException e) {

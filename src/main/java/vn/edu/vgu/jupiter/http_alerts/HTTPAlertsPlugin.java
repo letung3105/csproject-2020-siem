@@ -32,6 +32,16 @@ public class HTTPAlertsPlugin implements PluginLoader {
     public static final String SAME_USER_FAILED_LOGIN_ALERT_INTERVAL_KEY = "sameUserFailedLoginAlertInterval";
     public static final String SAME_USER_FAILED_LOGIN_HIGH_PRIORITY_THRESHOLD_KEY = "sameUserFailedLoginHighPriorityThreshold";
 
+    public static final String FILE_TOO_LARGE_ATTEMPTS_THRESHOLD_KEY = "fileTooLargeAttemptsThreshold";
+    public static final String FILE_TOO_LARGE_TIME_WINDOW_KEY = "fileTooLargeTimeWindow";
+    public static final String FILE_TOO_LARGE_ALERT_INTERVAL_KEY = "fileTooLargeAlertInterval";
+    public static final String FILE_TOO_LARGE_HIGH_PRIORITY_THRESHOLD_KEY = "fileTooLargeHighPriorityThreshold";
+
+    public static final String SAME_USER_FILE_TOO_LARGE_ATTEMPTS_THRESHOLD_KEY = "sameUserFileTooLargeAttemptsThreshold";
+    public static final String SAME_USER_FILE_TOO_LARGE_TIME_WINDOW_KEY = "sameUserFileTooLargeTimeWindow";
+    public static final String SAME_USER_FILE_TOO_LARGE_ALERT_INTERVAL_KEY = "sameUserFileTooLargeAlertInterval";
+    public static final String SAME_USER_FILE_TOO_LARGE_HIGH_PRIORITY_THRESHOLD_KEY = "sameUserFileTooLargeHighPriorityThreshold";
+
     private static final Logger log = LoggerFactory.getLogger(HTTPAlertsPlugin.class);
 
     private String runtimeURI;
@@ -68,6 +78,19 @@ public class HTTPAlertsPlugin implements PluginLoader {
                         Integer.parseInt(context.getProperties().getProperty(SAME_USER_FAILED_LOGIN_TIME_WINDOW_KEY, "2")),
                         Integer.parseInt(context.getProperties().getProperty(SAME_USER_FAILED_LOGIN_ALERT_INTERVAL_KEY, "1")),
                         Integer.parseInt(context.getProperties().getProperty(SAME_USER_FAILED_LOGIN_HIGH_PRIORITY_THRESHOLD_KEY, "5"))
+                ),
+                new HTTPAlertsConfigurations.FileTooLarge(
+                        Integer.parseInt(context.getProperties().getProperty(FILE_TOO_LARGE_ATTEMPTS_THRESHOLD_KEY, "15")),
+                        Integer.parseInt(context.getProperties().getProperty(FILE_TOO_LARGE_TIME_WINDOW_KEY, "6")),
+                        Integer.parseInt(context.getProperties().getProperty(FILE_TOO_LARGE_ALERT_INTERVAL_KEY, "3")),
+                        Integer.parseInt(context.getProperties().getProperty(FILE_TOO_LARGE_HIGH_PRIORITY_THRESHOLD_KEY, "20"))
+
+                ),
+                new HTTPAlertsConfigurations.FileTooLargeSameUserID(
+                        Integer.parseInt(context.getProperties().getProperty(SAME_USER_FILE_TOO_LARGE_ATTEMPTS_THRESHOLD_KEY, "3")),
+                        Integer.parseInt(context.getProperties().getProperty(SAME_USER_FILE_TOO_LARGE_TIME_WINDOW_KEY, "2")),
+                        Integer.parseInt(context.getProperties().getProperty(SAME_USER_FILE_TOO_LARGE_ALERT_INTERVAL_KEY, "1")),
+                        Integer.parseInt(context.getProperties().getProperty(SAME_USER_FILE_TOO_LARGE_HIGH_PRIORITY_THRESHOLD_KEY, "5"))
                 )
         );
     }

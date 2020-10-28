@@ -11,10 +11,15 @@ public class HTTPAlertsConfigurations {
     private FailedLoginFromSameIP failedLoginFromSameIP;
     private FailedLoginSameUserID failedLoginSameUserID;
 
-    public HTTPAlertsConfigurations(FailedLogin failedLogin, FailedLoginFromSameIP failedLoginFromSameIP, FailedLoginSameUserID failedLoginSameUserID) {
+    private FileTooLarge fileTooLarge;
+    private FileTooLargeSameUserID fileTooLargeSameUserID;
+
+    public HTTPAlertsConfigurations(FailedLogin failedLogin, FailedLoginFromSameIP failedLoginFromSameIP, FailedLoginSameUserID failedLoginSameUserID, FileTooLarge fileTooLarge, FileTooLargeSameUserID fileTooLargeSameUserID) {
         this.failedLogin = failedLogin;
         this.failedLoginFromSameIP = failedLoginFromSameIP;
         this.failedLoginSameUserID = failedLoginSameUserID;
+        this.fileTooLarge = fileTooLarge;
+        this.fileTooLargeSameUserID = fileTooLargeSameUserID;
     }
 
     public FailedLogin getFailedLogin() {
@@ -27,6 +32,14 @@ public class HTTPAlertsConfigurations {
 
     public FailedLoginSameUserID getFailedLoginSameUserID() {
         return failedLoginSameUserID;
+    }
+
+    public FileTooLarge getFileTooLarge() {
+        return fileTooLarge;
+    }
+
+    public FileTooLargeSameUserID getFileTooLargeSameUserID() {
+        return fileTooLargeSameUserID;
     }
 
     /**
@@ -101,6 +114,18 @@ public class HTTPAlertsConfigurations {
      */
     public static class FailedLoginSameUserID extends GeneralHTTPAlert {
         public FailedLoginSameUserID(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
+            super(consecutiveAttemptsThreshold, timeWindow, alertInterval, highPriorityThreshold);
+        }
+    }
+
+    public static class FileTooLarge extends GeneralHTTPAlert {
+        public FileTooLarge(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
+            super(consecutiveAttemptsThreshold, timeWindow, alertInterval, highPriorityThreshold);
+        }
+    }
+
+    public static class FileTooLargeSameUserID extends GeneralHTTPAlert {
+        public FileTooLargeSameUserID(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
             super(consecutiveAttemptsThreshold, timeWindow, alertInterval, highPriorityThreshold);
         }
     }

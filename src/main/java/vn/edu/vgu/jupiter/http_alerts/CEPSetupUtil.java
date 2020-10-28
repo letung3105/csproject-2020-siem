@@ -60,10 +60,15 @@ public class CEPSetupUtil {
     public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
         configuration.getCommon().addEventType(HTTPLog.class);
+
         configuration.getCommon().addEventType(HTTPFailedLogin.class);
         configuration.getCommon().addEventType(FailedLoginFromSameIPAlert.class);
         configuration.getCommon().addEventType(FailedLoginAlert.class);
         configuration.getCommon().addEventType(FailedLoginSameUserIDAlert.class);
+
+        configuration.getCommon().addEventType(HTTPFileTooLarge.class);
+        configuration.getCommon().addEventType(FileTooLargeAlert.class);
+        configuration.getCommon().addEventType(FileTooLargeSameUserIDAlert.class);
         return configuration;
     }
 }
