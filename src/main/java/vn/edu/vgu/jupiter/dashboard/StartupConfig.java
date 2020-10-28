@@ -61,7 +61,7 @@ public class StartupConfig extends Application implements Initializable {
     public void start(Stage stage) throws Exception {
         //set up scene and show
         var root = (Parent) FXMLLoader.load(getClass().getResource("StartupConfig.fxml"));
-        Scene scene = new Scene(root, WIDTH / 2, HEIGHT / 2);
+        Scene scene = new Scene(root, 600, 600);
         stage.setTitle("SIEM Dashboard");
         stage.setScene(scene);
         stage.show();

@@ -34,6 +34,21 @@ public class MetricsPanel implements PropertyChangeListener, Initializable {
     @FXML
     public Label numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel;
 
+    @FXML
+    public Label numberOfARPReplyEventsLabel;
+    @FXML
+    public Label numberOfARPBroadcastEventsLabel;
+    @FXML
+    public Label numberOfARPDuplicateIPAlertsLabel;
+    @FXML
+    public Label numberOfARPCacheFloodAlertsLabel;
+    @FXML
+    public Label numberOfARPAnnouncementEventsLabel;
+    @FXML
+    public Label numberOfCacheUpdateEventsLabel;
+    @FXML
+    public Label numberOfARPMultipleUnaskedForAnnouncementAlertsLabel;
+
     private Map<String, Label> enabledMetricLogStatementNamesToLabel = new ConcurrentHashMap<>();
     private Map<String, Long> statementNamesToEventsCount = new ConcurrentHashMap<>();
 
@@ -48,6 +63,14 @@ public class MetricsPanel implements PropertyChangeListener, Initializable {
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsAlert", numberOfConsecutiveFailedLoginsAlertsLabel);
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsFromSameIPAlert", numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel);
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsSameUserIDAlert", numberOfConsecutiveFailedLoginsSameUserIDAlertsLabel);
+
+        enabledMetricLogStatementNamesToLabel.put("ARPAnnouncementEvent", numberOfARPAnnouncementEventsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ARPBroadcastEvent", numberOfARPBroadcastEventsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ARPCacheFloodAlertEvent", numberOfARPCacheFloodAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ARPCacheUpdateEvent", numberOfCacheUpdateEventsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ARPDuplicateIPAlertEvent", numberOfARPDuplicateIPAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ARPMultipleUnaskedForAnnouncementAlertEvent", numberOfARPMultipleUnaskedForAnnouncementAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ARPReplyEvent", numberOfARPReplyEventsLabel);
     }
 
     @Override

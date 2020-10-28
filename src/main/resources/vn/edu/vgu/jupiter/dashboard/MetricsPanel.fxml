@@ -163,14 +163,120 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <children>
-                        <Label text="NO METRIC" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="8.0">
-                            <VBox.margin>
-                                <Insets top="8.0"/>
-                            </VBox.margin>
-                            <font>
-                                <Font size="16.0"/>
-                            </font>
-                        </Label>
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="8.0"
+                              AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
+                            <children>
+                                <Label text="ARPReply">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfARPReplyEventsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ARPBroadcast">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfARPBroadcastEventsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ARPDuplicateIPAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfARPDuplicateIPAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ARPCacheFloodAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfARPCacheFloodAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ARPAnnouncement">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfARPAnnouncementEventsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ARPCacheUpdate">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfCacheUpdateEventsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ARPMultipleUnaskedForAnnouncementAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfARPMultipleUnaskedForAnnouncementAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                            </children>
+                        </VBox>
                     </children>
                 </AnchorPane>
             </content>

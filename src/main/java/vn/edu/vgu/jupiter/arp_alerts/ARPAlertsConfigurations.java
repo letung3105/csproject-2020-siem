@@ -23,6 +23,9 @@ public class ARPAlertsConfigurations {
         configuration.getCommon().addEventType(ARPAnnouncementEvent.class);
         configuration.getCommon().addEventType(ARPCacheUpdateEvent.class);
         configuration.getCommon().addEventType(ARPMultipleUnaskedForAnnouncementAlertEvent.class);
+        configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
+        configuration.getRuntime().getLogging().setEnableTimerDebug(false);
+        configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
         return configuration;
     }
 
@@ -30,6 +33,18 @@ public class ARPAlertsConfigurations {
         this.arpCacheFlood = arpCacheFlood;
         this.arpDuplicateIP = arpDuplicateIP;
         this.arpGratuitousAnnouncement = arpGratuitousAnnouncement;
+    }
+
+    public ARPDuplicateIP getArpDuplicateIP() {
+        return arpDuplicateIP;
+    }
+
+    public ARPCacheFlood getArpCacheFlood() {
+        return arpCacheFlood;
+    }
+
+    public ARPGratuitousAnnouncement getArpGratuitousAnnouncement() {
+        return arpGratuitousAnnouncement;
     }
 
     public static class ARPDuplicateIP {

@@ -26,6 +26,8 @@ public class HTTPAlertsConfigurations {
         configuration.getCommon().addEventType(ConsecutiveFailedLoginsFromSameIPAlert.class);
         configuration.getCommon().addEventType(ConsecutiveFailedLoginsAlert.class);
         configuration.getCommon().addEventType(ConsecutiveFailedLoginsSameUserIDAlert.class);
+        configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
+        configuration.getRuntime().getLogging().setEnableTimerDebug(false);
         configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
         return configuration;
     }

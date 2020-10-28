@@ -5,6 +5,7 @@ import com.espertech.esper.common.client.metric.StatementMetric;
 import com.espertech.esper.runtime.client.*;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
+import vn.edu.vgu.jupiter.EPFacade;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -65,10 +66,10 @@ public class HTTPAlertsMain implements Runnable {
     public HTTPAlertsMain(String logPath) {
         this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), getEPConfiguration());
         this.metricListener = new MetricListener();
-        CEPSetupUtil
+        EPFacade
                 .compileDeploy(
                         "select * from com.espertech.esper.common.client.metric.StatementMetric",
-                        runtime
+                        runtime, getEPConfiguration()
                 )
                 .addListener(metricListener);
         this.logPath = logPath;
