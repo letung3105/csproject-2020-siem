@@ -1,7 +1,6 @@
 package vn.edu.vgu.jupiter.scan_alerts.eventbean;
 
 import org.pcap4j.packet.IpPacket;
-import org.pcap4j.packet.TcpPacket;
 
 /**
  * Data structure that represents the raw event that contains the
@@ -11,10 +10,10 @@ import org.pcap4j.packet.TcpPacket;
  */
 public class TcpPacket {
     private Long timestamp;
-    private TcpPacket.TcpHeader tcpHeader;
+    private org.pcap4j.packet.TcpPacket.TcpHeader tcpHeader;
     private IpPacket.IpHeader ipHeader;
 
-    public TcpPacket(Long timestamp, TcpPacket.TcpHeader tcpHeader, IpPacket.IpHeader ipHeader) {
+    public TcpPacket(Long timestamp, org.pcap4j.packet.TcpPacket.TcpHeader tcpHeader, IpPacket.IpHeader ipHeader) {
         this.timestamp = timestamp;
         this.tcpHeader = tcpHeader;
         this.ipHeader = ipHeader;
@@ -28,7 +27,7 @@ public class TcpPacket {
         return ipHeader;
     }
 
-    public TcpPacket.TcpHeader getTcpHeader() {
+    public org.pcap4j.packet.TcpPacket.TcpHeader getTcpHeader() {
         return tcpHeader;
     }
 
