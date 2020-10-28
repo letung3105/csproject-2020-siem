@@ -1,0 +1,12 @@
+# Setting up upload webserver with apache
+* Move the content of package "resources/upload-webserver" to /var/www/html
+* Restart apache and mysql service with 
+```
+sudo service apache2 restart
+```
+```
+sudo service mysql restart
+```
+* Connect to localhost/post_upload/buoi24_4.html
+* Browse and select a large file to upload
+* Select upload
