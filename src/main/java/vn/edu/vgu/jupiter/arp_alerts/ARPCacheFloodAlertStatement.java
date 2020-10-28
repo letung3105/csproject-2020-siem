@@ -15,15 +15,17 @@ import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfigu
  * @author Bui Xuan Phuoc
  */
 public class ARPCacheFloodAlertStatement {
-    private String statementEPL = "insert into ARPCacheFloodAlertEvent\n " +
-            "select cast(count(distinct destIP) as int) from ARPBroadcastEvent#time(?:alertTimeWindow:integer second)\n " +
-            "having count(distinct destIP) >= ?:consecutiveAttemptThreshold:integer\n " +
-            "output last every ?:alertInterval:integer second;\n " +
+    private String statementEPL =
+            "@Name('ARPCacheFloodAlertEvent')\n" +
+                    "insert into ARPCacheFloodAlertEvent\n " +
+                    "select cast(count(distinct destIP) as int) from ARPBroadcastEvent#time(?:alertTimeWindow:integer second)\n " +
+                    "having count(distinct destIP) >= ?:consecutiveAttemptThreshold:integer\n " +
+                    "output last every ?:alertInterval:integer second;\n " +
 
-            "insert into ARPCacheFloodAlertEvent\n " +
-            "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
-            "having count(distinct IP) >= ?:consecutiveAttemptThreshold:integer and ?:alertTimeWindow = ?:alertTimeWindow\n " +
-            "output last every ?:alertInterval:integer second;";
+                    "insert into ARPCacheFloodAlertEvent\n " +
+                    "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +
+                    "having count(distinct IP) >= ?:consecutiveAttemptThreshold:integer and ?:alertTimeWindow = ?:alertTimeWindow\n " +
+                    "output last every ?:alertInterval:integer second;";
 
     //    "insert into ARPCacheFloodAlertEvent\n " +
 //            "select cast(count(distinct IP) as int) from ARPCacheUpdateEvent\n " +

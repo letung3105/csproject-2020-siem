@@ -14,17 +14,19 @@ import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfigu
  * @author Bui Xuan Phuoc
  */
 public class ARPCacheUpdateStatement {
-    private String statementEPL = "insert into ARPCacheUpdateEvent\n " +
-            "select srcIP, srcMAC, time from ARPReplyEvent;\n " +
+    private String statementEPL =
+            "@Name('ARPCacheUpdateEvent')\n" +
+                    "insert into ARPCacheUpdateEvent\n " +
+                    "select srcIP, srcMAC, time from ARPReplyEvent;\n " +
 
-            "insert into ARPCacheUpdateEvent\n " +
-            "select destIP, destMAC, time from ARPReplyEvent;\n " +
+                    "insert into ARPCacheUpdateEvent\n " +
+                    "select destIP, destMAC, time from ARPReplyEvent;\n " +
 
-            "insert into ARPCacheUpdateEvent\n " +
-            "select srcIP, srcMAC, time from ARPAnnouncementEvent;\n " +
+                    "insert into ARPCacheUpdateEvent\n " +
+                    "select srcIP, srcMAC, time from ARPAnnouncementEvent;\n " +
 
-            "insert into ARPCacheUpdateEvent\n " +
-            "select destIP, destMAC, time from ARPAnnouncementEvent";
+                    "insert into ARPCacheUpdateEvent\n " +
+                    "select destIP, destMAC, time from ARPAnnouncementEvent";
     private String listenStatementEPL = "select * from ARPCacheUpdateEvent";
 
     private EPStatement statement;

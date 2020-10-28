@@ -11,12 +11,14 @@ import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfigu
 
 
 public class ARPMultipleUnaskedForAnnouncementAlertStatement {
-    String statementEPL = "insert into ARPMultipleUnaskedForAnnouncementAlertEvent\n " +
-            "select cast(count(*) as int), srcIP, srcMAC, time\n " +
-            "from ARPAnnouncementEvent#time_batch(?:alertTimeWindow:integer second)\n " +
-            "group by srcIP\n " +
-            "having count(*) > ?:consecutiveAttemptThreshold:integer\n " +
-            "output last every ?:alertInterval:integer second";
+    String statementEPL =
+            "@Name('ARPMultipleUnaskedForAnnouncementAlertEvent')\n" +
+                    "insert into ARPMultipleUnaskedForAnnouncementAlertEvent\n " +
+                    "select cast(count(*) as int), srcIP, srcMAC, time\n " +
+                    "from ARPAnnouncementEvent#time_batch(?:alertTimeWindow:integer second)\n " +
+                    "group by srcIP\n " +
+                    "having count(*) > ?:consecutiveAttemptThreshold:integer\n " +
+                    "output last every ?:alertInterval:integer second";
 
     private String listenStatementEPL = "select * from ARPMultipleUnaskedForAnnouncementAlertEvent";
 

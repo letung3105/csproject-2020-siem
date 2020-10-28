@@ -8,9 +8,11 @@ import vn.edu.vgu.jupiter.EPFacade;
 import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
 public class ARPBroadcastStatement {
-    String statementEPL = "insert into ARPBroadcastEvent\n " +
-            "select srcIP, destIP, srcMAC, time from ARPPacketEvent\n " +
-            "where destMAC like '00:00:00:00:00:00'";
+    String statementEPL =
+            "@Name('ARPBroadcastEvent')\n" +
+                    "insert into ARPBroadcastEvent\n " +
+                    "select srcIP, destIP, srcMAC, time from ARPPacketEvent\n " +
+                    "where destMAC like '00:00:00:00:00:00'";
 
     private String listenStatementEPL = "select * from ARPBroadcastEvent";
     private EPStatement statement;

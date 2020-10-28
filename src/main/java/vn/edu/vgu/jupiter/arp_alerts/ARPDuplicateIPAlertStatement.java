@@ -13,11 +13,13 @@ import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfigu
  * @author Bui Xuan Phuoc
  */
 public class ARPDuplicateIPAlertStatement {
-    String statementEPL = "insert into ARPDuplicateIPAlertEvent\n " +
-            "select IP, time\n " +
-            "from ARPCacheUpdateEvent\n " +
-            "group by IP\n " +
-            "having count(distinct MAC) > 1";
+    String statementEPL =
+            "@Name('ARPDuplicateIPAlertEvent')\n" +
+                    "insert into ARPDuplicateIPAlertEvent\n " +
+                    "select IP, time\n " +
+                    "from ARPCacheUpdateEvent\n " +
+                    "group by IP\n " +
+                    "having count(distinct MAC) > 1";
 
     private String listenStatementEPL = "select * from ARPDuplicateIPAlertEvent";
     private EPStatement statement;

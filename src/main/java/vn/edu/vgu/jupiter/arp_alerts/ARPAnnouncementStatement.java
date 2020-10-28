@@ -14,9 +14,11 @@ import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfigu
  * @author Bui Xuan Phuoc
  */
 public class ARPAnnouncementStatement {
-    String statementEPL = "insert into ARPAnnouncementEvent\n " +
-            "select srcIP, destIP, srcMAC, destMAC, time from ARPPacketEvent as a\n " +
-            "where a.announcement";
+    String statementEPL =
+            "@Name('ARPAnnouncementEvent')\n" +
+                    "insert into ARPAnnouncementEvent\n " +
+                    "select srcIP, destIP, srcMAC, destMAC, time from ARPPacketEvent as a\n " +
+                    "where a.announcement";
 
     private String listenStatement = "select * from ARPAnnouncementEvent";
     private EPStatement statement;
