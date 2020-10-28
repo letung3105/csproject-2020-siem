@@ -26,7 +26,8 @@ public class ARPAlertsPlugin implements PluginLoader {
     public static final String ARP_GRATUITOUS_ANNOUNCEMENT_ALERT_INTERVAL_KEY = "arpGratuitousAnnouncementAlertInterval";
     public static final String ARP_GRATUITOUS_ANNOUNCEMENT_HIGH_PRIORITY_THRESHOLD_KEY = "arpGratuitousAnnouncementHighPriorityThreshold";
     public static final String ARP_GRATUITOUS_ANNOUNCEMENT_CONSECUTIVE_ATTEMPTS_THRESHOLD_KEY = "arpGratuitousAnnouncementConsecutiveAttemptsThreshold";
-    private static final Logger log = LoggerFactory.getLogger(ARPAlertsPlugin.class);
+    public static final Logger log = LoggerFactory.getLogger(ARPAlertsPlugin.class);
+    public static final String ARP_DUPLICATE_IP_ALERT_INTERVAL_KEY = "arpDuplicateIPAlertInterval";
     private String netdev;
     private String runtimeURI;
     private ARPAlertsMain main;
@@ -43,7 +44,9 @@ public class ARPAlertsPlugin implements PluginLoader {
         runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY, context.getRuntime().getURI());
         netdev = context.getProperties().getProperty(NETDEV_KEY, "lo");
         configs = new ARPAlertsConfigurations(
-                new ARPAlertsConfigurations.ARPDuplicateIP(),
+                new ARPAlertsConfigurations.ARPDuplicateIP(
+                        Integer.parseInt(context.getProperties().getProperty(ARP_DUPLICATE_IP_ALERT_INTERVAL_KEY, "10"))
+                ),
                 new ARPAlertsConfigurations.ARPCacheFlood(
                         Integer.parseInt(context.getProperties().getProperty(ARP_CACHE_FLOOD_CONSECUTIVE_ATTEMPTS_THRESHOLD_KEY, "40")),
                         Integer.parseInt(context.getProperties().getProperty(ARP_CACHE_FLOOD_TIME_WINDOW_KEY, "3")),

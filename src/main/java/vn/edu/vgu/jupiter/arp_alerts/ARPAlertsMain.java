@@ -92,7 +92,7 @@ public class ARPAlertsMain implements Runnable {
 
     public static void main(String[] args) {
         ARPAlertsConfigurations arpAlertsConfigurations = new ARPAlertsConfigurations(
-                new ARPAlertsConfigurations.ARPDuplicateIP(),
+                new ARPAlertsConfigurations.ARPDuplicateIP(10),
                 new ARPAlertsConfigurations.ARPCacheFlood(40, 3, 10, 30),
                 new ARPAlertsConfigurations.ARPGratuitousAnnouncement(4, 10, 10, 3)
         );
@@ -110,7 +110,8 @@ public class ARPAlertsMain implements Runnable {
                 arpAlertsConfigurations.arpCacheFlood.timeWindowSeconds,
                 arpAlertsConfigurations.arpCacheFlood.alertIntervalSeconds,
                 arpAlertsConfigurations.arpCacheFlood.highPriorityThreshold);
-        arpDuplicateIPAlertStatement = new ARPDuplicateIPAlertStatement(runtime);
+        arpDuplicateIPAlertStatement = new ARPDuplicateIPAlertStatement(runtime,
+                arpAlertsConfigurations.arpDuplicateIP.alertIntervalSeconds);
         arpCacheUpdateStatement = new ARPCacheUpdateStatement(runtime);
         arpMultipleUnaskedForAnnouncementAlertStatement = new ARPMultipleUnaskedForAnnouncementAlertStatement(runtime,
                 arpAlertsConfigurations.arpGratuitousAnnouncement.consecutiveAttemptsThreshold,

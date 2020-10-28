@@ -8,6 +8,29 @@
         <Accordion prefWidth="300.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0"
                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <panes>
+                <TitledPane animated="false" text="Duplicate IP's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="arpDuplicateIPAlertInterval"
+                                           GridPane.columnIndex="1"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+
                 <TitledPane animated="false" text="ARP cache flood's thresholds">
                     <content>
                         <GridPane vgap="8.0">

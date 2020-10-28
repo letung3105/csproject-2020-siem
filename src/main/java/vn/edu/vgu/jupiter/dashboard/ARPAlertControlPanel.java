@@ -35,12 +35,16 @@ public class ARPAlertControlPanel implements Initializable {
     public TextField arpGratuitousAnnouncementAlertInterval;
     @FXML
     public TextField arpGratuitousAnnouncementHighPriorityThreshold;
+    @FXML
+    public TextField arpDuplicateIPAlertInterval;
 
     private EPRuntime runtime;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // upon initialization, set the value of the text fields to their default value
+        arpDuplicateIPAlertInterval.setText(String.valueOf(10));
+
         arpCacheFloodConsecutiveAttemptsThreshold.setText(String.valueOf(40));
         arpCacheFloodTimeWindow.setText(String.valueOf(3));
         arpCacheFloodAlertInterval.setText(String.valueOf(10));
@@ -73,7 +77,8 @@ public class ARPAlertControlPanel implements Initializable {
         // get runtime
         ARPAlertsPlugin plugin = (ARPAlertsPlugin) runtime.getContext().getEnvironment().get("plugin-loader/ARPAlertsPlugin");
         ARPAlertsConfigurations configs = new ARPAlertsConfigurations(
-                new ARPAlertsConfigurations.ARPDuplicateIP(),
+                new ARPAlertsConfigurations.ARPDuplicateIP(
+                        parseUintOrDefault(arpDuplicateIPAlertInterval.getText(), 10)),
                 new ARPAlertsConfigurations.ARPCacheFlood(
                         parseUintOrDefault(arpCacheFloodConsecutiveAttemptsThreshold.getText(), 40),
                         parseUintOrDefault(arpCacheFloodTimeWindow.getText(), 3),

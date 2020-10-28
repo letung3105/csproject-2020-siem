@@ -48,7 +48,11 @@ public class ARPAlertsConfigurations {
     }
 
     public static class ARPDuplicateIP {
+        int alertIntervalSeconds;
 
+        public ARPDuplicateIP(int alertIntervalSeconds) {
+            this.alertIntervalSeconds = alertIntervalSeconds;
+        }
     }
 
     public static class ARPCacheFlood {

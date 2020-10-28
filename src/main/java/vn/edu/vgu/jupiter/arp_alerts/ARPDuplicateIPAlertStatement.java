@@ -1,5 +1,7 @@
 package vn.edu.vgu.jupiter.arp_alerts;
 
+import com.espertech.esper.common.client.util.TimePeriod;
+import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
@@ -19,7 +21,8 @@ public class ARPDuplicateIPAlertStatement {
                     "select IP, time\n " +
                     "from ARPCacheUpdateEvent\n " +
                     "group by IP\n " +
-                    "having count(distinct MAC) > 1";
+                    "having count(distinct MAC) > 1\n " +
+                    "output last every ?:alertInterval:integer second";
 
     private String listenStatementEPL = "select * from ARPDuplicateIPAlertEvent";
     private EPStatement statement;
@@ -28,9 +31,13 @@ public class ARPDuplicateIPAlertStatement {
 
     private EPRuntime runtime;
 
-    public ARPDuplicateIPAlertStatement(EPRuntime runtime) {
+    public ARPDuplicateIPAlertStatement(EPRuntime runtime, int alertIntervalSeconds) {
         this.runtime = runtime;
-        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration());
+        DeploymentOptions options = new DeploymentOptions();
+        options.setStatementSubstitutionParameter(prepared -> {
+            prepared.setObject("alertInterval", alertIntervalSeconds);
+        });
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration(), options);
         listenStatement = EPFacade.compileDeploy(listenStatementEPL, runtime, getEPConfiguration());
         listenStatement.addListener(new ARPDuplicateIPAlertListener());
     }
