@@ -7,7 +7,7 @@ import com.espertech.esper.runtime.client.EPUndeployException;
 
 public class FileTooLargeSameUserIDAlertStatement {
     private String statementEPL =
-            "insert into FileTooLargeSameUserIDAlert\n " +
+            "@Name('FileTooLargeSameUserIDAlert') insert into FileTooLargeSameUserIDAlert\n " +
             "select IPAddress, userID, time, timeZone, count(*)\n " +
             "from HTTPFileTooLarge#time(?:alertTimeWindow:integer second)\n " +
             "group by userID\n " +

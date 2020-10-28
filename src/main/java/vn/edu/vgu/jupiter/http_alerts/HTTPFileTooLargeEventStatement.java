@@ -5,7 +5,7 @@ import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
 
 public class HTTPFileTooLargeEventStatement {
-    String statementEPL = "insert into HTTPFileTooLarge\n " +
+    String statementEPL = "@Name('HTTPFileTooLarge') insert into HTTPFileTooLarge\n " +
             "select IPAddress, userID, time, timeZone from HTTPLog\n " +
             "where statusCode like \"413\"";
     private EPStatement statement;

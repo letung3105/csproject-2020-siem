@@ -7,7 +7,7 @@ import com.espertech.esper.runtime.client.EPUndeployException;
 
 public class FileTooLargeAlertStatement {
     private String statementEPL =
-            "insert into FileTooLargeAlert\n " +
+            "@Name('FileTooLargeAlert') insert into FileTooLargeAlert\n " +
                     "select timeZone, time, count(*)\n " +
                     "from HTTPFileTooLarge#time(?:alertTimeWindow:integer second)\n " +
                     "having count(*) > ?:consecutiveAttemptThreshold:integer\n" +
