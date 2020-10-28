@@ -5,6 +5,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
 
 public class ARPMultipleUnaskedForAnnouncementAlertStatement {
@@ -33,8 +36,8 @@ public class ARPMultipleUnaskedForAnnouncementAlertStatement {
             prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 
-        statement = ARPAlertUtils.compileDeploy(statementEPL, runtime, options);
-        listenStatement = ARPAlertUtils.compileDeploy(listenStatementEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration(), options);
+        listenStatement = EPFacade.compileDeploy(listenStatementEPL, runtime, getEPConfiguration());
         listenStatement.addListener(new ARPMultipleUnaskedForAnnouncementAlertListener(highPriorityThreshold));
     }
 

@@ -3,6 +3,9 @@ package vn.edu.vgu.jupiter.arp_alerts;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement to detect IP entries that has multiple MAC addresses linked to it,
@@ -25,8 +28,8 @@ public class ARPDuplicateIPAlertStatement {
 
     public ARPDuplicateIPAlertStatement(EPRuntime runtime) {
         this.runtime = runtime;
-        statement = ARPAlertUtils.compileDeploy(statementEPL, runtime);
-        listenStatement = ARPAlertUtils.compileDeploy(listenStatementEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration());
+        listenStatement = EPFacade.compileDeploy(listenStatementEPL, runtime, getEPConfiguration());
         listenStatement.addListener(new ARPDuplicateIPAlertListener());
     }
 

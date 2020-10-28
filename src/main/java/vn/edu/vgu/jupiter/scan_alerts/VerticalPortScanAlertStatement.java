@@ -4,6 +4,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.scan_alerts.PortScansAlertConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement for raising alerts for vertical port scan events that might be
@@ -13,7 +16,8 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class VerticalPortScanAlertStatement {
     private static final String eplRaiseAlert =
-            "insert into VerticalPortScanAlert\n" +
+            "@Name('VerticalPortScanAlert')\n" +
+                    "insert into VerticalPortScanAlert\n" +
                     "select timestamp, ipHeader.dstAddr, count(distinct tcpHeader.dstPort)\n" +
                     "from TcpPacketWithClosedPort#time(?:timeWindow:integer seconds)\n" +
                     "group by ipHeader.dstAddr\n" +
@@ -39,9 +43,9 @@ public class VerticalPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        stmtRaiseAlert = PortScansAlertUtil.compileDeploy(eplRaiseAlert, runtime, alertOpts);
+        stmtRaiseAlert = EPFacade.compileDeploy(eplRaiseAlert, runtime, getEPConfiguration(), alertOpts);
 
-        stmtListen = PortScansAlertUtil.compileDeploy(eplListen, runtime);
+        stmtListen = EPFacade.compileDeploy(eplListen, runtime, getEPConfiguration());
         stmtListen.addListener(new VerticalPortScanAlertListener(countThreshold));
     }
 

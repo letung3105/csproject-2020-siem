@@ -3,6 +3,7 @@ package vn.edu.vgu.jupiter.dashboard;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPUndeployException;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
@@ -27,17 +28,29 @@ import java.util.ResourceBundle;
  */
 public class HTTPAlertControlPanel implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(HTTPAlertControlPanel.class);
+    @FXML
     public TextField failedLoginAttemptsThreshold;
+    @FXML
     public TextField failedLoginTimeWindow;
+    @FXML
     public TextField failedLoginAlertInterval;
+    @FXML
     public TextField failedLoginHighPriorityThreshold;
+    @FXML
     public TextField sameIpFailedLoginAttemptsThreshold;
+    @FXML
     public TextField sameIpFailedLoginTimeWindow;
+    @FXML
     public TextField sameIpFailedLoginAlertInterval;
+    @FXML
     public TextField sameIpFailedLoginHighPriorityThreshold;
+    @FXML
     public TextField sameUserFailedLoginAttemptsThreshold;
+    @FXML
     public TextField sameUserFailedLoginTimeWindow;
+    @FXML
     public TextField sameUserFailedLoginAlertInterval;
+    @FXML
     public TextField sameUserFailedLoginHighPriorityThreshold;
     private EPRuntime runtime;
 
@@ -105,7 +118,6 @@ public class HTTPAlertControlPanel implements Initializable {
         // redeployment
         plugin.undeploy();
         plugin.deploy(configs);
-        //
         updateFieldsValue(configs);
 
         // message to user

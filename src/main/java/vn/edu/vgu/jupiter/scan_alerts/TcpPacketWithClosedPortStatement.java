@@ -3,6 +3,9 @@ package vn.edu.vgu.jupiter.scan_alerts;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.scan_alerts.PortScansAlertConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement for selecting packets of TCP connection to closed port
@@ -12,7 +15,8 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class TcpPacketWithClosedPortStatement {
     private static final String eplTcpPacketToClosedPort =
-            "insert into TcpPacketWithClosedPort\n" +
+            "@Name('TcpPacketWithClosedPort')\n" +
+                    "insert into TcpPacketWithClosedPort\n" +
                     "select a.timestamp, a.tcpHeader, a.ipHeader from pattern [\n" +
                     "every a=TcpPacket(tcpHeader.syn = true and tcpHeader.ack = false) ->\n" +
                     "b=TcpPacket(\n" +
@@ -31,7 +35,7 @@ public class TcpPacketWithClosedPortStatement {
 
     public TcpPacketWithClosedPortStatement(EPRuntime runtime) {
         this.runtime = runtime;
-        stmtTcpPacketToClosedPort = PortScansAlertUtil.compileDeploy(eplTcpPacketToClosedPort, runtime);
+        stmtTcpPacketToClosedPort = EPFacade.compileDeploy(eplTcpPacketToClosedPort, runtime, getEPConfiguration());
     }
 
     /**

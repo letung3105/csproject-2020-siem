@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" prefWidth="300.0" xmlns="http://javafx.com/javafx"
+            fx:controller="vn.edu.vgu.jupiter.dashboard.ARPAlertControlPanel">
+    <children>
+        <Accordion prefWidth="300.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <panes>
+                <TitledPane animated="false" text="ARP cache flood's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="arpCacheFloodConsecutiveAttemptsThreshold" GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="arpCacheFloodTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="arpCacheFloodAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="arpCacheFloodHighPriorityThreshold" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="Gratuitous ARP announcement's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="arpGratuitousAnnouncementConsecutiveAttemptsThreshold"
+                                           GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="arpGratuitousAnnouncementTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="arpGratuitousAnnouncementAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="arpGratuitousAnnouncementHighPriorityThreshold"
+                                           GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+            </panes>
+        </Accordion>
+        <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" onAction="#deploy"
+                text="Apply changes" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="97.0"
+                AnchorPane.rightAnchor="101.0"/>
+    </children>
+</AnchorPane>

@@ -4,6 +4,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.scan_alerts.PortScansAlertConfigurations.getEPConfiguration;
 
 /**
  * A class to compile EPL statements for the HorizontalPortScanAlert event
@@ -13,7 +16,8 @@ import com.espertech.esper.runtime.client.EPUndeployException;
  */
 public class HorizontalPortScanAlertStatement {
     private static final String alertStmt =
-            "insert into HorizontalPortScanAlert\n" +
+            "@Name('HorizontalPortScanAlert')\n" +
+                    "insert into HorizontalPortScanAlert\n" +
                     "select timestamp, tcpHeader.dstPort, count(distinct ipHeader.dstAddr)\n" +
                     "from TcpPacketWithClosedPort#time(?:timeWindow:integer second)\n" +
                     "group by tcpHeader.dstPort\n" +
@@ -38,8 +42,8 @@ public class HorizontalPortScanAlertStatement {
                 }
         );
 
-        statement = PortScansAlertUtil.compileDeploy(alertStmt, runtime, opts);
-        listenStatement = PortScansAlertUtil.compileDeploy(listenStmt, runtime);
+        statement = EPFacade.compileDeploy(alertStmt, runtime, getEPConfiguration(), opts);
+        listenStatement = EPFacade.compileDeploy(listenStmt, runtime, getEPConfiguration());
         listenStatement.addListener(new HorizontalPortScanAlertListener(countThreshold));
     }
 

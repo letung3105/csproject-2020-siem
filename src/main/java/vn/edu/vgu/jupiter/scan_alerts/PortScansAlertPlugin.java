@@ -7,6 +7,8 @@ import com.espertech.esper.runtime.client.plugin.PluginLoaderInitContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.beans.PropertyChangeListener;
+
 /**
  * PluginLoader for added this example as part of an Esper configuration file and therefore execute it during startup.
  *
@@ -36,13 +38,12 @@ public class PortScansAlertPlugin implements PluginLoader {
     private Thread portScansAlertThread;
     private PortScansAlertConfigurations configs;
 
-    /**
-     * Set the default configurations that is used when the runtime first started.
-     * <p>
-     * This function is called by Esper's engine.
-     *
-     * @param context The context given by Esper
-     */
+    public void addStatementMetricListener(PropertyChangeListener listener) {
+        if (main != null) {
+            main.addStatementMetricListener(listener);
+        }
+    }
+
     public void init(PluginLoaderInitContext context) {
         runtimeURI = context.getProperties().getProperty(RUNTIME_URI_KEY, context.getRuntime().getURI());
         netdev = context.getProperties().getProperty(NETDEV_KEY, "lo");
@@ -97,7 +98,9 @@ public class PortScansAlertPlugin implements PluginLoader {
      * @param configs
      */
     public void deploy(PortScansAlertConfigurations configs) {
-        main.deploy(configs);
+        if (main != null) {
+            main.deploy(configs);
+        }
     }
 
     /**

@@ -14,6 +14,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.filter.ThresholdFilter;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,10 +37,8 @@ import java.util.ResourceBundle;
  * Upon receiving the correct values, it will switch to Dashboard
  */
 public class StartupConfig extends Application implements Initializable {
-    public static final double HEIGHT = 600;
-    public static final double WIDTH = 600;
-
-    private static Scene scene;
+    public static final double WIDTH = 960;
+    public static final double HEIGHT = 640;
 
     @FXML
     private ComboBox<String> netDeviceComboBox;
@@ -41,6 +46,14 @@ public class StartupConfig extends Application implements Initializable {
     private TextField apacheLogLocationField;
 
     public static void main(String[] args) {
+        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+        PatternLayout.Builder patternBuilder = PatternLayout.newBuilder();
+        patternBuilder.withPattern("%d{HH:mm:ss.SSS} [%level]: %msg%n");
+        Filter filter = ThresholdFilter.createFilter(Level.INFO, Filter.Result.ACCEPT, Filter.Result.NEUTRAL);
+        Appender textAreaAppender = TextAreaAppender.createAppender("TextAreaAppender", patternBuilder.build(), filter);
+        ctx.getRootLogger().addAppender(textAreaAppender);
+        ctx.updateLoggers();
+
         launch(args);
     }
 
@@ -48,7 +61,7 @@ public class StartupConfig extends Application implements Initializable {
     public void start(Stage stage) throws Exception {
         //set up scene and show
         var root = (Parent) FXMLLoader.load(getClass().getResource("StartupConfig.fxml"));
-        scene = new Scene(root, WIDTH, HEIGHT);
+        Scene scene = new Scene(root, 600, 600);
         stage.setTitle("SIEM Dashboard");
         stage.setScene(scene);
         stage.show();
@@ -73,7 +86,7 @@ public class StartupConfig extends Application implements Initializable {
 
             Node eventSource = (Node) evt.getSource();
             Stage stage = (Stage) eventSource.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, WIDTH, HEIGHT));
         } else {
             //make an big error message
             Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -2,7 +2,7 @@ package vn.edu.vgu.jupiter.http_alerts;
 
 import com.espertech.esper.runtime.client.EPRuntime;
 import org.apache.commons.io.input.TailerListenerAdapter;
-import vn.edu.vgu.jupiter.eventbean_http.HTTPLog;
+import vn.edu.vgu.jupiter.http_alerts.eventbean.HTTPLog;
 
 import java.util.ArrayList;
 import java.util.Arrays;

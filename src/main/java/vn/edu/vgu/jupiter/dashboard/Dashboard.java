@@ -3,12 +3,16 @@ package vn.edu.vgu.jupiter.dashboard;
 import com.espertech.esper.common.client.configuration.Configuration;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPRuntimeProvider;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import vn.edu.vgu.jupiter.arp_alerts.ARPAlertsPlugin;
 import vn.edu.vgu.jupiter.http_alerts.HTTPAlertsPlugin;
 import vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin;
 
+import javax.naming.NamingException;
 import java.util.Properties;
 
 /**
@@ -34,6 +38,14 @@ public class Dashboard {
     @FXML
     public PortScansAlertController portScansAlertControlPanelController;
     @FXML
+    public AnchorPane arpAlertControlPanel;
+    @FXML
+    public ARPAlertControlPanel arpAlertControlPanelController;
+    @FXML
+    public TabPane metricsPanel;
+    @FXML
+    public MetricsPanel metricsPanelController;
+    @FXML
     public TextArea logArea;
 
     private String logFileLocation;
@@ -53,7 +65,7 @@ public class Dashboard {
         // configure HTTPAlertPlugin
         // log location is /var/log/apache2/access.log
         Properties httpAlertsProps = new Properties();
-        httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "SIEM");
+        httpAlertsProps.put(HTTPAlertsPlugin.RUNTIME_URI_KEY, "HTTPAlertsPlugin");
         httpAlertsProps.put(HTTPAlertsPlugin.LOG_PATH_KEY, logFileLocation);
         config.getRuntime().addPluginLoader(
                 "HTTPAlertsPlugin",
@@ -69,13 +81,39 @@ public class Dashboard {
                 "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin",
                 portScansAlertProps);
 
-        EPRuntime runtime = EPRuntimeProvider.getRuntime("SIEM", config);
+        Properties arpAlertsProps = new Properties();
+        arpAlertsProps.put(ARPAlertsPlugin.RUNTIME_URI_KEY, "ARPAlertsPlugin");
+        arpAlertsProps.put(ARPAlertsPlugin.NETDEV_KEY, netDeviceName);
+        config.getRuntime().addPluginLoader(
+                "ARPAlertsPlugin",
+                "vn.edu.vgu.jupiter.arp_alerts.ARPAlertsPlugin",
+                arpAlertsProps);
 
-        // shared the runtime with the controllers
-        this.httpAlertControlPanelController.setRuntime(runtime);
-        this.portScansAlertControlPanelController.setRuntime(runtime);
-        TextAreaAppender.setTextArea(this.logArea);
+        Platform.runLater(() -> {
+            EPRuntime runtime = EPRuntimeProvider.getRuntime("SIEM", config);
+            this.httpAlertControlPanelController.setRuntime(runtime);
+            this.portScansAlertControlPanelController.setRuntime(runtime);
+            this.arpAlertControlPanelController.setRuntime(runtime);
+
+            TextAreaAppender.setTextArea(this.logArea);
+            try {
+                HTTPAlertsPlugin httpPlugin = (HTTPAlertsPlugin) runtime
+                        .getContext().getEnvironment().get("plugin-loader/HTTPAlertsPlugin");
+                PortScansAlertPlugin portScanPlugin = (PortScansAlertPlugin) runtime
+                        .getContext().getEnvironment().get("plugin-loader/PortScansAlertPlugin");
+                ARPAlertsPlugin arpPlugin = (ARPAlertsPlugin) runtime
+                        .getContext().getEnvironment().get("plugin-loader/ARPAlertsPlugin");
+
+                httpPlugin.addStatementMetricListener(metricsPanelController);
+                portScanPlugin.addStatementMetricListener(metricsPanelController);
+                arpPlugin.addStatementMetricListener(metricsPanelController);
+            } catch (NamingException e) {
+                e.printStackTrace();
+                Platform.exit();
+            }
+        });
     }
+
 }
 
 

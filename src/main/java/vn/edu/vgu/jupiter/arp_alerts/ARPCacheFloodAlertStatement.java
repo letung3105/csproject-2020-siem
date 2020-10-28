@@ -4,6 +4,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement to detect ARP cache flooding attempts,
@@ -48,8 +51,8 @@ public class ARPCacheFloodAlertStatement {
             prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 
-        statement = ARPAlertUtils.compileDeploy(statementEPL, runtime, options);
-        listenStatement = ARPAlertUtils.compileDeploy(listenStatementEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration(), options);
+        listenStatement = EPFacade.compileDeploy(listenStatementEPL, runtime, getEPConfiguration());
         listenStatement.addListener(new ARPCacheFloodAlertListener(highPriorityThreshold));
     }
 

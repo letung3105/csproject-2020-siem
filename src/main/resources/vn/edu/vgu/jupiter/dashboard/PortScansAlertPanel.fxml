@@ -98,7 +98,7 @@
             </panes>
         </Accordion>
         <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" onAction="#applyVariableChanges"
-                text="Apply Changes" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="97.0"
+                text="Apply changes" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="97.0"
                 AnchorPane.rightAnchor="101.0"/>
     </children>
 </AnchorPane>

@@ -100,7 +100,8 @@
                 </TitledPane>
             </panes>
         </Accordion>
-        <Button alignment="CENTER" mnemonicParsing="false" onAction="#deploy" text="Button"
-                AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0"/>
+        <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" onAction="#deploy"
+                text="Apply changes" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="97.0"
+                AnchorPane.rightAnchor="101.0"/>
     </children>
 </AnchorPane>

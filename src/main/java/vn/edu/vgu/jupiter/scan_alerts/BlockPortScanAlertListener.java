@@ -29,11 +29,10 @@ public class BlockPortScanAlertListener implements UpdateListener {
         }
         Long ts = (Long) newEvents[0].get("timestamp");
         int count = ((Long) newEvents[0].get("count")).intValue();
-
         if (count < countThreshold) {
-            logger.info("[ts={}] LOW PRIORITY: POTENTIAL BLOCK PORT SCAN", ts);
+            logger.info("LOW PRIORITY: [ts={}] POTENTIAL BLOCK PORT SCAN", ts);
         } else {
-            logger.warn("[ts={}] HIGH PRIORITY: BLOCK PORT SCAN", ts);
+            logger.warn("HIGH PRIORITY: [ts={}] BLOCK PORT SCAN", ts);
         }
     }
 }

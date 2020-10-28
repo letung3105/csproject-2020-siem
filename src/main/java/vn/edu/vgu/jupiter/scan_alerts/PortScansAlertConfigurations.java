@@ -1,5 +1,8 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
+import com.espertech.esper.common.client.configuration.Configuration;
+import vn.edu.vgu.jupiter.scan_alerts.eventbean.*;
+
 /**
  * Sets of parameters for raising port scan alerts.
  *
@@ -9,6 +12,25 @@ public class PortScansAlertConfigurations {
     private VerticalScan verticalScan;
     private HorizontalScan horizontalScan;
     private BlockScan blockScan;
+
+    /**
+     * Make and returns that default configuration for Esper
+     *
+     * @return the configuration
+     */
+    protected static Configuration getEPConfiguration() {
+        Configuration configuration = new Configuration();
+        configuration.getCommon().addEventType(TcpPacket.class);
+        configuration.getCommon().addEventType(TcpPacketWithClosedPort.class);
+        configuration.getCommon().addEventType(ClosedPortsCountPerAddress.class);
+        configuration.getCommon().addEventType(VerticalPortScanAlert.class);
+        configuration.getCommon().addEventType(HorizontalPortScanAlert.class);
+        configuration.getCommon().addEventType(BlockPortScanAlert.class);
+        configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
+        configuration.getRuntime().getLogging().setEnableTimerDebug(false);
+        configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
+        return configuration;
+    }
 
     public PortScansAlertConfigurations(VerticalScan verticalScan,
                                         HorizontalScan horizontalScan,

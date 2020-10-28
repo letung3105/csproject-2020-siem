@@ -1,18 +1,72 @@
 package vn.edu.vgu.jupiter.arp_alerts;
 
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import com.espertech.esper.runtime.client.EPUndeployException;
-import org.pcap4j.core.*;
+import com.espertech.esper.common.client.EventBean;
+import com.espertech.esper.common.client.metric.StatementMetric;
+import com.espertech.esper.runtime.client.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.pcap4j.core.PacketListener;
+import org.pcap4j.core.PcapHandle;
+import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.core.Pcaps;
 import org.pcap4j.packet.ArpPacket;
-import vn.edu.vgu.jupiter.eventbean_arp.ARPPacketEvent;
+import vn.edu.vgu.jupiter.EPFacade;
+import vn.edu.vgu.jupiter.arp_alerts.eventbean.ARPPacketEvent;
 
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
 public class ARPAlertsMain implements Runnable {
+    private static class MetricListener implements UpdateListener {
+        private Map<String, Long> eventsCumulativeCount;
+        private Set<PropertyChangeListener> propertyChangeListenerSet;
+
+        public MetricListener() {
+            this.propertyChangeListenerSet = new HashSet<>();
+            this.eventsCumulativeCount = new HashMap<>();
+            this.eventsCumulativeCount.put("ARPAnnouncementEvent", 0L);
+            this.eventsCumulativeCount.put("ARPBroadcastEvent", 0L);
+            this.eventsCumulativeCount.put("ARPCacheFloodAlertEvent", 0L);
+            this.eventsCumulativeCount.put("ARPCacheUpdateEvent", 0L);
+            this.eventsCumulativeCount.put("ARPDuplicateIPAlertEvent", 0L);
+            this.eventsCumulativeCount.put("ARPMultipleUnaskedForAnnouncementAlertEvent", 0L);
+            this.eventsCumulativeCount.put("ARPReplyEvent", 0L);
+        }
+
+        public void addPropertyChangeListener(PropertyChangeListener listener) {
+            propertyChangeListenerSet.add(listener);
+        }
+
+        @Override
+        public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
+            if (newEvents == null) {
+                return; // ignore old events for events leaving the window
+            }
+
+            StatementMetric metric = (StatementMetric) newEvents[0].getUnderlying();
+            if (eventsCumulativeCount.containsKey(metric.getStatementName())) {
+                Long oldCount = eventsCumulativeCount.get(metric.getStatementName());
+                Long newCount = oldCount + metric.getNumOutputIStream();
+                if (!newCount.equals(oldCount)) {
+                    eventsCumulativeCount.put(metric.getStatementName(), newCount);
+                    for (PropertyChangeListener l : propertyChangeListenerSet) {
+                        l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
+                    }
+                }
+            }
+        }
+    }
+
+    private static Logger log = LogManager.getLogger(ARPAlertsMain.class);
+
+    private String netDevName;
+
     private EPRuntime runtime;
     private ARPAnnouncementStatement arpAnnouncementStatement;
     private ARPReplyStatement arpReplyStatement;
@@ -21,9 +75,19 @@ public class ARPAlertsMain implements Runnable {
     private ARPCacheUpdateStatement arpCacheUpdateStatement;
     private ARPMultipleUnaskedForAnnouncementAlertStatement arpMultipleUnaskedForAnnouncementAlertStatement;
     private ARPBroadcastStatement arpBroadcastStatement;
+    private MetricListener metricListener;
 
-    public ARPAlertsMain() {
-        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), ARPAlertUtils.getConfiguration());
+
+    public ARPAlertsMain(String netDevName) {
+        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), getEPConfiguration());
+        this.metricListener = new ARPAlertsMain.MetricListener();
+        this.netDevName = netDevName;
+        EPFacade
+                .compileDeploy(
+                        "select * from com.espertech.esper.common.client.metric.StatementMetric",
+                        runtime, getEPConfiguration()
+                )
+                .addListener(metricListener);
     }
 
     public static void main(String[] args) {
@@ -32,12 +96,12 @@ public class ARPAlertsMain implements Runnable {
                 new ARPAlertsConfigurations.ARPCacheFlood(40, 3, 10, 30),
                 new ARPAlertsConfigurations.ARPGratuitousAnnouncement(4, 10, 10, 3)
         );
-        ARPAlertsMain arpAlertsMain = new ARPAlertsMain();
+        ARPAlertsMain arpAlertsMain = new ARPAlertsMain(args[0]);
         arpAlertsMain.deploy(arpAlertsConfigurations);
         arpAlertsMain.run();
     }
 
-    private void deploy(ARPAlertsConfigurations arpAlertsConfigurations) {
+    public void deploy(ARPAlertsConfigurations arpAlertsConfigurations) {
         arpBroadcastStatement = new ARPBroadcastStatement(runtime);
         arpAnnouncementStatement = new ARPAnnouncementStatement(runtime);
         arpReplyStatement = new ARPReplyStatement(runtime);
@@ -56,31 +120,16 @@ public class ARPAlertsMain implements Runnable {
     }
 
     public void run() {
-        String ip = getPreferredOutboundIP();
-
-        InetAddress inetAddress;
         try {
-            //Change the InetAddress to your desire interface's address
-            inetAddress = InetAddress.getByName(ip);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+            // getting the network interface
+            PcapNetworkInterface nif = Pcaps.getDevByName(netDevName);
+            log.info(nif.getName() + "(" + nif.getDescription() + ")");
 
-        PcapNetworkInterface networkInterface;
-        try {
-            networkInterface = Pcaps.getDevByAddress(inetAddress);
-        } catch (PcapNativeException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
-        //OPEN PCAP HANDLE FROM NETWORK INTERFACE
-        int snapLen = 65536; //bytes
-        PcapNetworkInterface.PromiscuousMode mode = PcapNetworkInterface.PromiscuousMode.PROMISCUOUS;
-        int timeout = 10; //milliseconds
-        try {
-            PcapHandle handle = networkInterface.openLive(snapLen, mode, timeout);
+            //OPEN PCAP HANDLE FROM NETWORK INTERFACE
+            int snapLen = 65536; //bytes
+            PcapNetworkInterface.PromiscuousMode mode = PcapNetworkInterface.PromiscuousMode.PROMISCUOUS;
+            int timeout = 10; //milliseconds
+            PcapHandle handle = nif.openLive(snapLen, mode, timeout);
             PacketListener listener = packet -> {
                 if (packet.contains(ArpPacket.class)) {
                     ArpPacket arp = packet.get(ArpPacket.class);
@@ -91,34 +140,13 @@ public class ARPAlertsMain implements Runnable {
 
             try {
                 handle.loop(-1, listener);
-            } catch (PcapNativeException | InterruptedException | NotOpenException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            } catch (NullPointerException e) {
-                System.out.println("Not connected to the internet");
             }
             handle.close();
-        } catch (PcapNativeException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Method to get the preferred outbound IP of the machine's network interfaces
-     *
-     * @return preferred outbound IP of the machine
-     * @author Bui Xuan Phuoc
-     */
-    public String getPreferredOutboundIP() {
-        String ip = null;
-        //ip always takes the value of the preferred outbound ip
-        try (final DatagramSocket socket = new DatagramSocket()) {
-            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-            ip = socket.getLocalAddress().getHostAddress();
-        } catch (UnknownHostException | SocketException e) {
-            e.printStackTrace();
-        }
-        System.out.println(ip);
-        return ip;
     }
 
     public void undeploy() throws EPUndeployException {
@@ -150,5 +178,9 @@ public class ARPAlertsMain implements Runnable {
             arpCacheUpdateStatement.undeploy();
             arpCacheUpdateStatement = null;
         }
+    }
+
+    public void addStatementMetricListener(PropertyChangeListener listener) {
+        this.metricListener.addPropertyChangeListener(listener);
     }
 }

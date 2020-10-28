@@ -1,13 +1,23 @@
 package vn.edu.vgu.jupiter.scan_alerts;
 
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.espertech.esper.runtime.client.EPRuntimeProvider;
-import com.espertech.esper.runtime.client.EPUndeployException;
+import com.espertech.esper.common.client.EventBean;
+import com.espertech.esper.common.client.metric.StatementMetric;
+import com.espertech.esper.runtime.client.*;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.IpV4Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vn.edu.vgu.jupiter.eventbean.TcpPacket;
+import vn.edu.vgu.jupiter.EPFacade;
+import vn.edu.vgu.jupiter.scan_alerts.eventbean.TcpPacket;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static vn.edu.vgu.jupiter.scan_alerts.PortScansAlertConfigurations.getEPConfiguration;
 
 /**
  * This class is the new PortScansMain that have function to modify variables for all PortScan types
@@ -16,6 +26,43 @@ import vn.edu.vgu.jupiter.eventbean.TcpPacket;
  * @author Pham Nguyen Thanh An
  */
 public class PortScansAlertMain implements Runnable {
+    private static class MetricListener implements UpdateListener {
+        private Map<String, Long> eventsCumulativeCount;
+        private Set<PropertyChangeListener> propertyChangeListenerSet;
+
+        public MetricListener() {
+            this.eventsCumulativeCount = new HashMap<>();
+            this.propertyChangeListenerSet = new HashSet<>();
+            this.eventsCumulativeCount.put("TcpPacketWithClosedPort", 0L);
+            this.eventsCumulativeCount.put("VerticalPortScanAlert", 0L);
+            this.eventsCumulativeCount.put("HorizontalPortScanAlert", 0L);
+            this.eventsCumulativeCount.put("BlockPortScanAlert", 0L);
+        }
+
+        public void addPropertyChangeListener(PropertyChangeListener listener) {
+            propertyChangeListenerSet.add(listener);
+        }
+
+        @Override
+        public void update(EventBean[] newEvents, EventBean[] oldEvents, EPStatement statement, EPRuntime runtime) {
+            if (newEvents == null) {
+                return; // ignore old events for events leaving the window
+            }
+
+            StatementMetric metric = (StatementMetric) newEvents[0].getUnderlying();
+            if (eventsCumulativeCount.containsKey(metric.getStatementName())) {
+                Long oldCount = eventsCumulativeCount.get(metric.getStatementName());
+                Long newCount = oldCount + metric.getNumOutputIStream();
+                eventsCumulativeCount.put(metric.getStatementName(), newCount);
+                if (!newCount.equals(oldCount)) {
+                    for (PropertyChangeListener l : propertyChangeListenerSet) {
+                        l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
+                    }
+                }
+            }
+        }
+    }
+
     private static final Logger log = LoggerFactory.getLogger(PortScansAlertMain.class);
     private static final int READ_TIMEOUT = 100; // [ms]
     private static final int SNAPLEN = 65536; // [bytes]
@@ -26,6 +73,7 @@ public class PortScansAlertMain implements Runnable {
     private PortScansAlertConfigurations portScanAlertConfig;
 
     private EPRuntime runtime;
+    private MetricListener metricListener;
     private TcpPacketWithClosedPortStatement tcpClosedStatement;
     private VerticalPortScanAlertStatement verticalStatement;
     private HorizontalPortScanAlertStatement horizontalStatement;
@@ -33,8 +81,13 @@ public class PortScansAlertMain implements Runnable {
 
     public PortScansAlertMain(String netDevName) {
         this.netDevName = netDevName;
-        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(),
-                PortScansAlertUtil.getConfiguration());
+        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), getEPConfiguration());
+        this.metricListener = new MetricListener();
+        EPFacade
+                .compileDeploy(
+                        "select * from com.espertech.esper.common.client.metric.StatementMetric",
+                        runtime, getEPConfiguration())
+                .addListener(this.metricListener);
     }
 
     public static void main(String[] args) {
@@ -133,15 +186,23 @@ public class PortScansAlertMain implements Runnable {
     public void undeploy() throws EPUndeployException {
         if (tcpClosedStatement != null) {
             tcpClosedStatement.undeploy();
+            tcpClosedStatement = null;
         }
         if (verticalStatement != null) {
             verticalStatement.undeploy();
+            verticalStatement = null;
         }
         if (horizontalStatement != null) {
             horizontalStatement.undeploy();
+            horizontalStatement = null;
         }
         if (blockStatement != null) {
             blockStatement.undeploy();
+            blockStatement = null;
         }
+    }
+
+    public void addStatementMetricListener(PropertyChangeListener listener) {
+        metricListener.addPropertyChangeListener(listener);
     }
 }
