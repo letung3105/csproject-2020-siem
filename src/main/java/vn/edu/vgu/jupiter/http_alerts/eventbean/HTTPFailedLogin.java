@@ -1,18 +1,16 @@
-package vn.edu.vgu.jupiter.eventbean_http;
+package vn.edu.vgu.jupiter.http_alerts.eventbean;
 
-public class ConsecutiveFailedLoginsSameUserIDAlert {
+public class HTTPFailedLogin {
     String IPAddress;
     String userID;
     String time;
     String timeZone;
-    long failuresCount;
 
-    public ConsecutiveFailedLoginsSameUserIDAlert(String IPAddress, String userID, String time, String timeZone, long failuresCount) {
+    public HTTPFailedLogin(String IPAddress, String userID, String time, String timeZone) {
         this.IPAddress = IPAddress;
         this.userID = userID;
         this.time = time;
         this.timeZone = timeZone;
-        this.failuresCount = failuresCount;
     }
 
     public String getIPAddress() {
@@ -29,9 +27,5 @@ public class ConsecutiveFailedLoginsSameUserIDAlert {
 
     public String getTimeZone() {
         return timeZone;
-    }
-
-    public long getFailuresCount() {
-        return failuresCount;
     }
 }

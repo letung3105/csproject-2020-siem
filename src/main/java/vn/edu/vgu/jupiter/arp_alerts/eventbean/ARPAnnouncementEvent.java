@@ -1,13 +1,13 @@
-package vn.edu.vgu.jupiter.eventbean_arp;
+package vn.edu.vgu.jupiter.arp_alerts.eventbean;
 
-public class ARPReplyEvent {
+public class ARPAnnouncementEvent {
     String srcIP;
     String destIP;
     String srcMAC;
     String destMAC;
     String time;
 
-    public ARPReplyEvent(String srcIP, String destIP, String srcMAC, String destMAC, String time) {
+    public ARPAnnouncementEvent(String srcIP, String destIP, String srcMAC, String destMAC, String time) {
         this.srcIP = srcIP;
         this.destIP = destIP;
         this.srcMAC = srcMAC;

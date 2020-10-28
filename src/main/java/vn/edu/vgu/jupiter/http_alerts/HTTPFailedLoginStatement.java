@@ -3,6 +3,9 @@ package vn.edu.vgu.jupiter.http_alerts;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement to select failed authentication attempts
@@ -22,7 +25,7 @@ public class HTTPFailedLoginStatement {
 
     public HTTPFailedLoginStatement(EPRuntime runtime) {
         this.runtime = runtime;
-        statement = CEPSetupUtil.compileDeploy(statementEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration());
     }
 
     public void undeploy() throws EPUndeployException {

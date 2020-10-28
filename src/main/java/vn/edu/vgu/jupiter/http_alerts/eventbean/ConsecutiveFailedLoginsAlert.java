@@ -1,4 +1,4 @@
-package vn.edu.vgu.jupiter.eventbean_http;
+package vn.edu.vgu.jupiter.http_alerts.eventbean;
 
 public class ConsecutiveFailedLoginsAlert {
     String time;

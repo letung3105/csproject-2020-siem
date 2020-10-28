@@ -7,7 +7,8 @@ import org.pcap4j.core.*;
 import org.pcap4j.packet.IpV4Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vn.edu.vgu.jupiter.eventbean.TcpPacket;
+import vn.edu.vgu.jupiter.EPFacade;
+import vn.edu.vgu.jupiter.scan_alerts.eventbean.TcpPacket;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static vn.edu.vgu.jupiter.scan_alerts.PortScansAlertConfigurations.getEPConfiguration;
 
 /**
  * This class is the new PortScansMain that have function to modify variables for all PortScan types
@@ -24,16 +27,16 @@ import java.util.Set;
  */
 public class PortScansAlertMain implements Runnable {
     private static class MetricListener implements UpdateListener {
-        private Map<String, Long> eventsCummulativeCount;
+        private Map<String, Long> eventsCumulativeCount;
         private Set<PropertyChangeListener> propertyChangeListenerSet;
 
         public MetricListener() {
-            this.eventsCummulativeCount = new HashMap<>();
+            this.eventsCumulativeCount = new HashMap<>();
             this.propertyChangeListenerSet = new HashSet<>();
-            this.eventsCummulativeCount.put("TcpPacketWithClosedPort", 0L);
-            this.eventsCummulativeCount.put("VerticalPortScanAlert", 0L);
-            this.eventsCummulativeCount.put("HorizontalPortScanAlert", 0L);
-            this.eventsCummulativeCount.put("BlockPortScanAlert", 0L);
+            this.eventsCumulativeCount.put("TcpPacketWithClosedPort", 0L);
+            this.eventsCumulativeCount.put("VerticalPortScanAlert", 0L);
+            this.eventsCumulativeCount.put("HorizontalPortScanAlert", 0L);
+            this.eventsCumulativeCount.put("BlockPortScanAlert", 0L);
         }
 
         public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -47,10 +50,10 @@ public class PortScansAlertMain implements Runnable {
             }
 
             StatementMetric metric = (StatementMetric) newEvents[0].getUnderlying();
-            if (eventsCummulativeCount.containsKey(metric.getStatementName())) {
-                Long oldCount = eventsCummulativeCount.get(metric.getStatementName());
+            if (eventsCumulativeCount.containsKey(metric.getStatementName())) {
+                Long oldCount = eventsCumulativeCount.get(metric.getStatementName());
                 Long newCount = oldCount + metric.getNumOutputIStream();
-                eventsCummulativeCount.put(metric.getStatementName(), newCount);
+                eventsCumulativeCount.put(metric.getStatementName(), newCount);
                 if (!newCount.equals(oldCount)) {
                     for (PropertyChangeListener l : propertyChangeListenerSet) {
                         l.propertyChange(new PropertyChangeEvent(this.getClass(), metric.getStatementName(), oldCount, newCount));
@@ -78,11 +81,12 @@ public class PortScansAlertMain implements Runnable {
 
     public PortScansAlertMain(String netDevName) {
         this.netDevName = netDevName;
-        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(),
-                PortScansAlertUtil.getConfiguration());
+        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), getEPConfiguration());
         this.metricListener = new MetricListener();
-        PortScansAlertUtil
-                .compileDeploy("select * from com.espertech.esper.common.client.metric.StatementMetric", runtime)
+        EPFacade
+                .compileDeploy(
+                        "select * from com.espertech.esper.common.client.metric.StatementMetric",
+                        runtime, getEPConfiguration())
                 .addListener(this.metricListener);
     }
 

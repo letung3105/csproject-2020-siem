@@ -1,4 +1,4 @@
-package vn.edu.vgu.jupiter.eventbean_arp;
+package vn.edu.vgu.jupiter.arp_alerts.eventbean;
 
 public class ARPCacheFloodAlertEvent {
     int count;

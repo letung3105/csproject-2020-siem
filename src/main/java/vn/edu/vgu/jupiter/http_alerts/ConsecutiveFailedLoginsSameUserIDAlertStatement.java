@@ -4,6 +4,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement to select consecutive failed log in targeting one userID, raise the alert events.
@@ -36,8 +39,8 @@ public class ConsecutiveFailedLoginsSameUserIDAlertStatement {
             prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 
-        statement = CEPSetupUtil.compileDeploy(statementEPL, runtime, options);
-        listenStatement = CEPSetupUtil.compileDeploy(listenStatementEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration(), options);
+        listenStatement = EPFacade.compileDeploy(listenStatementEPL, runtime, getEPConfiguration());
         listenStatement.addListener(new ConsecutiveFailedLoginsSameUserIDAlertListener(highPriorityThreshold));
     }
 

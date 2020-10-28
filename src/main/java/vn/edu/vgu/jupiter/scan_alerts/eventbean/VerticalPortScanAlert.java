@@ -1,4 +1,4 @@
-package vn.edu.vgu.jupiter.eventbean;
+package vn.edu.vgu.jupiter.scan_alerts.eventbean;
 
 import java.net.InetAddress;
 

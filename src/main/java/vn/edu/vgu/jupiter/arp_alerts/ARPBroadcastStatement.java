@@ -3,6 +3,9 @@ package vn.edu.vgu.jupiter.arp_alerts;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
 public class ARPBroadcastStatement {
     String statementEPL = "insert into ARPBroadcastEvent\n " +
@@ -16,7 +19,7 @@ public class ARPBroadcastStatement {
 
     public ARPBroadcastStatement(EPRuntime runtime) {
         this.runtime = runtime;
-        statement = ARPAlertUtils.compileDeploy(statementEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration());
     }
 
     public void undeploy() throws EPUndeployException {

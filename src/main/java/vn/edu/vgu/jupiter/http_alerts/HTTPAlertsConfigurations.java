@@ -1,5 +1,8 @@
 package vn.edu.vgu.jupiter.http_alerts;
 
+import com.espertech.esper.common.client.configuration.Configuration;
+import vn.edu.vgu.jupiter.http_alerts.eventbean.*;
+
 /**
  * Sets of parameters for raising http alerts.
  *
@@ -10,6 +13,22 @@ public class HTTPAlertsConfigurations {
     private FailedLogin failedLogin;
     private FailedLoginFromSameIP failedLoginFromSameIP;
     private FailedLoginSameUserID failedLoginSameUserID;
+
+    /**
+     * Make and returns that default configuration for Esper
+     *
+     * @return the configuration
+     */
+    protected static Configuration getEPConfiguration() {
+        Configuration configuration = new Configuration();
+        configuration.getCommon().addEventType(HTTPLog.class);
+        configuration.getCommon().addEventType(HTTPFailedLogin.class);
+        configuration.getCommon().addEventType(ConsecutiveFailedLoginsFromSameIPAlert.class);
+        configuration.getCommon().addEventType(ConsecutiveFailedLoginsAlert.class);
+        configuration.getCommon().addEventType(ConsecutiveFailedLoginsSameUserIDAlert.class);
+        configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
+        return configuration;
+    }
 
     public HTTPAlertsConfigurations(FailedLogin failedLogin, FailedLoginFromSameIP failedLoginFromSameIP, FailedLoginSameUserID failedLoginSameUserID) {
         this.failedLogin = failedLogin;

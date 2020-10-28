@@ -1,24 +1,24 @@
-package vn.edu.vgu.jupiter.eventbean_arp;
+package vn.edu.vgu.jupiter.arp_alerts.eventbean;
 
-public class ARPMultipleUnaskedForAnnouncementAlertEvent {
-    int count;
+public class ARPBroadcastEvent {
     String srcIP;
+    String destIP;
     String srcMAC;
     String time;
 
-    public ARPMultipleUnaskedForAnnouncementAlertEvent(int count, String srcIP, String srcMAC, String time) {
-        this.count = count;
+    public ARPBroadcastEvent(String srcIP, String destIP, String srcMAC, String time) {
         this.srcIP = srcIP;
+        this.destIP = destIP;
         this.srcMAC = srcMAC;
         this.time = time;
     }
 
-    public int getCount() {
-        return count;
-    }
-
     public String getSrcIP() {
         return srcIP;
+    }
+
+    public String getDestIP() {
+        return destIP;
     }
 
     public String getSrcMAC() {

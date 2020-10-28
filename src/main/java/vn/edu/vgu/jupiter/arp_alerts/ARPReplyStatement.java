@@ -3,6 +3,9 @@ package vn.edu.vgu.jupiter.arp_alerts;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement to select ARP reply packets
@@ -21,7 +24,7 @@ public class ARPReplyStatement {
 
     public ARPReplyStatement(EPRuntime runtime) {
         this.runtime = runtime;
-        statement = ARPAlertUtils.compileDeploy(statementEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration());
     }
 
     public void undeploy() throws EPUndeployException {

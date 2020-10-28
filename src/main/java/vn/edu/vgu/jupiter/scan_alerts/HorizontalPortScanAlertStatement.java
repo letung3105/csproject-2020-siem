@@ -4,6 +4,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.scan_alerts.PortScansAlertConfigurations.getEPConfiguration;
 
 /**
  * A class to compile EPL statements for the HorizontalPortScanAlert event
@@ -39,8 +42,8 @@ public class HorizontalPortScanAlertStatement {
                 }
         );
 
-        statement = PortScansAlertUtil.compileDeploy(alertStmt, runtime, opts);
-        listenStatement = PortScansAlertUtil.compileDeploy(listenStmt, runtime);
+        statement = EPFacade.compileDeploy(alertStmt, runtime, getEPConfiguration(), opts);
+        listenStatement = EPFacade.compileDeploy(listenStmt, runtime, getEPConfiguration());
         listenStatement.addListener(new HorizontalPortScanAlertListener(countThreshold));
     }
 

@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations.getEPConfiguration;
+
 public class HTTPAlertsMain implements Runnable {
     private static class MetricListener implements UpdateListener {
         private Map<String, Long> eventsCumulativeCount;
@@ -61,7 +63,7 @@ public class HTTPAlertsMain implements Runnable {
     private String logPath;
 
     public HTTPAlertsMain(String logPath) {
-        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), CEPSetupUtil.getConfiguration());
+        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), getEPConfiguration());
         this.metricListener = new MetricListener();
         CEPSetupUtil
                 .compileDeploy(

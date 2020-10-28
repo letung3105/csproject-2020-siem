@@ -1,9 +1,30 @@
 package vn.edu.vgu.jupiter.arp_alerts;
 
+import com.espertech.esper.common.client.configuration.Configuration;
+import vn.edu.vgu.jupiter.arp_alerts.eventbean.*;
+
 public class ARPAlertsConfigurations {
     ARPDuplicateIP arpDuplicateIP;
     ARPCacheFlood arpCacheFlood;
     ARPGratuitousAnnouncement arpGratuitousAnnouncement;
+
+    /**
+     * Make and returns that default configuration for Esper
+     *
+     * @return the configuration
+     */
+    protected static Configuration getEPConfiguration() {
+        Configuration configuration = new Configuration();
+        configuration.getCommon().addEventType(ARPPacketEvent.class);
+        configuration.getCommon().addEventType(ARPReplyEvent.class);
+        configuration.getCommon().addEventType(ARPBroadcastEvent.class);
+        configuration.getCommon().addEventType(ARPDuplicateIPAlertEvent.class);
+        configuration.getCommon().addEventType(ARPCacheFloodAlertEvent.class);
+        configuration.getCommon().addEventType(ARPAnnouncementEvent.class);
+        configuration.getCommon().addEventType(ARPCacheUpdateEvent.class);
+        configuration.getCommon().addEventType(ARPMultipleUnaskedForAnnouncementAlertEvent.class);
+        return configuration;
+    }
 
     public ARPAlertsConfigurations(ARPDuplicateIP arpDuplicateIP, ARPCacheFlood arpCacheFlood, ARPGratuitousAnnouncement arpGratuitousAnnouncement) {
         this.arpCacheFlood = arpCacheFlood;

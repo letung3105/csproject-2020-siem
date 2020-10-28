@@ -4,6 +4,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.scan_alerts.PortScansAlertConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement for raising alerts for block port scan events that might be
@@ -49,7 +52,7 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("timeWindow", timeWindow);
                 }
         );
-        stmtPortsCountPerAddr = PortScansAlertUtil.compileDeploy(eplPortsCountPerAddr, runtime, portsCountOpts);
+        stmtPortsCountPerAddr = EPFacade.compileDeploy(eplPortsCountPerAddr, runtime, getEPConfiguration(), portsCountOpts);
 
         DeploymentOptions alertOpts = new DeploymentOptions();
         alertOpts.setStatementSubstitutionParameter(prepared -> {
@@ -59,9 +62,9 @@ public class BlockPortScanAlertStatement {
                     prepared.setObject("alertInterval", alertInterval);
                 }
         );
-        stmtRaiseAlert = PortScansAlertUtil.compileDeploy(eplRaiseAlert, runtime, alertOpts);
+        stmtRaiseAlert = EPFacade.compileDeploy(eplRaiseAlert, runtime, getEPConfiguration(), alertOpts);
 
-        stmtListen = PortScansAlertUtil.compileDeploy(eplListen, runtime);
+        stmtListen = EPFacade.compileDeploy(eplListen, runtime, getEPConfiguration());
         stmtListen.addListener(new BlockPortScanAlertListener(countThreshold));
     }
 

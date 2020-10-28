@@ -1,4 +1,4 @@
-package vn.edu.vgu.jupiter.eventbean;
+package vn.edu.vgu.jupiter.scan_alerts.eventbean;
 
 /**
  * Data structure that represents alerts for potential block port scan events

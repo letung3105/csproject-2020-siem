@@ -1,4 +1,4 @@
-package vn.edu.vgu.jupiter.eventbean_arp;
+package vn.edu.vgu.jupiter.arp_alerts.eventbean;
 
 import org.pcap4j.packet.ArpPacket;
 

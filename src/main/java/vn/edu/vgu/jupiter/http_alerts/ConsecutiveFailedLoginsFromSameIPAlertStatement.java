@@ -4,6 +4,9 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 import com.espertech.esper.runtime.client.EPUndeployException;
+import vn.edu.vgu.jupiter.EPFacade;
+
+import static vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations.getEPConfiguration;
 
 /**
  * This class compile the EPL statement to select consecutive failed login attempts sourcing from one IP and raise the according events
@@ -36,8 +39,8 @@ public class ConsecutiveFailedLoginsFromSameIPAlertStatement {
             prepared.setObject("alertInterval", alertIntervalSeconds);
         });
 
-        statement = CEPSetupUtil.compileDeploy(statementEPL, runtime, options);
-        listenStatement = CEPSetupUtil.compileDeploy(listenEPL, runtime);
+        statement = EPFacade.compileDeploy(statementEPL, runtime, getEPConfiguration(), options);
+        listenStatement = EPFacade.compileDeploy(listenEPL, runtime, getEPConfiguration());
         listenStatement.addListener(new ConsecutiveFailedLoginsFromSameIPAlertListener(highPriorityThreshold));
     }
 

@@ -5,7 +5,7 @@ import com.espertech.esper.runtime.client.EPRuntimeProvider;
 import com.espertech.esper.runtime.client.EPUndeployException;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.ArpPacket;
-import vn.edu.vgu.jupiter.eventbean_arp.ARPPacketEvent;
+import vn.edu.vgu.jupiter.arp_alerts.eventbean.ARPPacketEvent;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -23,7 +23,7 @@ public class ARPAlertsMain implements Runnable {
     private ARPBroadcastStatement arpBroadcastStatement;
 
     public ARPAlertsMain() {
-        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), ARPAlertUtils.getConfiguration());
+        this.runtime = EPRuntimeProvider.getRuntime(this.getClass().getSimpleName(), ARPAlertsConfigurations.getEPConfiguration());
     }
 
     public static void main(String[] args) {
