@@ -24,9 +24,9 @@ public class FileTooLargeSameUserIDAlertListener implements UpdateListener {
         String userID = (String) newEvents[0].get("userID");
         Long count = (Long) newEvents[0].get("failuresCount");
         if (count < highPriorityThreshold) {
-            log.info("LOW PRIORITY: Consecutive file too large from target '{}'", userID);
+            log.info("LOW PRIORITY: Consecutive file too large from user '{}'", userID);
         } else {
-            log.warn("HIGH PRIORITY: Consecutive file too large from target '{}'", userID);
+            log.warn("HIGH PRIORITY: Consecutive file too large from user '{}'", userID);
         }
     }
 }

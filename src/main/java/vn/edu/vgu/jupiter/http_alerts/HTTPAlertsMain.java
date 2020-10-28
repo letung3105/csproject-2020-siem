@@ -16,6 +16,7 @@ public class HTTPAlertsMain implements Runnable {
     private FailedLoginAlertStatement failedLoginAlertStmt;
     private FailedLoginFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
     private FailedLoginSameUserIDAlertStatement failedLoginSameUserIDAlertStmt;
+    private HTTPFileTooLargeEventStatement httpFileTooLargeEventStatement;
     private FileTooLargeAlertStatement fileTooLargeAlertStmt;
     private FileTooLargeSameUserIDAlertStatement fileTooLargeSameUserIDAlertStmt;
 
@@ -47,7 +48,7 @@ public class HTTPAlertsMain implements Runnable {
     public void run() {
         File apacheAccessLogFile = new File(logPath);
         TailerListener listener = new HTTPDLogTailer(runtime);
-        Tailer tailer = Tailer.create(apacheAccessLogFile, listener, 100);
+        Tailer tailer = Tailer.create(apacheAccessLogFile, listener, 100, true);
         tailer.run();
     }
 
@@ -59,6 +60,7 @@ public class HTTPAlertsMain implements Runnable {
      */
     public void deploy(HTTPAlertsConfigurations configs) {
         httpFailedLoginEventStmt = new HTTPFailedLoginEventStatement(runtime);
+        httpFileTooLargeEventStatement = new HTTPFileTooLargeEventStatement(runtime);
         failedLoginAlertStmt = new FailedLoginAlertStatement(
                 runtime,
                 configs.getFailedLogin().getConsecutiveAttemptsThreshold(),
@@ -99,6 +101,9 @@ public class HTTPAlertsMain implements Runnable {
     public void undeploy() throws EPUndeployException {
         if (httpFailedLoginEventStmt != null) {
             httpFailedLoginEventStmt.undeploy();
+        }
+        if (httpFileTooLargeEventStatement != null) {
+            httpFileTooLargeEventStatement.undeploy();
         }
         if (failedLoginAlertStmt != null) {
             failedLoginAlertStmt.undeploy();
