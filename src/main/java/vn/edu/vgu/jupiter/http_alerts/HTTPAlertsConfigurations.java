@@ -14,6 +14,10 @@ public class HTTPAlertsConfigurations {
     private FailedLoginFromSameIP failedLoginFromSameIP;
     private FailedLoginSameUserID failedLoginSameUserID;
 
+    private FileTooLarge fileTooLarge;
+    private FileTooLargeSameUserID fileTooLargeSameUserID;
+    private FileTooLargeFromSameIP fileTooLargeFromSameIP;
+
     /**
      * Make and returns that default configuration for Esper
      *
@@ -22,20 +26,30 @@ public class HTTPAlertsConfigurations {
     protected static Configuration getEPConfiguration() {
         Configuration configuration = new Configuration();
         configuration.getCommon().addEventType(HTTPLog.class);
+
         configuration.getCommon().addEventType(HTTPFailedLogin.class);
         configuration.getCommon().addEventType(ConsecutiveFailedLoginsFromSameIPAlert.class);
         configuration.getCommon().addEventType(ConsecutiveFailedLoginsAlert.class);
         configuration.getCommon().addEventType(ConsecutiveFailedLoginsSameUserIDAlert.class);
+
+        configuration.getCommon().addEventType(HTTPFileTooLarge.class);
+        configuration.getCommon().addEventType(ConsecutiveFileTooLargeFromSameIPAlert.class);
+        configuration.getCommon().addEventType(ConsecutiveFileTooLargeSameUserIDAlert.class);
+        configuration.getCommon().addEventType(ConsecutiveFileTooLargeAlert.class);
+
         configuration.getRuntime().getLogging().setEnableExecutionDebug(false);
         configuration.getRuntime().getLogging().setEnableTimerDebug(false);
         configuration.getRuntime().getMetricsReporting().setEnableMetricsReporting(true);
         return configuration;
     }
 
-    public HTTPAlertsConfigurations(FailedLogin failedLogin, FailedLoginFromSameIP failedLoginFromSameIP, FailedLoginSameUserID failedLoginSameUserID) {
+    public HTTPAlertsConfigurations(FailedLogin failedLogin, FailedLoginFromSameIP failedLoginFromSameIP, FailedLoginSameUserID failedLoginSameUserID, FileTooLarge fileTooLarge, FileTooLargeFromSameIP fileTooLargeFromSameIP, FileTooLargeSameUserID fileTooLargeSameUserID) {
         this.failedLogin = failedLogin;
         this.failedLoginFromSameIP = failedLoginFromSameIP;
         this.failedLoginSameUserID = failedLoginSameUserID;
+        this.fileTooLarge = fileTooLarge;
+        this.fileTooLargeFromSameIP = fileTooLargeFromSameIP;
+        this.fileTooLargeSameUserID = fileTooLargeSameUserID;
     }
 
     public FailedLogin getFailedLogin() {
@@ -48,6 +62,18 @@ public class HTTPAlertsConfigurations {
 
     public FailedLoginSameUserID getFailedLoginSameUserID() {
         return failedLoginSameUserID;
+    }
+
+    public FileTooLarge getFileTooLarge() {
+        return fileTooLarge;
+    }
+
+    public FileTooLargeSameUserID getFileTooLargeSameUserID() {
+        return fileTooLargeSameUserID;
+    }
+
+    public FileTooLargeFromSameIP getFileTooLargeFromSameIP() {
+        return fileTooLargeFromSameIP;
     }
 
     /**
@@ -122,6 +148,24 @@ public class HTTPAlertsConfigurations {
      */
     public static class FailedLoginSameUserID extends GeneralHTTPAlert {
         public FailedLoginSameUserID(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
+            super(consecutiveAttemptsThreshold, timeWindow, alertInterval, highPriorityThreshold);
+        }
+    }
+
+    public static class FileTooLarge extends GeneralHTTPAlert {
+        public FileTooLarge(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
+            super(consecutiveAttemptsThreshold, timeWindow, alertInterval, highPriorityThreshold);
+        }
+    }
+
+    public static class FileTooLargeFromSameIP extends GeneralHTTPAlert {
+        public FileTooLargeFromSameIP(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
+            super(consecutiveAttemptsThreshold, timeWindow, alertInterval, highPriorityThreshold);
+        }
+    }
+
+    public static class FileTooLargeSameUserID extends GeneralHTTPAlert {
+        public FileTooLargeSameUserID(int consecutiveAttemptsThreshold, int timeWindow, int alertInterval, long highPriorityThreshold) {
             super(consecutiveAttemptsThreshold, timeWindow, alertInterval, highPriorityThreshold);
         }
     }

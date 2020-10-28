@@ -98,6 +98,97 @@
                         </GridPane>
                     </content>
                 </TitledPane>
+                <TitledPane animated="false" text="File too large's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="fileTooLargeAttemptsThreshold" GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="fileTooLargeTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="fileTooLargeAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="fileTooLargeHighPriorityThreshold" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="File too large from same IP's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="sameIpFileTooLargeAttemptsThreshold" GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="sameIpFileTooLargeTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="sameIpFileTooLargeAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="sameIpFileTooLargeHighPriorityThreshold" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+                <TitledPane animated="false" text="File too large from same user ID's thresholds">
+                    <content>
+                        <GridPane vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="80.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="16.0" prefWidth="65.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="NEVER"/>
+                                <RowConstraints vgrow="ALWAYS"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="Consecutive attemps threshold"/>
+                                <TextField fx:id="sameUserFileTooLargeAttemptsThreshold" GridPane.columnIndex="1"/>
+                                <Label text="Time window (seconds)" GridPane.rowIndex="1"/>
+                                <TextField fx:id="sameUserFileTooLargeTimeWindow" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <Label text="Alert interval (seconds)" GridPane.rowIndex="2"/>
+                                <TextField fx:id="sameUserFileTooLargeAlertInterval" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <Label text="High priority threshold" GridPane.rowIndex="3"/>
+                                <TextField fx:id="sameUserFileTooLargeHighPriorityThreshold" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </TitledPane>
+
             </panes>
         </Accordion>
         <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" onAction="#deploy"

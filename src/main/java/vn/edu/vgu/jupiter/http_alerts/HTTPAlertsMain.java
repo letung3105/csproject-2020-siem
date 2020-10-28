@@ -6,6 +6,7 @@ import com.espertech.esper.runtime.client.*;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
 import vn.edu.vgu.jupiter.EPFacade;
+import vn.edu.vgu.jupiter.http_alerts.eventbean.ConsecutiveFileTooLargeSameUserIDAlert;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,6 +30,11 @@ public class HTTPAlertsMain implements Runnable {
             this.eventsCumulativeCount.put("ConsecutiveFailedLoginsAlert", 0L);
             this.eventsCumulativeCount.put("ConsecutiveFailedLoginsFromSameIPAlert", 0L);
             this.eventsCumulativeCount.put("ConsecutiveFailedLoginsSameUserIDAlert", 0L);
+
+            this.eventsCumulativeCount.put("HTTPFileTooLarge", 0L);
+            this.eventsCumulativeCount.put("ConsecutiveFileTooLargeAlert", 0L);
+            this.eventsCumulativeCount.put("ConsecutiveFileTooLargeFromSameIPAlert", 0L);
+            this.eventsCumulativeCount.put("ConsecutiveFileTooLargeSameUserIDAlert", 0L);
         }
 
         public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -61,6 +67,11 @@ public class HTTPAlertsMain implements Runnable {
     private ConsecutiveFailedLoginsAlertStatement failedLoginAlertStmt;
     private ConsecutiveFailedLoginsFromSameIPAlertStatement failedLoginFromSameIPAlertStmt;
     private ConsecutiveFailedLoginsSameUserIDAlertStatement failedLoginSameUserIDAlertStmt;
+
+    private HTTPFileTooLargeStatement httpFileTooLargeStmt;
+    private ConsecutiveFileTooLargeAlertStatement consecutiveFileTooLargeAlertStmt;
+    private ConsecutiveFileTooLargeFromSameIPAlertStatement consecutiveFileTooLargeFromSameIPAlertStmt;
+    private ConsecutiveFileTooLargeSameUserIDAlertStatement consecutiveFileTooLargeSameUserIDAlertStmt;
     private String logPath;
 
     public HTTPAlertsMain(String logPath) {
@@ -79,7 +90,10 @@ public class HTTPAlertsMain implements Runnable {
         HTTPAlertsConfigurations httpAlertConfig = new HTTPAlertsConfigurations(
                 new HTTPAlertsConfigurations.FailedLogin(15, 6, 3, 20),
                 new HTTPAlertsConfigurations.FailedLoginFromSameIP(12, 2, 1, 15),
-                new HTTPAlertsConfigurations.FailedLoginSameUserID(3, 2, 1, 5));
+                new HTTPAlertsConfigurations.FailedLoginSameUserID(3, 2, 1, 5),
+                new HTTPAlertsConfigurations.FileTooLarge(5, 6, 3, 3),
+                new HTTPAlertsConfigurations.FileTooLargeFromSameIP(3, 6, 3, 2),
+                new HTTPAlertsConfigurations.FileTooLargeSameUserID(3, 6, 3, 2));
 
         HTTPAlertsMain httpAlertsMain = new HTTPAlertsMain("/private/var/log/apache2/access.log");
         httpAlertsMain.deploy(httpAlertConfig);
@@ -121,6 +135,23 @@ public class HTTPAlertsMain implements Runnable {
                 configs.getFailedLoginSameUserID().getTimeWindow(),
                 configs.getFailedLoginSameUserID().getAlertInterval(),
                 configs.getFailedLoginSameUserID().getHighPriorityThreshold());
+
+        httpFileTooLargeStmt = new HTTPFileTooLargeStatement(runtime);
+        consecutiveFileTooLargeAlertStmt = new ConsecutiveFileTooLargeAlertStatement(runtime,
+                configs.getFileTooLarge().getConsecutiveAttemptsThreshold(),
+                configs.getFileTooLarge().getTimeWindow(),
+                configs.getFileTooLarge().getAlertInterval(),
+                configs.getFileTooLarge().getHighPriorityThreshold());
+        consecutiveFileTooLargeFromSameIPAlertStmt = new ConsecutiveFileTooLargeFromSameIPAlertStatement(runtime,
+                configs.getFileTooLargeFromSameIP().getConsecutiveAttemptsThreshold(),
+                configs.getFileTooLargeFromSameIP().getTimeWindow(),
+                configs.getFileTooLargeFromSameIP().getAlertInterval(),
+                configs.getFileTooLargeFromSameIP().getHighPriorityThreshold());
+        consecutiveFileTooLargeSameUserIDAlertStmt = new ConsecutiveFileTooLargeSameUserIDAlertStatement(runtime,
+                configs.getFileTooLargeSameUserID().getConsecutiveAttemptsThreshold(),
+                configs.getFileTooLargeSameUserID().getTimeWindow(),
+                configs.getFileTooLargeSameUserID().getAlertInterval(),
+                configs.getFileTooLargeSameUserID().getHighPriorityThreshold());
     }
 
     /**
@@ -144,6 +175,22 @@ public class HTTPAlertsMain implements Runnable {
         if (failedLoginSameUserIDAlertStmt != null) {
             failedLoginSameUserIDAlertStmt.undeploy();
             failedLoginSameUserIDAlertStmt = null;
+        }
+        if (httpFileTooLargeStmt != null) {
+            httpFileTooLargeStmt.undeploy();
+            httpFileTooLargeStmt = null;
+        }
+        if (consecutiveFileTooLargeAlertStmt != null) {
+            consecutiveFileTooLargeAlertStmt.undeploy();
+            consecutiveFileTooLargeAlertStmt = null;
+        }
+        if (consecutiveFileTooLargeFromSameIPAlertStmt != null) {
+            consecutiveFileTooLargeFromSameIPAlertStmt.undeploy();
+            consecutiveFileTooLargeFromSameIPAlertStmt = null;
+        }
+        if (consecutiveFileTooLargeSameUserIDAlertStmt != null) {
+            consecutiveFileTooLargeSameUserIDAlertStmt.undeploy();
+            consecutiveFileTooLargeSameUserIDAlertStmt = null;
         }
     }
 
