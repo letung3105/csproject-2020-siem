@@ -7,6 +7,12 @@ import vn.edu.vgu.jupiter.EPFacade;
 
 import static vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations.getEPConfiguration;
 
+/**
+ * This class compile the EPL statement to select file too large send attempts,
+ * and deploy the compiled EPL to the runtime
+ *
+ * @author Bui Xuan Phuoc
+ */
 public class HTTPFileTooLargeStatement {
     private static final String statementEPL =
             "@Name('HTTPFileTooLarge')\n" +

@@ -8,6 +8,13 @@ import vn.edu.vgu.jupiter.EPFacade;
 
 import static vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations.getEPConfiguration;
 
+
+/**
+ * This class compile the EPL statement to select consecutive file too large being sent sourcing from one IP and raise the according events
+ * and deploy the compiled EPL to the runtime
+ *
+ * @author Bui Xuan Phuoc
+ */
 public class ConsecutiveFileTooLargeFromSameIPAlertStatement {
     private static final String statementEPL =
             "@Name('ConsecutiveFileTooLargeFromSameIPAlert')\n" +

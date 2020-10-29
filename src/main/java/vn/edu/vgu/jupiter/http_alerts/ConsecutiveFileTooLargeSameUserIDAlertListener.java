@@ -7,6 +7,11 @@ import com.espertech.esper.runtime.client.UpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A listener for ConsecutiveFileTooLargeSameUserIDAlertStatement, prioritize the alert by a threshold
+ *
+ * @author Bui Xuan Phuoc
+ */
 public class ConsecutiveFileTooLargeSameUserIDAlertListener implements UpdateListener {
     private static final Logger log = LoggerFactory.getLogger(ConsecutiveFailedLoginsSameUserIDAlertListener.class);
 
