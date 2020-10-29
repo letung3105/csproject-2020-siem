@@ -47,7 +47,7 @@ sysctl -w net.ipv4.ip_forward=1
 
 ## ARP Spoofing
 * A DuplicateIP alert should be raised.
-* To arpspoof a target:
+* To redirect packets from the victim to your machine:
 ```
 arpspoof -i [Network Interface Name] -t [Victim IP] [Router IP]
 ```
