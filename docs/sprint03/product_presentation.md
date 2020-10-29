@@ -11,7 +11,7 @@ marp: true
 
 ---
 
-# Overview: Security information and event managment
+# Overview: Security information and event management
 
 + Collect and aggregate data:
     + Data comes from multiple sources.
