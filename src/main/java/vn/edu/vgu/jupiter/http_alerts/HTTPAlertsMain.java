@@ -108,7 +108,6 @@ public class HTTPAlertsMain implements Runnable {
         File apacheAccessLogFile = new File(logPath);
         TailerListener listener = new HTTPDLogTailer(runtime);
         Tailer tailer = Tailer.create(apacheAccessLogFile, listener, 100, true);
-        tailer.run();
     }
 
     /**
