@@ -55,4 +55,45 @@ marp: true
 
 ---
 
-# Our SIEM system: Port scan detection
+# Our SIEM system: HTTP service alert
+
+![](images/HTTPHierarchy.png)
+
+---
+
+# Our SIEM system: Port scan alert
+
+![](images/PortScanHierarchy.png)
+
+---
+
+# Our SIEM system: ARP alert
+
+![](images/ARPEventHierarchy.png)
+
+---
+
+# Our SIEM system: What can be improved?
+
++ Structured log message
++ Microservices architecture
++ Consider multiple sources of event for each alert
++ More noticable alerts
++ Smooth GUI
+
+---
+
+# Demo: Our web service
+
+![](images/HTTPServiceLogin.png)
+
+![](images/HTTPServiceForm.png)
+
+---
+
+# Demo: Tools used
+
++ `nmap` [(https://nmap.org)](https://nmap.org)
++ `macof` [(https://linux.die.net/man/8/macof)](https://linux.die.net/man/8/macof)
++ `arping` [(https://linux.die.net/man/8/arping)](https://linux.die.net/man/8/arping)
++ `arpspoof` [(https://linux.die.net/man/8/arpspoof)](https://linux.die.net/man/8/arpspoof)
