@@ -21,7 +21,7 @@ public class ARPMultipleUnaskedForAnnouncementAlertListener implements UpdateLis
         if (newEvents == null) {
             return; // ignore old events for events leaving the window
         }
-        Long count = (Long) newEvents[0].get("count");
+        Long count = Long.parseLong(newEvents[0].get("count").toString());
         if (count < highPriorityThreshold) {
             logger.info("LOW PRIORITY: Consecutive gratuitous announcements in a small instance of time detected: " + newEvents[0].get("count"));
         } else {
