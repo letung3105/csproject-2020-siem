@@ -1,5 +1,5 @@
 # Setting up upload webserver with apache
-* Move the content of package "resources/upload-webserver" to /var/www/html
+* Move the content of package "docs/sprint03/upload-webserver" to /var/www/html
 * Set up an apache2 webserver
 * Install mysql service with:
 ```
