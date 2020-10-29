@@ -52,6 +52,31 @@ public class HTTPAlertControlPanel implements Initializable {
     public TextField sameUserFailedLoginAlertInterval;
     @FXML
     public TextField sameUserFailedLoginHighPriorityThreshold;
+
+    @FXML
+    public TextField fileTooLargeAttemptsThreshold;
+    @FXML
+    public TextField fileTooLargeTimeWindow;
+    @FXML
+    public TextField fileTooLargeAlertInterval;
+    @FXML
+    public TextField fileTooLargeHighPriorityThreshold;
+    @FXML
+    public TextField sameIpFileTooLargeAttemptsThreshold;
+    @FXML
+    public TextField sameIpFileTooLargeTimeWindow;
+    @FXML
+    public TextField sameIpFileTooLargeAlertInterval;
+    @FXML
+    public TextField sameIpFileTooLargeHighPriorityThreshold;
+    @FXML
+    public TextField sameUserFileTooLargeAttemptsThreshold;
+    @FXML
+    public TextField sameUserFileTooLargeTimeWindow;
+    @FXML
+    public TextField sameUserFileTooLargeAlertInterval;
+    @FXML
+    public TextField sameUserFileTooLargeHighPriorityThreshold;
     private EPRuntime runtime;
 
     @Override
@@ -71,6 +96,21 @@ public class HTTPAlertControlPanel implements Initializable {
         sameUserFailedLoginTimeWindow.setText(String.valueOf(2));
         sameUserFailedLoginAlertInterval.setText(String.valueOf(1));
         sameUserFailedLoginHighPriorityThreshold.setText(String.valueOf(5));
+
+        fileTooLargeAttemptsThreshold.setText(String.valueOf(16));
+        fileTooLargeTimeWindow.setText(String.valueOf(6));
+        fileTooLargeAlertInterval.setText(String.valueOf(3));
+        fileTooLargeHighPriorityThreshold.setText(String.valueOf(20));
+
+        sameIpFileTooLargeAttemptsThreshold.setText(String.valueOf(12));
+        sameIpFileTooLargeTimeWindow.setText(String.valueOf(2));
+        sameIpFileTooLargeAlertInterval.setText(String.valueOf(1));
+        sameIpFileTooLargeHighPriorityThreshold.setText(String.valueOf(15));
+
+        sameUserFileTooLargeAttemptsThreshold.setText(String.valueOf(3));
+        sameUserFileTooLargeTimeWindow.setText(String.valueOf(2));
+        sameUserFileTooLargeAlertInterval.setText(String.valueOf(1));
+        sameUserFileTooLargeHighPriorityThreshold.setText(String.valueOf(5));
 
     }
 
@@ -112,6 +152,24 @@ public class HTTPAlertControlPanel implements Initializable {
                         parseUintOrDefault(sameUserFailedLoginTimeWindow.getText(), 2),
                         parseUintOrDefault(sameUserFailedLoginAlertInterval.getText(), 1),
                         parseUintOrDefault(sameUserFailedLoginHighPriorityThreshold.getText(), 5)
+                ),
+                new HTTPAlertsConfigurations.FileTooLarge(
+                        parseUintOrDefault(fileTooLargeAttemptsThreshold.getText(), 16),
+                        parseUintOrDefault(fileTooLargeTimeWindow.getText(), 6),
+                        parseUintOrDefault(fileTooLargeAlertInterval.getText(), 3),
+                        parseUintOrDefault(fileTooLargeHighPriorityThreshold.getText(), 20)
+                ),
+                new HTTPAlertsConfigurations.FileTooLargeFromSameIP(
+                        parseUintOrDefault(sameIpFileTooLargeAttemptsThreshold.getText(), 12),
+                        parseUintOrDefault(sameIpFileTooLargeTimeWindow.getText(), 2),
+                        parseUintOrDefault(sameIpFileTooLargeAlertInterval.getText(), 1),
+                        parseUintOrDefault(sameIpFileTooLargeHighPriorityThreshold.getText(), 15)
+                ),
+                new HTTPAlertsConfigurations.FileTooLargeSameUserID(
+                        parseUintOrDefault(sameUserFileTooLargeAttemptsThreshold.getText(), 3),
+                        parseUintOrDefault(sameUserFileTooLargeTimeWindow.getText(), 2),
+                        parseUintOrDefault(sameUserFileTooLargeAlertInterval.getText(), 1),
+                        parseUintOrDefault(sameUserFileTooLargeHighPriorityThreshold.getText(), 5)
                 )
         );
 
@@ -144,6 +202,21 @@ public class HTTPAlertControlPanel implements Initializable {
         sameUserFailedLoginTimeWindow.setText(String.valueOf(config.getFailedLoginSameUserID().getTimeWindow()));
         sameUserFailedLoginAlertInterval.setText(String.valueOf(config.getFailedLoginSameUserID().getAlertInterval()));
         sameUserFailedLoginHighPriorityThreshold.setText(String.valueOf(config.getFailedLoginSameUserID().getHighPriorityThreshold()));
+
+        fileTooLargeAttemptsThreshold.setText(String.valueOf(config.getFileTooLarge().getConsecutiveAttemptsThreshold()));
+        fileTooLargeTimeWindow.setText(String.valueOf(config.getFileTooLarge().getTimeWindow()));
+        fileTooLargeAlertInterval.setText(String.valueOf(config.getFileTooLarge().getAlertInterval()));
+        fileTooLargeHighPriorityThreshold.setText(String.valueOf(config.getFileTooLarge().getHighPriorityThreshold()));
+
+        sameIpFileTooLargeAttemptsThreshold.setText(String.valueOf(config.getFileTooLargeFromSameIP().getConsecutiveAttemptsThreshold()));
+        sameIpFileTooLargeTimeWindow.setText(String.valueOf(config.getFileTooLargeFromSameIP().getTimeWindow()));
+        sameIpFileTooLargeAlertInterval.setText(String.valueOf(config.getFileTooLargeFromSameIP().getAlertInterval()));
+        sameIpFileTooLargeHighPriorityThreshold.setText(String.valueOf(config.getFileTooLargeFromSameIP().getHighPriorityThreshold()));
+
+        sameUserFileTooLargeAttemptsThreshold.setText(String.valueOf(config.getFileTooLargeSameUserID().getConsecutiveAttemptsThreshold()));
+        sameUserFileTooLargeTimeWindow.setText(String.valueOf(config.getFileTooLargeSameUserID().getTimeWindow()));
+        sameUserFileTooLargeAlertInterval.setText(String.valueOf(config.getFileTooLargeSameUserID().getAlertInterval()));
+        sameUserFileTooLargeHighPriorityThreshold.setText(String.valueOf(config.getFileTooLargeSameUserID().getHighPriorityThreshold()));
     }
 
     /**

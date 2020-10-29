@@ -23,7 +23,7 @@
                                 <RowConstraints vgrow="ALWAYS"/>
                             </rowConstraints>
                             <children>
-                                <Label text="Consecutive attemps threshold"/>
+                                <Label text="Alert interval (seconds)"/>
                                 <TextField fx:id="arpDuplicateIPAlertInterval"
                                            GridPane.columnIndex="1"/>
                             </children>
