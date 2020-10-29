@@ -1,28 +1,40 @@
 package vn.edu.vgu.jupiter;
 
-import com.espertech.esper.common.client.configuration.Configuration;
-import com.espertech.esper.runtime.client.EPRuntime;
-import com.espertech.esper.runtime.client.EPRuntimeProvider;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.filter.ThresholdFilter;
+import org.apache.logging.log4j.core.layout.PatternLayout;
+import vn.edu.vgu.jupiter.dashboard.TextAreaAppender;
 
-import java.util.Properties;
-
-/**
- * Hello world!
- */
-public class App {
+public class App extends Application {
     public static void main(String[] args) {
-        Configuration config = new Configuration();
-        Properties props = new Properties();
-        props.put("runtimeURI", "PortScansAlertPlugin");
-        props.put("netdev", "lo0");
-        config.getRuntime().addPluginLoader("PortScansAlertPlugin", "vn.edu.vgu.jupiter.scan_alerts.PortScansAlertPlugin", props);
+        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+        PatternLayout.Builder patternBuilder = PatternLayout.newBuilder();
+        patternBuilder.withPattern("%d{HH:mm:ss.SSS} [%level]: %msg%n");
+        Filter filter = ThresholdFilter.createFilter(Level.INFO, Filter.Result.ACCEPT, Filter.Result.NEUTRAL);
+        Appender textAreaAppender = TextAreaAppender.createAppender("TextAreaAppender", patternBuilder.build(), filter);
+        ctx.getRootLogger().addAppender(textAreaAppender);
+        ctx.updateLoggers();
 
-        EPRuntime runtime = EPRuntimeProvider.getRuntime("PortScansAlertPlugin", config);
-
-        try {
-            Thread.sleep(Long.MAX_VALUE);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        launch(args);
     }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        //set up scene and show
+        var root = (Parent) FXMLLoader.load(getClass().getResource("dashboard/StartupConfig.fxml"));
+        Scene scene = new Scene(root, 600, 600);
+        stage.setTitle("SIEM Dashboard");
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

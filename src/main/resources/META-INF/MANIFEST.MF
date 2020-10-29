@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Main-Class: vn.edu.vgu.jupiter.App
+Class-Path: javafx-graphics-15-mac.jar javafx-controls-15.jar javax.json
+ -1.0.4.jar javafx-fxml-15-mac.jar javafx-base-15-mac.jar log4j-api-2.13
+ .3.jar javafx-graphics-15.jar ST4-4.3.jar pcap4j-core-1.8.2.jar esper-c
+ ommon-8.6.0.jar icu4j-61.1.jar javafx-fxml-15.jar javafx-controls-15-ma
+ c.jar antlr4-runtime-4.7.2.jar esper-compiler-8.6.0.jar antlr-runtime-3
+ .5.2.jar log4j-core-2.13.3.jar esper-runtime-8.6.0.jar antlr4-4.8.jar j
+ avafx-base-15.jar commons-io-2.8.0.jar commons-compiler-3.1.2.jar org.a
+ bego.treelayout.core-1.0.3.jar jna-5.3.1.jar slf4j-api-1.7.25.jar log4j
+ -slf4j-impl-2.13.3.jar janino-3.1.2.jar pcap4j-packetfactory-static-1.8
+ .2.jar
+

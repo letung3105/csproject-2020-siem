@@ -1,6 +1,5 @@
 package vn.edu.vgu.jupiter.dashboard;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -14,13 +13,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.Filter;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.filter.ThresholdFilter;
-import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,36 +28,11 @@ import java.util.ResourceBundle;
  * This controller asks for user inputs in net device for port scans alerts and log location for http alerts
  * Upon receiving the correct values, it will switch to Dashboard
  */
-public class StartupConfig extends Application implements Initializable {
-    public static final double WIDTH = 960;
-    public static final double HEIGHT = 640;
-
+public class StartupConfig implements Initializable {
     @FXML
     private ComboBox<String> netDeviceComboBox;
     @FXML
     private TextField apacheLogLocationField;
-
-    public static void main(String[] args) {
-        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-        PatternLayout.Builder patternBuilder = PatternLayout.newBuilder();
-        patternBuilder.withPattern("%d{HH:mm:ss.SSS} [%level]: %msg%n");
-        Filter filter = ThresholdFilter.createFilter(Level.INFO, Filter.Result.ACCEPT, Filter.Result.NEUTRAL);
-        Appender textAreaAppender = TextAreaAppender.createAppender("TextAreaAppender", patternBuilder.build(), filter);
-        ctx.getRootLogger().addAppender(textAreaAppender);
-        ctx.updateLoggers();
-
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        //set up scene and show
-        var root = (Parent) FXMLLoader.load(getClass().getResource("StartupConfig.fxml"));
-        Scene scene = new Scene(root, 600, 600);
-        stage.setTitle("SIEM Dashboard");
-        stage.setScene(scene);
-        stage.show();
-    }
 
     /**
      * Get controller from Dashboard and uses it to set variables and plugin, thus start to run
@@ -86,7 +53,7 @@ public class StartupConfig extends Application implements Initializable {
 
             Node eventSource = (Node) evt.getSource();
             Stage stage = (Stage) eventSource.getScene().getWindow();
-            stage.setScene(new Scene(root, WIDTH, HEIGHT));
+            stage.setScene(new Scene(root, 960, 640));
         } else {
             //make an big error message
             Alert alert = new Alert(Alert.AlertType.ERROR);
