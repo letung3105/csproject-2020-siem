@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * The information of the new events is logged to the system using the class's logger
  *
- * @author Bui Xuan Phuoc
+ * @author Dang Chi Cong
  */
 
 public class ConsecutiveFailedLoginsFromSameIPAlertListener implements UpdateListener {

@@ -12,7 +12,7 @@ import static vn.edu.vgu.jupiter.http_alerts.HTTPAlertsConfigurations.getEPConfi
  * This class compile the EPL statement to select consecutive failed login attempts sourcing from one IP and raise the according events
  * and deploy the compiled EPL to the runtime
  *
- * @author Bui Xuan Phuoc
+ * @author Dang Chi Cong
  */
 public class ConsecutiveFailedLoginsFromSameIPAlertStatement {
     private static final String statementEPL =

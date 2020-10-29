@@ -7,6 +7,11 @@ import com.espertech.esper.runtime.client.UpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class is the listener for ARPDuplicateIPAlertStatement,
+ *
+ * @author Bui Xuan Phuoc
+ */
 public class ARPDuplicateIPAlertListener implements UpdateListener {
     private static final Logger logger = LoggerFactory.getLogger(ARPDuplicateIPAlertListener.class);
 

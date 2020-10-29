@@ -11,7 +11,7 @@ import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfigu
  * This class compile the EPL statement to select ARP announcements packets
  * and deploy the compiled EPL to the runtime
  *
- * @author Bui Xuan Phuoc
+ * @author Dang Chi Cong
  */
 public class ARPAnnouncementStatement {
     String statementEPL =

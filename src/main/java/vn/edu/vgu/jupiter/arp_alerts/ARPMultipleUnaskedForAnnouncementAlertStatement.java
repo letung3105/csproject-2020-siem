@@ -12,7 +12,7 @@ import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfigu
 /**
  * This class compile the EPL statement to detect surges of gratuitous ARP packets,
  *
- * @author Bui Xuan Phuoc
+ * @author Dang Chi Cong
  */
 public class ARPMultipleUnaskedForAnnouncementAlertStatement {
     String statementEPL =

@@ -3,6 +3,11 @@ package vn.edu.vgu.jupiter.arp_alerts;
 import com.espertech.esper.common.client.configuration.Configuration;
 import vn.edu.vgu.jupiter.arp_alerts.eventbean.*;
 
+/**
+ * Sets of parameters for raising arp alerts.
+ *
+ * @author Tung Le Vo
+ */
 public class ARPAlertsConfigurations {
     ARPDuplicateIP arpDuplicateIP;
     ARPCacheFlood arpCacheFlood;

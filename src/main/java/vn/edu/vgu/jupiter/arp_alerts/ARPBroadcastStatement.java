@@ -7,6 +7,13 @@ import vn.edu.vgu.jupiter.EPFacade;
 
 import static vn.edu.vgu.jupiter.arp_alerts.ARPAlertsConfigurations.getEPConfiguration;
 
+/**
+ * This class compile the EPL statement to select broadcast ARP packets,
+ * and deploy the compiled EPL to the runtime
+ *
+ * @author Bui Xuan Phuoc
+ */
+
 public class ARPBroadcastStatement {
     String statementEPL =
             "@Name('ARPBroadcastEvent')\n" +
