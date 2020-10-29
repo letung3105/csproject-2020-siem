@@ -35,6 +35,15 @@ public class MetricsPanel implements PropertyChangeListener, Initializable {
     public Label numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel;
 
     @FXML
+    public Label numberOfHTTPFileTooLargeEventsLabel;
+    @FXML
+    public Label numberOfConsecutiveFileTooLargeAlertsLabel;
+    @FXML
+    public Label numberOfConsecutiveFileTooLargeFromSameIPAlertsLabel;
+    @FXML
+    public Label numberOfConsecutiveFileTooLargeSameUserIDAlertsLabel;
+
+    @FXML
     public Label numberOfARPReplyEventsLabel;
     @FXML
     public Label numberOfARPBroadcastEventsLabel;
@@ -63,6 +72,11 @@ public class MetricsPanel implements PropertyChangeListener, Initializable {
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsAlert", numberOfConsecutiveFailedLoginsAlertsLabel);
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsFromSameIPAlert", numberOfConsecutiveFailedLoginsFromSameIPAlertsLabel);
         enabledMetricLogStatementNamesToLabel.put("ConsecutiveFailedLoginsSameUserIDAlert", numberOfConsecutiveFailedLoginsSameUserIDAlertsLabel);
+
+        enabledMetricLogStatementNamesToLabel.put("HTTPFileTooLarge", numberOfHTTPFileTooLargeEventsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ConsecutiveFileTooLargeAlert", numberOfConsecutiveFileTooLargeAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ConsecutiveFileTooLargeFromSameIPAlert", numberOfConsecutiveFileTooLargeFromSameIPAlertsLabel);
+        enabledMetricLogStatementNamesToLabel.put("ConsecutiveFileTooLargeSameUserIDAlert", numberOfConsecutiveFileTooLargeSameUserIDAlertsLabel);
 
         enabledMetricLogStatementNamesToLabel.put("ARPAnnouncementEvent", numberOfARPAnnouncementEventsLabel);
         enabledMetricLogStatementNamesToLabel.put("ARPBroadcastEvent", numberOfARPBroadcastEventsLabel);

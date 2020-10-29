@@ -153,6 +153,67 @@
                                         <Insets left="8.0"/>
                                     </VBox.margin>
                                 </Label>
+                                <Label text="HTTPFailedLogin">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfHTTPFileTooLargeEventsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ConsecutiveFileTooLargeAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfConsecutiveFileTooLargeAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ConsecutiveFileTooLargeFromSameIPAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfConsecutiveFileTooLargeFromSameIPAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="ConsecutiveFileTooLargeSameUserIDAlert">
+                                    <VBox.margin>
+                                        <Insets top="8.0"/>
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="numberOfConsecutiveFileTooLargeSameUserIDAlertsLabel" text="#events: 0">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="8.0"/>
+                                    </VBox.margin>
+                                </Label>
                             </children>
                         </VBox>
                     </children>
