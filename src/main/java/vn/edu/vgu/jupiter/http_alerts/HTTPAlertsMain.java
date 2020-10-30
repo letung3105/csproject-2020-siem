@@ -6,7 +6,6 @@ import com.espertech.esper.runtime.client.*;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
 import vn.edu.vgu.jupiter.EPFacade;
-import vn.edu.vgu.jupiter.http_alerts.eventbean.ConsecutiveFileTooLargeSameUserIDAlert;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -107,7 +106,8 @@ public class HTTPAlertsMain implements Runnable {
     public void run() {
         File apacheAccessLogFile = new File(logPath);
         TailerListener listener = new HTTPDLogTailer(runtime);
-        Tailer tailer = Tailer.create(apacheAccessLogFile, listener, 100, true);
+        Tailer tailer = new Tailer(apacheAccessLogFile, listener, 100, true);
+        tailer.run();
     }
 
     /**
