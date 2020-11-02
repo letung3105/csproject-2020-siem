@@ -95,7 +95,7 @@
                 </TitledPane>
             </panes>
         </Accordion>
-        <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" onAction="#deploy"
+        <Button layoutX="97.0" layoutY="428.0" mnemonicParsing="false" onAction="#applyVariableChanges"
                 text="Apply changes" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="97.0"
                 AnchorPane.rightAnchor="101.0"/>
     </children>

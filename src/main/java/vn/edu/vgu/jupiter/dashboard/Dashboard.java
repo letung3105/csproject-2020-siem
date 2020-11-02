@@ -36,7 +36,7 @@ public class Dashboard {
     @FXML
     public AnchorPane portScansAlertControlPanel;
     @FXML
-    public PortScansAlertController portScansAlertControlPanelController;
+    public PortScansAlertControlPanel portScansAlertControlPanelController;
     @FXML
     public AnchorPane arpAlertControlPanel;
     @FXML

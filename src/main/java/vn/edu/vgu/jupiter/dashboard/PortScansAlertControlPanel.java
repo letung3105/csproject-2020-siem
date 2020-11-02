@@ -23,8 +23,8 @@ import java.util.ResourceBundle;
  *
  * @author Pham Nguyen Thanh An
  */
-public class PortScansAlertController implements Initializable {
-    private static final Logger log = LoggerFactory.getLogger(PortScansAlertController.class);
+public class PortScansAlertControlPanel implements Initializable {
+    private static final Logger log = LoggerFactory.getLogger(PortScansAlertControlPanel.class);
     /**
      * FXML fields id
      */
