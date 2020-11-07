@@ -8,6 +8,11 @@ import com.espertech.esper.runtime.client.DeploymentOptions;
 import com.espertech.esper.runtime.client.EPRuntime;
 import com.espertech.esper.runtime.client.EPStatement;
 
+/**
+ * Simple facade for compiling and deploying EPL statements
+ *
+ * @author Vo Le Tung
+ */
 public class EPFacade {
     /**
      * Compile and deploy the compiled statement with the given deployment options

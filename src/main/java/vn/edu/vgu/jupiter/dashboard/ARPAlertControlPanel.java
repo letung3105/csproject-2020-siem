@@ -14,6 +14,9 @@ import javax.naming.NamingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * @author Bui Xuan Phuoc
+ */
 public class ARPAlertControlPanel implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(ARPAlertControlPanel.class);
 

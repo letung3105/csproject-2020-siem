@@ -27,6 +27,8 @@ import java.util.ResourceBundle;
 /**
  * This controller asks for user inputs in net device for port scans alerts and log location for http alerts
  * Upon receiving the correct values, it will switch to Dashboard
+ *
+ * @author Pham Nguyen Thanh An
  */
 public class StartupConfig implements Initializable {
     @FXML

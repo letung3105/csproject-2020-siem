@@ -13,7 +13,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A controller
+ * A panel that displays the number of processed events
+ *
+ * @author Vo Le Tung
  */
 public class MetricsPanel implements PropertyChangeListener, Initializable {
     @FXML

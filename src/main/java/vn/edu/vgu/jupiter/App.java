@@ -14,6 +14,11 @@ import org.apache.logging.log4j.core.filter.ThresholdFilter;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import vn.edu.vgu.jupiter.dashboard.TextAreaAppender;
 
+/**
+ * Entrypoint for setting up Log4J2 appender and starts the application
+ *
+ * @author Vo Le Tung
+ */
 public class App extends Application {
     public static void main(String[] args) {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
